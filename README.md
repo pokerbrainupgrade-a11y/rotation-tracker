@@ -9,10 +9,14 @@ model. Mobile only, portrait only, installs to the iPhone home screen.
 
 ## Status
 
-**Phase 0 — deployable empty shell.** No data layer, no features. Five labeled
-tabs and a placeholder heading each. The point of this phase is to prove the
-pipeline (build → test gate → Pages deploy → installable → offline) before any
-data exists that could be lost.
+**Phase 0 — deployable empty shell. Live, CI green.** No data layer, no
+features. Five labeled tabs and a placeholder heading each. The point of this
+phase is to prove the pipeline (build → test gate → Pages deploy → installable
+→ offline) before any data exists that could be lost.
+
+Verified: Actions green · site serves · service worker activated in scope ·
+manifest `scope`/`start_url` both `/rotation-tracker/` · shell precached.
+**Still outstanding: the iPhone Airplane-Mode test (check 5 below).**
 
 ---
 
@@ -105,6 +109,30 @@ then:
    `/rotation-tracker/`.
 3. On iPhone, a stale install can pin an old service worker. Delete the home
    screen icon, clear Safari website data for the domain, re-add.
+
+### Push rejected: "refusing to allow an OAuth App to create or update workflow"
+
+The saved git credential is an OAuth App token without the `workflow` scope, so
+it cannot push any change to `.github/workflows/`. Everything else pushes fine.
+This will recur every time `deploy.yml` is edited.
+
+Workarounds, cheapest first:
+
+1. **Edit `deploy.yml` in the GitHub web UI**, then `git pull --rebase`. Fine
+   for the rare workflow tweak.
+2. **Push that one file via GitHub Desktop**, which holds its own token with
+   `workflow` scope.
+3. **Replace the stored credential** with a token that has `workflow` scope
+   (GitHub → Settings → Developer settings → Personal access tokens). Then
+   `git credential-osxkeychain erase` the old one. Do this only if workflow
+   edits become frequent — a token that can rewrite CI is worth keeping scarce.
+
+To create a workflow file from a local copy without retyping it in the browser,
+URL-encode the contents into the new-file editor:
+
+```bash
+python3 -c "import urllib.parse;c=open('.github/workflows/deploy.yml').read();print('https://github.com/pokerbrainupgrade-a11y/rotation-tracker/new/main?filename='+urllib.parse.quote('.github/workflows/deploy.yml',safe='')+'&value='+urllib.parse.quote(c,safe=''))"
+```
 
 ### Data recovery
 
