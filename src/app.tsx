@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { TabBar } from './components/TabBar';
 import { Skeleton } from './components/Skeleton';
 import { ErrorScreen } from './components/ErrorScreen';
 import { Placeholder } from './screens/Placeholder';
 import { Dashboard } from './screens/Dashboard';
+import { Calendar } from './screens/Calendar';
 import { SCREEN_COPY } from './screens';
 import { useDashboard } from './hooks/useDashboard';
 import { toLocalDate } from './data/dates';
@@ -29,6 +30,19 @@ export function App() {
   const go = useCallback((next: Route) => {
     location.hash = hashFor(next);
   }, []);
+
+  // Refetch when returning to the Dashboard.
+  //
+  // Scheduling happens on the Calendar tab, but its consequences — warnings,
+  // ledger counts, the next position — are read on the Dashboard. Without this
+  // the Dashboard keeps whatever it loaded at launch, so a violation you were
+  // just warned about appears to have vanished. Only on transition INTO the
+  // route, so the initial mount is not loaded twice.
+  const prevRoute = useRef<Route>(route);
+  useEffect(() => {
+    if (prevRoute.current !== 'dashboard' && route === 'dashboard') reload();
+    prevRoute.current = route;
+  }, [route, reload]);
 
   const onExport = useCallback(() => {
     setExporting(true);
@@ -108,6 +122,8 @@ export function App() {
         />
       )}
 
+      {route === 'calendar' && <Calendar />}
+
       {route === 'settings' && (
         <Placeholder
           title="Settings"
@@ -115,7 +131,7 @@ export function App() {
         />
       )}
 
-      {route !== 'dashboard' && route !== 'settings' && (
+      {route !== 'dashboard' && route !== 'settings' && route !== 'calendar' && (
         <Placeholder title={SCREEN_COPY[activeTab].title} note={SCREEN_COPY[activeTab].note} />
       )}
 

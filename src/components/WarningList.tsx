@@ -1,4 +1,5 @@
 import { WarningItem } from './WarningItem';
+import { groupWarnings } from '../lib/warningCopy';
 import type { Warning } from '../engine/constraints';
 
 interface WarningListProps {
@@ -14,14 +15,24 @@ interface WarningListProps {
 export function WarningList({ warnings, onDismiss }: WarningListProps) {
   if (warnings.length === 0) return null;
 
+  // Collapse repeats of the same id: the engine emits one per occurrence, but
+  // the message carries no date, so three identical rows say nothing the first
+  // one didn't. Dismissal was already per-id, so they always cleared together.
+  const grouped = groupWarnings(warnings);
+
   return (
     <section class="section" data-testid="warning-list">
       <div class="section__head">
         <h2 class="section__title">Active Warnings</h2>
       </div>
       <div class="warnings">
-        {warnings.map((w, i) => (
-          <WarningItem key={`${w.id}-${w.relatedDate ?? i}`} warning={w} onDismiss={onDismiss} />
+        {grouped.map(({ warning, count }) => (
+          <WarningItem
+            key={warning.id}
+            warning={warning}
+            count={count}
+            onDismiss={onDismiss}
+          />
         ))}
       </div>
     </section>

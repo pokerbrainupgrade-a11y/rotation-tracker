@@ -2,6 +2,8 @@ import type { Warning } from '../engine/constraints';
 
 interface WarningItemProps {
   warning: Warning;
+  /** Occurrences collapsed into this row; 1 renders no badge. */
+  count?: number;
   onDismiss: (id: string) => void;
 }
 
@@ -9,7 +11,7 @@ interface WarningItemProps {
  * Severity border: --alert for `alert`, --strength for `warn`. Neither is
  * --brand red — red means "press this", not "look at this".
  */
-export function WarningItem({ warning, onDismiss }: WarningItemProps) {
+export function WarningItem({ warning, count = 1, onDismiss }: WarningItemProps) {
   const accent = warning.severity === 'alert' ? 'var(--alert)' : 'var(--strength)';
 
   return (
@@ -19,7 +21,10 @@ export function WarningItem({ warning, onDismiss }: WarningItemProps) {
       data-warning-id={warning.id}
       style={{ borderLeftColor: accent }}
     >
-      <p class="warning__text">{warning.message}</p>
+      <p class="warning__text">
+        {warning.message}
+        {count > 1 && <span class="warning__count num"> ×{count}</span>}
+      </p>
       {warning.dismissible && (
         <button
           type="button"

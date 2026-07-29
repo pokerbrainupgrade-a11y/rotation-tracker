@@ -109,7 +109,8 @@ test('shell — five tabs, hash routing, Dashboard is the landing route', async 
 
   await page.getByRole('button', { name: 'Calendar' }).click();
   await expect(page).toHaveURL(/#\/calendar/);
-  await expect(page.getByRole('heading', { name: 'Calendar' })).toBeVisible();
+  // Calendar is a real screen from Phase 4 on, not a titled placeholder.
+  await expect(page.getByTestId('calendar')).toBeVisible();
 
   // Back returns to the Dashboard — the point of hash routing in standalone.
   await page.goBack();

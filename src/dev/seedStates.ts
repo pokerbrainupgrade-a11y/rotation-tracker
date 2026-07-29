@@ -33,6 +33,8 @@ export type ScenarioName =
   | 'warn-cns-ascent'
   | 'warn-gap-4d'
   | 'warn-ledger-floor'
+  | 'calendar'
+  | 'calendar-empty'
   | 'db-error'
   | 'no-profile';
 
@@ -196,6 +198,33 @@ function build(name: ScenarioName, today: string): Built {
     case 'warn-ledger-floor':
       return { scheduled: [], setLogs: [], esdLogs: [] };
 
+    case 'calendar-empty':
+      return { scheduled: [], setLogs: [], esdLogs: [] };
+
+    // A schedule with forward planned sessions at KNOWN spacings, so a
+    // deferral's effect on spacing is checkable rather than eyeballed.
+    // Planned at +1, +3, +6, +10 days; one past session carrying logs so the
+    // delete cascade has something real to destroy.
+    case 'calendar': {
+      const past = session('TD2', 2, today);
+      const scheduled = [
+        past,
+        session('TD1', -1, today, { status: 'planned' }),
+        session('TD2', -3, today, { status: 'planned' }),
+        session('TD3', -6, today, { status: 'planned' }),
+        session('RD', -10, today, { status: 'planned' }),
+      ];
+      return {
+        scheduled,
+        setLogs: [
+          maxIntentSet(past.id, past.ts),
+          primeSet(past.id, past.ts + 1000),
+          { ...maxIntentSet(past.id, past.ts + 2000), id: nextId() },
+        ],
+        esdLogs: [vo2(past.id, past.ts + 3000, true)],
+      };
+    }
+
     case 'unscheduled':
     case 'export-overdue':
     case 'export-never':
@@ -266,7 +295,12 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
 
   // `unscheduled` deliberately leaves nothing planned, so the next-session
   // card has to render its UNSCHEDULED state.
-  if (name !== 'unscheduled' && name !== 'warn-ledger-floor') {
+  if (
+    name !== 'unscheduled' &&
+    name !== 'warn-ledger-floor' &&
+    name !== 'calendar' &&
+    name !== 'calendar-empty'
+  ) {
     const planned = session('TD1', -1, today, { status: 'planned' });
     await db.put('scheduled', planned);
   }

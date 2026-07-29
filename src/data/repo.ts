@@ -159,6 +159,40 @@ export async function putScheduled(session: ScheduledSession): Promise<void> {
 }
 
 /**
+ * Write many sessions atomically.
+ *
+ * Deferral rewrites the whole forward sequence. Persisting that one record at a
+ * time would leave the schedule half-shifted if anything failed partway —
+ * which looks fine until the rotation is quietly wrong two weeks later.
+ */
+export async function putScheduledMany(sessions: ScheduledSession[]): Promise<void> {
+  if (sessions.length === 0) return;
+  const db = await getDb();
+  const tx = db.transaction('scheduled', 'readwrite');
+  await Promise.all([...sessions.map((s) => tx.store.put(s)), tx.done]);
+}
+
+/**
+ * What a cascade delete would destroy, WITHOUT destroying it.
+ *
+ * The confirmation names real counts from the database rather than an
+ * estimate — "14 logged sets" has to be true, or the confirmation is theatre.
+ */
+export async function cascadeCounts(id: string): Promise<{
+  setLogs: number;
+  esdLogs: number;
+}> {
+  const db = await getDb();
+  const tx = db.transaction(['setLogs', 'esdLogs'], 'readonly');
+  const [setLogs, esdLogs] = await Promise.all([
+    tx.objectStore('setLogs').index('scheduledId').count(id),
+    tx.objectStore('esdLogs').index('scheduledId').count(id),
+  ]);
+  await tx.done;
+  return { setLogs, esdLogs };
+}
+
+/**
  * Delete a scheduled session AND every log that hangs off it, in ONE
  * transaction. Orphaned logs silently corrupt every ledger count, so this is
  * the only supported way to remove a session.

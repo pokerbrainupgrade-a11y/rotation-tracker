@@ -37,6 +37,7 @@
   --carbon-light: rgba(255, 255, 255, 0.013);
   --carbon-dark: rgba(255, 255, 255, 0.011);
   --mesh: rgba(255, 255, 255, 0.05);
+  --scrim: rgba(0, 0, 0, 0.55);   /* sheet backdrop */
 
   --r-button: 12px;
   --r-pill: 999px;
