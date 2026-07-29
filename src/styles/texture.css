@@ -1,0 +1,94 @@
+/*
+ * Texture pass.
+ *
+ * RULE: texture never reaches a data surface. No texture on the ledger, on any
+ * card, or on any numeral. Texture on something you have to read precisely is
+ * noise dressed as craft — and the ledger is the instrument this whole app
+ * exists to produce.
+ *
+ * Applied to exactly three places: the page background, the tab bar, and the
+ * START button.
+ */
+
+/* ---- carbon fibre: page background + tab bar ---- */
+
+body {
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(45deg, var(--carbon-light) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(-45deg, var(--carbon-dark) 0 2px, transparent 2px 5px);
+}
+
+.tabbar {
+  background-image:
+    repeating-linear-gradient(45deg, var(--carbon-light) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(-45deg, var(--carbon-dark) 0 2px, transparent 2px 5px);
+}
+
+/* ---- cage mesh: top of the Dashboard only ---- */
+
+/*
+ * Fades out well before the next-session card so no mesh line ever crosses a
+ * card edge. The mask is the important part — a hard cut-off would read as a
+ * rendering bug.
+ */
+.dashboard__mesh {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Scales with the safe area so it dissolves exactly where the next-session
+     card begins on ANY device. A fixed 120px is right on an iPhone (where
+     safe-area-inset-top is ~59px) but overlaps the card on a viewport with no
+     inset at all. */
+  height: calc(var(--safe-t) + 96px);
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(63deg, var(--mesh) 0 1px, transparent 1px 13px),
+    repeating-linear-gradient(-63deg, var(--mesh) 0 1px, transparent 1px 13px);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.35) 42%, rgba(0, 0, 0, 0) 72%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.35) 42%, rgba(0, 0, 0, 0) 72%);
+}
+
+/* Everything above the mesh, so no content is ever tinted by it. */
+.dash-header,
+.next-card,
+.section,
+.export-status {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- tread sheen: the START button only ---- */
+
+/*
+ * Layered UNDER the brand gradient at low contrast so the label stays sharp.
+ * If the label ever softens, halve these alphas rather than removing the
+ * gradient — legibility of the primary action outranks the texture.
+ */
+.next-card__start.btn--primary {
+  background-image:
+    repeating-linear-gradient(45deg, var(--sheen-light) 0 2px, transparent 2px 11px),
+    repeating-linear-gradient(-45deg, var(--sheen-dark) 0 2px, transparent 2px 11px),
+    linear-gradient(180deg, var(--brand) 0%, var(--brand-hover) 100%);
+}
+
+/* Numerals must stay clean: no inherited texture anywhere they render. */
+.num,
+[data-num],
+.ledger,
+.ledger-row,
+.card {
+  background-image: none;
+}
+
+/* The accent card keeps its flat surface colour. */
+.card { background-color: var(--surface); }
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton__line,
+  .skeleton__card,
+  .skeleton__row { animation: none; }
+  .btn { transition: none; }
+}

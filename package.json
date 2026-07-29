@@ -13,8 +13,9 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:e2e": "playwright test",
-    "lint": "eslint .",
-    "test:coverage": "vitest run --coverage"
+    "lint": "eslint . && node scripts/check-hex.mjs",
+    "test:coverage": "vitest run --coverage",
+    "check:hex": "node scripts/check-hex.mjs"
   },
   "dependencies": {
     "idb": "^8.0.3",

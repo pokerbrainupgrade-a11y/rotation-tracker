@@ -22,6 +22,22 @@
 
   --alert: #FF7A1A;        /* WARNINGS — amber-orange, NEVER red */
 
+  /* Secondary ledger rows at 60%. Precomputed rather than color-mix() so the
+     rendering does not depend on a Safari version. */
+  --velocity-60: rgba(200, 162, 75, 0.6);
+  --aerobic-60: rgba(47, 109, 181, 0.6);
+  --tick: rgba(255, 255, 255, 0.6);   /* ledger floor tick */
+
+  /* Texture. Sheen and mesh only — never applied to data surfaces. */
+  /* Halved from the mockup's 0.055/0.07: at full strength the tread visibly
+     softened the START label, and legibility of the primary action outranks
+     the texture. */
+  --sheen-light: rgba(255, 255, 255, 0.028);
+  --sheen-dark: rgba(0, 0, 0, 0.035);
+  --carbon-light: rgba(255, 255, 255, 0.013);
+  --carbon-dark: rgba(255, 255, 255, 0.011);
+  --mesh: rgba(255, 255, 255, 0.05);
+
   --r-button: 12px;
   --r-pill: 999px;
   --r-card: 6px;

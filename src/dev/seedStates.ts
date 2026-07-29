@@ -1,0 +1,275 @@
+/**
+ * DEV-ONLY visual state seeder.
+ *
+ * Stripped from production by the `import.meta.env.DEV` guard at every call
+ * site, so none of this ships. It exists because verifying "the VO2max row
+ * below floor with three missed exposures" by hand-logging sessions is slow
+ * enough that in practice you skip it — and then ship a state you never looked
+ * at.
+ *
+ * Usage: append `?scenario=<name>` to the URL.
+ */
+import { addDaysLocal, toLocalDate } from '../data/dates';
+import { getDb } from '../data/db';
+import { ensureProfile } from '../data/repo';
+import { programSeed } from '../data/seed';
+import { SEED_VERSION, type EsdLog, type ScheduledSession, type SetLog } from '../types';
+
+export type ScenarioName =
+  | 'healthy'
+  | 'below-velocity'
+  | 'below-prime'
+  | 'below-vo2max'
+  | 'below-zone2'
+  | 'below-training-days'
+  | 'vo2max-missed'
+  | 'unscheduled'
+  | 'export-overdue'
+  | 'export-never'
+  | 'warn-td1-not-off-rd'
+  | 'warn-double-maxintent'
+  | 'warn-esd-after-rd'
+  | 'warn-vo2-adjacent'
+  | 'warn-cns-ascent'
+  | 'warn-gap-4d'
+  | 'warn-ledger-floor'
+  | 'db-error'
+  | 'no-profile';
+
+export interface DevScenario {
+  name: ScenarioName | null;
+  /** Force the blocking storage-error screen without breaking real storage. */
+  forceDbError: boolean;
+}
+
+export function readScenario(search: string = location.search): DevScenario {
+  const name = new URLSearchParams(search).get('scenario') as ScenarioName | null;
+  return { name, forceDbError: name === 'db-error' };
+}
+
+let id = 0;
+const nextId = (): string => `dev-${++id}`;
+
+interface Built {
+  scheduled: ScheduledSession[];
+  setLogs: SetLog[];
+  esdLogs: EsdLog[];
+}
+
+const TEMPLATE_BY_POSITION = new Map(
+  programSeed.sessionTemplates.map((t) => [t.position, t]),
+);
+
+/** A completed session `daysAgo` back, optionally with its defining block logged. */
+function session(
+  position: ScheduledSession['position'],
+  daysAgo: number,
+  today: string,
+  over: Partial<ScheduledSession> = {},
+): ScheduledSession {
+  const template = TEMPLATE_BY_POSITION.get(position);
+  const localDate = addDaysLocal(today, -daysAgo);
+  return {
+    id: nextId(),
+    localDate,
+    ts: new Date(`${localDate}T12:00:00`).getTime(),
+    templateId: template?.id ?? 'tmpl.td2-strength',
+    position,
+    blockId: programSeed.blocks[0]?.id ?? 'block.accumulation',
+    rotationNumber: 4,
+    status: 'done',
+    compressionLevel: 100,
+    deload: false,
+    substituted: false,
+    substitutionNote: null,
+    metDosingSignature: null,
+    startedAt: null,
+    completedAt: null,
+    seedVersionAtLog: SEED_VERSION,
+    ...over,
+  };
+}
+
+function maxIntentSet(scheduledId: string, ts: number): SetLog {
+  return {
+    id: nextId(), scheduledId, exerciseId: 'ex.broad-jump', setIndex: 0, side: null,
+    load: null, unit: null, reps: 3, rpe: null, velocity: null, distance: 280,
+    contacts: null, completed: true, note: null, ts,
+  };
+}
+
+function primeSet(scheduledId: string, ts: number): SetLog {
+  return { ...maxIntentSet(scheduledId, ts), id: nextId(), exerciseId: 'ex.med-ball-throw' };
+}
+
+function vo2(scheduledId: string, ts: number, counted: boolean): EsdLog {
+  return {
+    id: nextId(), scheduledId, type: 'vo2max', minutes: 24, avgHr: 158, peakHr: 181,
+    intervalsCompleted: counted ? 4 : 2, counted, modality: 'bike', ts,
+  };
+}
+
+function zone2(scheduledId: string, ts: number, minutes: number): EsdLog {
+  return {
+    id: nextId(), scheduledId, type: 'zone2', minutes, avgHr: 128, peakHr: 140,
+    intervalsCompleted: null, counted: true, modality: 'bike', ts,
+  };
+}
+
+/**
+ * A comfortably-above-floor 28 days. Every other scenario is this, weakened in
+ * one specific way, so a single row moving below floor is unambiguous.
+ */
+function healthy(today: string): Built {
+  const scheduled: ScheduledSession[] = [];
+  const setLogs: SetLog[] = [];
+  const esdLogs: EsdLog[] = [];
+
+  // 3:1 rotation across 28 days: TD1, TD2, TD3, RD repeating.
+  const cycle = ['TD1', 'TD2', 'TD3', 'RD'] as const;
+  for (let d = 27; d >= 0; d--) {
+    const position = cycle[(27 - d) % 4];
+    if (!position) continue;
+    const s = session(position, d, today);
+    scheduled.push(s);
+    if (position === 'TD1') {
+      setLogs.push(maxIntentSet(s.id, s.ts), primeSet(s.id, s.ts + 1000));
+    }
+    if (position === 'TD3') esdLogs.push(vo2(s.id, s.ts, true));
+    if (position === 'RD') esdLogs.push(zone2(s.id, s.ts, 45));
+  }
+  return { scheduled, setLogs, esdLogs };
+}
+
+function build(name: ScenarioName, today: string): Built {
+  const base = healthy(today);
+
+  switch (name) {
+    case 'healthy':
+      return base;
+
+    // Strip EVERY max-intent set: the TD1s still happened, but the defining
+    // block did not — exactly the case the ledger rule exists to catch.
+    // Both jump and throw have to go: velocityFull is earned by ANY max-intent
+    // exercise in a power section, not only the prime.
+    case 'below-velocity':
+      return {
+        ...base,
+        setLogs: base.setLogs.filter(
+          (l) => l.exerciseId !== 'ex.broad-jump' && l.exerciseId !== 'ex.med-ball-throw',
+        ),
+      };
+
+    // Prime only. velocityFull survives on the jump, velocityPrime does not —
+    // the two rows should visibly disagree here.
+    case 'below-prime':
+      return { ...base, setLogs: base.setLogs.filter((l) => l.exerciseId !== 'ex.med-ball-throw') };
+
+    case 'below-vo2max':
+      return { ...base, esdLogs: base.esdLogs.filter((l) => l.type !== 'vo2max') };
+
+    // Alternate by index, not by timestamp parity: every session is stamped at
+    // noon, so parity is constant and would produce no misses at all.
+    case 'vo2max-missed': {
+      let n = 0;
+      return {
+        ...base,
+        esdLogs: base.esdLogs.map((l) =>
+          l.type === 'vo2max' ? { ...l, counted: n++ % 2 === 0 } : l,
+        ),
+      };
+    }
+
+    case 'below-zone2':
+      return {
+        ...base,
+        esdLogs: base.esdLogs.map((l) => (l.type === 'zone2' ? { ...l, minutes: 5 } : l)),
+      };
+
+    case 'below-training-days':
+    case 'warn-gap-4d':
+      return {
+        scheduled: base.scheduled.filter((_s, i) => i % 7 === 0),
+        setLogs: [], esdLogs: [],
+      };
+
+    case 'warn-ledger-floor':
+      return { scheduled: [], setLogs: [], esdLogs: [] };
+
+    case 'unscheduled':
+    case 'export-overdue':
+    case 'export-never':
+      return base;
+
+    case 'warn-td1-not-off-rd':
+      return { scheduled: [session('TD2', 2, today), session('TD1', 1, today)], setLogs: [], esdLogs: [] };
+
+    case 'warn-double-maxintent':
+      return { scheduled: [session('TD1', 2, today), session('TD1', 1, today)], setLogs: [], esdLogs: [] };
+
+    case 'warn-esd-after-rd':
+      return { scheduled: [session('RD', 2, today), session('TD3', 1, today)], setLogs: [], esdLogs: [] };
+
+    case 'warn-vo2-adjacent':
+      return { scheduled: [session('TD3', 2, today), session('TD3', 1, today)], setLogs: [], esdLogs: [] };
+
+    case 'warn-cns-ascent':
+      return { scheduled: [session('TD3', 2, today), session('TD2', 1, today)], setLogs: [], esdLogs: [] };
+
+    default:
+      return base;
+  }
+}
+
+/** Wipe user data and write the scenario. Returns false when nothing applied. */
+export async function applyScenario(name: ScenarioName, now: Date = new Date()): Promise<boolean> {
+  if (name === 'db-error') return false;
+
+  const db = await getDb();
+  const today = toLocalDate(now);
+
+  const tx = db.transaction(['scheduled', 'setLogs', 'esdLogs'], 'readwrite');
+  await Promise.all([
+    tx.objectStore('scheduled').clear(),
+    tx.objectStore('setLogs').clear(),
+    tx.objectStore('esdLogs').clear(),
+  ]);
+  await tx.done;
+
+  if (name === 'no-profile') {
+    const ptx = db.transaction('profile', 'readwrite');
+    await ptx.store.clear();
+    await ptx.done;
+    return true;
+  }
+
+  const first = programSeed.blocks[0];
+  const profile = await ensureProfile(first?.id ?? 'block.accumulation');
+
+  const lastExport =
+    name === 'export-never'
+      ? null
+      : name === 'export-overdue'
+        ? new Date(now.getTime() - 22 * 86_400_000).toISOString()
+        : now.toISOString();
+  await db.put('profile', { ...profile, lastExport, rotationNumber: 4 });
+
+  const built = build(name, today);
+
+  const wtx = db.transaction(['scheduled', 'setLogs', 'esdLogs'], 'readwrite');
+  await Promise.all([
+    ...built.scheduled.map((s) => wtx.objectStore('scheduled').put(s)),
+    ...built.setLogs.map((s) => wtx.objectStore('setLogs').put(s)),
+    ...built.esdLogs.map((s) => wtx.objectStore('esdLogs').put(s)),
+    wtx.done,
+  ]);
+
+  // `unscheduled` deliberately leaves nothing planned, so the next-session
+  // card has to render its UNSCHEDULED state.
+  if (name !== 'unscheduled' && name !== 'warn-ledger-floor') {
+    const planned = session('TD1', -1, today, { status: 'planned' });
+    await db.put('scheduled', planned);
+  }
+
+  return true;
+}

@@ -73,5 +73,8 @@
 }
 
 .tabbar__btn[aria-current='page'] .tabbar__dot {
-  background: var(--brand);
+  /* NOT --brand. Red is reserved for primary actions; using it for navigation
+     state too would mean red no longer uniquely says "press this", which is
+     the distinction the whole colour system is protecting. */
+  background: var(--text);
 }

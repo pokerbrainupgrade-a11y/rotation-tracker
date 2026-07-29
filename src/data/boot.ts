@@ -1,7 +1,7 @@
 import * as repo from './repo';
 import { checkStorage } from './db';
 import { ensureSeeded, programSeed } from './seed';
-import { ensureProfile, getProfile } from './repo';
+import { getProfile } from './repo';
 import { getStorageStatus, requestPersistence } from './persistence';
 
 export interface BootResult {
@@ -51,11 +51,12 @@ export async function boot(): Promise<BootResult> {
   }
 
   try {
-    const firstBlock = programSeed.blocks[0];
-    if (!firstBlock) throw new Error('Seed defines no blocks.');
+    if (!programSeed.blocks[0]) throw new Error('Seed defines no blocks.');
 
     const seeded = await ensureSeeded();
-    await ensureProfile(firstBlock.id);
+    // The profile is NOT created here. First launch has to be distinguishable
+    // from a returning launch so the app can route to setup; auto-creating one
+    // would make that state unreachable. Creation happens in the setup flow.
     const persisted = await requestPersistence();
 
     const placeholderSeed = isPlaceholderSeed();
