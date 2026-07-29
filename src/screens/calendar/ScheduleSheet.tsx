@@ -56,6 +56,8 @@ export function ScheduleSheet({
     startedAt: null,
     completedAt: null,
     seedVersionAtLog: SEED_VERSION,
+    checklist: [],
+    activeTimer: null,
   });
 
   const confirm = (): void => {

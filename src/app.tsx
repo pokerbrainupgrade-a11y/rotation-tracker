@@ -5,6 +5,12 @@ import { ErrorScreen } from './components/ErrorScreen';
 import { Placeholder } from './screens/Placeholder';
 import { Dashboard } from './screens/Dashboard';
 import { Calendar } from './screens/Calendar';
+import { Session } from './screens/Session';
+import { ResumeSheet } from './screens/session/ResumeSheet';
+import {
+  deleteSetLog, findUnfinishedSessions, getSetLogsByScheduled, putScheduled,
+} from './data/repo';
+import type { ScheduledSession } from './types';
 import { SCREEN_COPY } from './screens';
 import { useDashboard } from './hooks/useDashboard';
 import { toLocalDate } from './data/dates';
@@ -17,6 +23,9 @@ export function App() {
   const [route, setRoute] = useState<Route>(() => initialRoute());
   const { state, error, data, reload } = useDashboard();
   const [exporting, setExporting] = useState(false);
+  const [runningId, setRunningId] = useState<string | null>(null);
+  const [resume, setResume] = useState<{ session: ScheduledSession; setCount: number } | null>(null);
+  const [resumeChecked, setResumeChecked] = useState(false);
 
   // Dashboard is the landing route on every launch, so the hash is normalised
   // once on mount rather than restored from wherever the app was last closed.
@@ -58,6 +67,50 @@ export function App() {
       }
     })();
   }, []);
+
+  // Resume detection on launch: a session with startedAt set and completedAt
+  // null is one that was interrupted, and the interruption is usually a
+  // force-quit mid-workout.
+  useEffect(() => {
+    if (state !== 'ready' || resumeChecked) return;
+    setResumeChecked(true);
+    void (async () => {
+      const unfinished = await findUnfinishedSessions();
+      const first = unfinished[0];
+      if (!first) return;
+      const sets = await getSetLogsByScheduled(first.id);
+      setResume({ session: first, setCount: sets.length });
+    })();
+  }, [state, resumeChecked]);
+
+  const discardSession = useCallback(async () => {
+    if (!resume) return;
+    const sets = await getSetLogsByScheduled(resume.session.id);
+    for (const s of sets) await deleteSetLog(s.id);
+    await putScheduled({
+      ...resume.session,
+      startedAt: null,
+      activeTimer: null,
+      checklist: [],
+      status: 'planned',
+    });
+    setResume(null);
+    reload();
+  }, [resume, reload]);
+
+  const markComplete = useCallback(async () => {
+    if (!resume) return;
+    // Keeps whatever was logged. The ledger then judges it on merit, which may
+    // correctly mean it does not count as a TD1.
+    await putScheduled({
+      ...resume.session,
+      completedAt: Date.now(),
+      status: 'done',
+      activeTimer: null,
+    });
+    setResume(null);
+    reload();
+  }, [resume, reload]);
 
   const createProfile = useCallback(() => {
     void (async () => {
@@ -110,19 +163,48 @@ export function App() {
   }
 
   const activeTab: TabId =
-    route === 'settings' || route === 'setup' ? 'dashboard' : route;
+    route === 'settings' || route === 'setup' || route === 'session'
+      ? 'dashboard'
+      : route;
+
+  if (runningId) {
+    return (
+      <Session
+        sessionId={runningId}
+        onExit={() => {
+          setRunningId(null);
+          reload();
+        }}
+      />
+    );
+  }
 
   return (
     <>
+      {resume && (
+        <ResumeSheet
+          session={resume.session}
+          setCount={resume.setCount}
+          now={Date.now()}
+          onResume={() => {
+            setRunningId(resume.session.id);
+            setResume(null);
+          }}
+          onMarkComplete={markComplete}
+          onDiscard={discardSession}
+        />
+      )}
+
       {route === 'dashboard' && data && (
         <Dashboard
           data={data}
           today={toLocalDate(new Date())}
           onOpenSettings={() => go('settings')}
+          onStart={(id) => setRunningId(id)}
         />
       )}
 
-      {route === 'calendar' && <Calendar />}
+      {route === 'calendar' && <Calendar onStart={(id) => setRunningId(id)} />}
 
       {route === 'settings' && (
         <Placeholder

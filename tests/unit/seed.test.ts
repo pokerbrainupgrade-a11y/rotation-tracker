@@ -104,6 +104,9 @@ describe('acceptance 3 — seed update isolation', () => {
       liftRef: null,
       tags: ['tag.hinge'],
       maxIntent: false,
+      sets: 3, reps: 8, perSide: false, restSec: 90,
+      restPurpose: 'LOCAL RECOVERY', intent: 'test', terminationRule: 'test',
+      source: 'test', regression: 'easier', progression: 'harder',
     });
 
     const didSeed = await ensureSeeded(v2, 2);

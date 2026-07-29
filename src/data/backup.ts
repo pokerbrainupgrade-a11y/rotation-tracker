@@ -163,6 +163,23 @@ export const backupMigrations: Record<number, (b: RawBackup) => RawBackup> = {
       })),
     },
   }),
+  /**
+   * v2 — session runner fields. A backup taken at v1 has no checklist or
+   * activeTimer on its sessions; both are backfilled so a v1 restore lands on
+   * a database a v2 reader can use without special-casing.
+   */
+  2: (b) => ({
+    ...b,
+    schemaVersion: 2,
+    data: {
+      ...b.data,
+      scheduled: (b.data.scheduled ?? []).map((s) => ({
+        ...s,
+        checklist: s.checklist ?? [],
+        activeTimer: s.activeTimer ?? null,
+      })),
+    },
+  }),
 };
 
 function migrateBackup(raw: RawBackup): RawBackup {

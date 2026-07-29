@@ -6,6 +6,7 @@ import './styles/shell.css';
 import './styles/components.css';
 import './styles/dashboard.css';
 import './styles/calendar.css';
+import './styles/session.css';
 import './styles/texture.css';
 
 const root = document.getElementById('app');

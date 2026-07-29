@@ -34,7 +34,7 @@ function parseLocal(localDate: string): Date {
   return new Date(y ?? 1970, (m ?? 1) - 1, d ?? 1);
 }
 
-export function Calendar() {
+export function Calendar({ onStart }: { onStart: (sessionId: string) => void }) {
   const now = useMemo(() => new Date(), []);
   const { loading, data, reload } = useCalendar();
 
@@ -131,6 +131,7 @@ export function Calendar() {
           onSchedule={setScheduling}
           onDefer={setDeferring}
           onDelete={setDeleting}
+          onStart={onStart}
         />
       )}
 

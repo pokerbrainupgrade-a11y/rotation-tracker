@@ -1,5 +1,6 @@
 import type { IDBPDatabase, IDBPTransaction, StoreNames } from 'idb';
 import type { RotationDB } from './schema';
+import type { ScheduledSession } from '../types';
 
 export type MigrationDb = IDBPDatabase<RotationDB>;
 export type MigrationTx = IDBPTransaction<
@@ -68,6 +69,32 @@ export const migrations: Record<number, Migration> = {
       if (!db.objectStoreNames.contains(name)) {
         db.createObjectStore(name, { keyPath: 'id' });
       }
+    }
+  },
+
+  /**
+   * v2 — session runner state on the scheduled record.
+   *
+   * Adds `checklist` (completed Pillar/Movement Prep item ids) and
+   * `activeTimer` (a persisted rest timer, so a mid-rest app kill restores
+   * it). Both are BACKFILLED on every existing row: a reader that expects an
+   * array must never find `undefined`.
+   *
+   * Idempotent — re-running only fills rows that are still missing the fields.
+   */
+  2: async (_db, tx) => {
+    const store = tx.objectStore('scheduled');
+    let cursor = await store.openCursor();
+    while (cursor) {
+      const value = cursor.value as Partial<ScheduledSession>;
+      if (value.checklist === undefined || value.activeTimer === undefined) {
+        await cursor.update({
+          ...value,
+          checklist: value.checklist ?? [],
+          activeTimer: value.activeTimer ?? null,
+        } as ScheduledSession);
+      }
+      cursor = await cursor.continue();
     }
   },
 };

@@ -35,6 +35,9 @@ export type ScenarioName =
   | 'warn-ledger-floor'
   | 'calendar'
   | 'calendar-empty'
+  | 'session-ready'
+  | 'session-midway'
+  | 'session-stale'
   | 'db-error'
   | 'no-profile';
 
@@ -48,6 +51,8 @@ export function readScenario(search: string = location.search): DevScenario {
   const name = new URLSearchParams(search).get('scenario') as ScenarioName | null;
   return { name, forceDbError: name === 'db-error' };
 }
+
+const STABLE_NOW = Date.now();
 
 let id = 0;
 const nextId = (): string => `dev-${++id}`;
@@ -88,6 +93,8 @@ function session(
     startedAt: null,
     completedAt: null,
     seedVersionAtLog: SEED_VERSION,
+    checklist: [],
+    activeTimer: null,
     ...over,
   };
 }
@@ -201,6 +208,30 @@ function build(name: ScenarioName, today: string): Built {
     case 'calendar-empty':
       return { scheduled: [], setLogs: [], esdLogs: [] };
 
+    // A TD1 planned for today, never started. The runner's clean entry point.
+    case 'session-ready':
+      return {
+        scheduled: [session('TD1', 0, today, { id: 'run-1', status: 'planned' })],
+        setLogs: [], esdLogs: [],
+      };
+
+    // Started an hour ago with six sets down — the force-quit-mid-workout case.
+    case 'session-midway':
+    case 'session-stale': {
+      const hoursAgo = name === 'session-stale' ? 13 : 1;
+      const started = session('TD1', 0, today, {
+        id: 'run-1',
+        status: 'planned',
+        startedAt: STABLE_NOW - hoursAgo * 3_600_000,
+      });
+      const logs: SetLog[] = Array.from({ length: 6 }, (_, i) => ({
+        ...maxIntentSet(started.id, started.ts + i * 1000),
+        id: `log-${i}`,
+        setIndex: i % 4,
+      }));
+      return { scheduled: [started], setLogs: logs, esdLogs: [] };
+    }
+
     // A schedule with forward planned sessions at KNOWN spacings, so a
     // deferral's effect on spacing is checkable rather than eyeballed.
     // Planned at +1, +3, +6, +10 days; one past session carrying logs so the
@@ -299,7 +330,10 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
     name !== 'unscheduled' &&
     name !== 'warn-ledger-floor' &&
     name !== 'calendar' &&
-    name !== 'calendar-empty'
+    name !== 'calendar-empty' &&
+    name !== 'session-ready' &&
+    name !== 'session-midway' &&
+    name !== 'session-stale'
   ) {
     const planned = session('TD1', -1, today, { status: 'planned' });
     await db.put('scheduled', planned);

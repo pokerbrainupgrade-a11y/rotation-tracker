@@ -14,11 +14,12 @@ interface DayViewProps {
   onSchedule: (localDate: string) => void;
   onDefer: (session: ScheduledSession) => void;
   onDelete: (session: ScheduledSession) => void;
+  onStart: (sessionId: string) => void;
 }
 
 export function DayView({
   localDate, sessions, templates, exercises, now,
-  onNavigate, onSchedule, onDefer, onDelete,
+  onNavigate, onSchedule, onDefer, onDelete, onStart,
 }: DayViewProps) {
   const today = toLocalDate(now);
   const exerciseById = new Map(exercises.map((e) => [e.id, e]));
@@ -119,7 +120,12 @@ export function DayView({
               )}
 
               <div class="day-card__actions">
-                <button type="button" class="btn btn--primary day-card__start">
+                <button
+                  type="button"
+                  class="btn btn--primary day-card__start"
+                  data-testid="start-session"
+                  onClick={() => onStart(session.id)}
+                >
                   START
                 </button>
                 <div class="day-card__secondary">

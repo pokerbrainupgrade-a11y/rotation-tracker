@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 export const SEED_VERSION = 1;
 
 export type Units = 'lb' | 'kg';
@@ -39,6 +39,18 @@ export interface MaxRecord {
   method: 'tested' | 'estimated';
 }
 
+/**
+ * A running rest timer, persisted so a mid-rest app kill restores it.
+ * Timestamp-based: `startedAt` plus elapsed wall-clock is the only source of
+ * truth. Nothing accumulates.
+ */
+export interface ActiveTimer {
+  startedAt: number;       // epoch ms
+  durationSec: number;
+  adjustmentSec: number;   // net of +30s / -30s taps
+  exerciseId: string;
+}
+
 export interface ScheduledSession {
   id: string;                        // uuid
   localDate: string;                 // YYYY-MM-DD local — LEDGER KEY
@@ -56,6 +68,10 @@ export interface ScheduledSession {
   startedAt: number | null;          // resume support (Phase 5)
   completedAt: number | null;
   seedVersionAtLog: number;          // program definition active at log time
+  /** Completed checklist item ids (Pillar Prep, Movement Prep). Schema v2. */
+  checklist: string[];
+  /** Persisted rest timer, or null. Schema v2. */
+  activeTimer: ActiveTimer | null;
 }
 
 export interface SetLog {
@@ -137,16 +153,43 @@ export interface Exercise {
    * TD1 whose throw block was cut fail to count as a TD1.
    */
   maxIntent: boolean;
+
+  /* ---- prescription (placeholder values until the real program lands) ---- */
+
+  /** Prescribed working sets. Drives how many set rows the runner renders. */
+  sets: number;
+  /** Reps per set. */
+  reps: number;
+  /** true -> logged separately per side, L and R, in the same row. */
+  perSide: boolean;
+  /** Rest between sets, seconds. */
+  restSec: number;
+  /** Why that rest length, shown on the timer bar. */
+  restPurpose: string;
+  /** What the set is FOR. Always visible — this replaces movement demos. */
+  intent: string;
+  /** When to stop the set. Always visible. */
+  terminationRule: string;
+  /** Where the prescription came from. */
+  source: string;
+  /** Easier variant, shown in the [i] sheet. */
+  regression: string;
+  /** Harder variant, shown in the [i] sheet. */
+  progression: string;
+
   deprecated?: boolean;
 }
 
 /** What a section is for. `power` is load-bearing: the ledger reads it. */
 export type SectionRole =
+  | 'pillar-prep'
+  | 'movement-prep'
   | 'power'
-  | 'strength'
   | 'plyo'
-  | 'esd'
+  | 'movement-skills'
+  | 'strength'
   | 'accessory'
+  | 'esd'
   | 'recovery';
 
 export interface SessionTemplateSection {

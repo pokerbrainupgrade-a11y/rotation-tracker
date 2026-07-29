@@ -30,6 +30,8 @@ export function session(over: Partial<ScheduledSession> = {}): ScheduledSession 
     startedAt: null,
     completedAt: 1_772_003_600_000,
     seedVersionAtLog: SEED_VERSION,
+    checklist: [],
+    activeTimer: null,
     ...over,
   };
 }

@@ -32,7 +32,17 @@
       "tags": [
         "tag.bilateral-squat"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 5,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 180,
+      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
+      "intent": "Drive the floor away; bar speed constant across reps.",
+      "terminationRule": "Stop the set when bar speed visibly drops.",
+      "source": "Block strength template",
+      "regression": "Box squat to depth",
+      "progression": "Pause squat 2s"
     },
     {
       "id": "ex.trap-bar-deadlift",
@@ -41,7 +51,17 @@
       "tags": [
         "tag.hinge"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 5,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 180,
+      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
+      "intent": "Push the floor, hips and shoulders rise together.",
+      "terminationRule": "Stop when back position changes, not when reps run out.",
+      "source": "Block strength template",
+      "regression": "Rack pull",
+      "progression": "Deficit pull"
     },
     {
       "id": "ex.bench-press",
@@ -50,7 +70,17 @@
       "tags": [
         "tag.horizontal-press"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 4,
+      "reps": 5,
+      "perSide": false,
+      "restSec": 150,
+      "restPurpose": "PHOSPHAGEN RECOVERY",
+      "intent": "Controlled descent, aggressive drive off the chest.",
+      "terminationRule": "Stop at the first rep that slows noticeably.",
+      "source": "Block strength template",
+      "regression": "Floor press",
+      "progression": "Larsen press"
     },
     {
       "id": "ex.overhead-press",
@@ -59,7 +89,17 @@
       "tags": [
         "tag.vertical-press"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 3,
+      "reps": 6,
+      "perSide": false,
+      "restSec": 120,
+      "restPurpose": "PHOSPHAGEN RECOVERY",
+      "intent": "Ribs down, press through a locked trunk.",
+      "terminationRule": "Stop when the rib cage flares to complete a rep.",
+      "source": "Accessory",
+      "regression": "Half-kneeling press",
+      "progression": "Strict standing press"
     },
     {
       "id": "ex.weighted-pullup",
@@ -68,7 +108,17 @@
       "tags": [
         "tag.vertical-pull"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 4,
+      "reps": 5,
+      "perSide": false,
+      "restSec": 150,
+      "restPurpose": "PHOSPHAGEN RECOVERY",
+      "intent": "Lead with the elbows, finish chest to bar.",
+      "terminationRule": "Stop when the range shortens.",
+      "source": "Block strength template",
+      "regression": "Band-assisted pull-up",
+      "progression": "Weighted, slower eccentric"
     },
     {
       "id": "ex.split-squat",
@@ -77,7 +127,17 @@
       "tags": [
         "tag.unilateral-squat"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 3,
+      "reps": 8,
+      "perSide": true,
+      "restSec": 90,
+      "restPurpose": "LOCAL RECOVERY",
+      "intent": "Vertical shin, weight through the front mid-foot.",
+      "terminationRule": "Stop when the trailing hip cannot stay extended.",
+      "source": "Accessory",
+      "regression": "Split squat, no elevation",
+      "progression": "Front-foot-elevated"
     },
     {
       "id": "ex.broad-jump",
@@ -86,7 +146,17 @@
       "tags": [
         "tag.horizontal-jump"
       ],
-      "maxIntent": true
+      "maxIntent": true,
+      "sets": 4,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 180,
+      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
+      "intent": "Maximal horizontal distance. Full reset between reps.",
+      "terminationRule": "Stop the moment distance drops off the best rep.",
+      "source": "Velocity template",
+      "regression": "Standing long jump, submaximal",
+      "progression": "Weighted vest broad jump"
     },
     {
       "id": "ex.vertical-jump",
@@ -95,7 +165,17 @@
       "tags": [
         "tag.vertical-jump"
       ],
-      "maxIntent": true
+      "maxIntent": true,
+      "sets": 4,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 180,
+      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
+      "intent": "Maximal height, minimum ground contact on the countermovement.",
+      "terminationRule": "Stop when peak height falls below the best rep.",
+      "source": "Velocity template",
+      "regression": "Squat jump from pause",
+      "progression": "Depth jump"
     },
     {
       "id": "ex.med-ball-throw",
@@ -104,7 +184,17 @@
       "tags": [
         "tag.throw"
       ],
-      "maxIntent": true
+      "maxIntent": true,
+      "sets": 4,
+      "reps": 3,
+      "perSide": true,
+      "restSec": 180,
+      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
+      "intent": "Accelerate through the ball; hips lead, arms finish.",
+      "terminationRule": "Stop when the throw stops feeling ballistic.",
+      "source": "Velocity template",
+      "regression": "Lighter ball, same intent",
+      "progression": "Heavier ball, same speed"
     },
     {
       "id": "ex.pogo-hops",
@@ -113,7 +203,17 @@
       "tags": [
         "tag.plyo"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 4,
+      "reps": 10,
+      "perSide": false,
+      "restSec": 90,
+      "restPurpose": "ELASTIC RECOVERY",
+      "intent": "Minimum ground contact time. Stiff ankles, quiet landings.",
+      "terminationRule": "Stop when contacts get loud or slow.",
+      "source": "Elastic template",
+      "regression": "Two-foot pogo in place",
+      "progression": "Single-leg pogo"
     },
     {
       "id": "ex.bike-intervals",
@@ -122,7 +222,17 @@
       "tags": [
         "tag.vo2max"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 4,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 240,
+      "restPurpose": "AEROBIC RECOVERY BETWEEN INTERVALS",
+      "intent": "Hold the target power for the full interval.",
+      "terminationRule": "Stop the interval if power drops below target.",
+      "source": "ESD template",
+      "regression": "3 x 4 min",
+      "progression": "5 x 4 min"
     },
     {
       "id": "ex.zone2-ride",
@@ -131,7 +241,17 @@
       "tags": [
         "tag.zone2"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Conversational pace. Nasal breathing throughout.",
+      "terminationRule": "Stop if pace requires mouth breathing to hold.",
+      "source": "ESD template",
+      "regression": "Shorter duration",
+      "progression": "Longer duration"
     },
     {
       "id": "ex.mobility-flow",
@@ -140,7 +260,17 @@
       "tags": [
         "tag.recovery"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Move through range slowly; no forcing end positions.",
+      "terminationRule": "Stop at the first position that needs forcing.",
+      "source": "Regeneration",
+      "regression": "Reduced range",
+      "progression": "Longer holds"
     },
     {
       "id": "ex.easy-walk",
@@ -149,7 +279,119 @@
       "tags": [
         "tag.recovery"
       ],
-      "maxIntent": false
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Easy, unhurried. This is recovery, not training.",
+      "terminationRule": "No termination rule.",
+      "source": "Regeneration",
+      "regression": "Shorter walk",
+      "progression": "Longer walk"
+    },
+    {
+      "id": "ex.breathing",
+      "name": "90/90 Breathing",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Quality over quantity.",
+      "terminationRule": "Stop if position degrades.",
+      "source": "Preparation",
+      "regression": "Reduced range",
+      "progression": "Full range"
+    },
+    {
+      "id": "ex.glute-bridge",
+      "name": "Glute Bridge",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Quality over quantity.",
+      "terminationRule": "Stop if position degrades.",
+      "source": "Preparation",
+      "regression": "Reduced range",
+      "progression": "Full range"
+    },
+    {
+      "id": "ex.side-plank",
+      "name": "Side Plank",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Quality over quantity.",
+      "terminationRule": "Stop if position degrades.",
+      "source": "Preparation",
+      "regression": "Reduced range",
+      "progression": "Full range"
+    },
+    {
+      "id": "ex.leg-swings",
+      "name": "Leg Swings",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Quality over quantity.",
+      "terminationRule": "Stop if position degrades.",
+      "source": "Preparation",
+      "regression": "Reduced range",
+      "progression": "Full range"
+    },
+    {
+      "id": "ex.inchworm",
+      "name": "Inchworm",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Quality over quantity.",
+      "terminationRule": "Stop if position degrades.",
+      "source": "Preparation",
+      "regression": "Reduced range",
+      "progression": "Full range"
+    },
+    {
+      "id": "ex.lateral-lunge",
+      "name": "Lateral Lunge",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
+      "intent": "Quality over quantity.",
+      "terminationRule": "Stop if position degrades.",
+      "source": "Preparation",
+      "regression": "Reduced range",
+      "progression": "Full range"
     }
   ],
   "sessionTemplates": [
@@ -158,6 +400,28 @@
       "name": "TD1 \u2014 Velocity / Power",
       "position": "TD1",
       "sections": [
+        {
+          "id": "sec.td1-velocity.pillar",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.breathing",
+            "ex.glute-bridge",
+            "ex.side-plank"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.td1-velocity.movement",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.leg-swings",
+            "ex.inchworm",
+            "ex.lateral-lunge"
+          ],
+          "primeExerciseId": null
+        },
         {
           "id": "sec.td1.jumps",
           "label": "Jumps",
@@ -198,6 +462,28 @@
       "position": "TD2",
       "sections": [
         {
+          "id": "sec.td2-strength.pillar",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.breathing",
+            "ex.glute-bridge",
+            "ex.side-plank"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.td2-strength.movement",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.leg-swings",
+            "ex.inchworm",
+            "ex.lateral-lunge"
+          ],
+          "primeExerciseId": null
+        },
+        {
           "id": "sec.td2.primary",
           "label": "Primary",
           "role": "strength",
@@ -235,6 +521,28 @@
       "position": "TD3",
       "sections": [
         {
+          "id": "sec.td3-elastic.pillar",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.breathing",
+            "ex.glute-bridge",
+            "ex.side-plank"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.td3-elastic.movement",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.leg-swings",
+            "ex.inchworm",
+            "ex.lateral-lunge"
+          ],
+          "primeExerciseId": null
+        },
+        {
           "id": "sec.td3.plyo",
           "label": "Plyometrics",
           "role": "plyo",
@@ -262,6 +570,28 @@
       "name": "TD-A \u2014 Combined",
       "position": "TD-A",
       "sections": [
+        {
+          "id": "sec.td-a.pillar",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.breathing",
+            "ex.glute-bridge",
+            "ex.side-plank"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.td-a.movement",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.leg-swings",
+            "ex.inchworm",
+            "ex.lateral-lunge"
+          ],
+          "primeExerciseId": null
+        },
         {
           "id": "sec.tda.jumps",
           "label": "Jumps",
@@ -292,6 +622,28 @@
       "position": "TD-B-STR",
       "sections": [
         {
+          "id": "sec.td-b-str.pillar",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.breathing",
+            "ex.glute-bridge",
+            "ex.side-plank"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.td-b-str.movement",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.leg-swings",
+            "ex.inchworm",
+            "ex.lateral-lunge"
+          ],
+          "primeExerciseId": null
+        },
+        {
           "id": "sec.tdbstr.primary",
           "label": "Primary",
           "role": "strength",
@@ -318,6 +670,28 @@
       "position": "TD-B-ESD",
       "sections": [
         {
+          "id": "sec.td-b-esd.pillar",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.breathing",
+            "ex.glute-bridge",
+            "ex.side-plank"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.td-b-esd.movement",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.leg-swings",
+            "ex.inchworm",
+            "ex.lateral-lunge"
+          ],
+          "primeExerciseId": null
+        },
+        {
           "id": "sec.tdbesd.esd",
           "label": "ESD",
           "role": "esd",
@@ -337,6 +711,28 @@
       "name": "RD \u2014 Recovery",
       "position": "RD",
       "sections": [
+        {
+          "id": "sec.rd.pillar",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.breathing",
+            "ex.glute-bridge",
+            "ex.side-plank"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.rd.movement",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.leg-swings",
+            "ex.inchworm",
+            "ex.lateral-lunge"
+          ],
+          "primeExerciseId": null
+        },
         {
           "id": "sec.rd.recovery",
           "label": "Recovery",

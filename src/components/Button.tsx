@@ -2,7 +2,9 @@ import type { ComponentChildren, JSX } from 'preact';
 
 type Variant = 'primary' | 'secondary' | 'ghost';
 
-interface ButtonProps extends Omit<JSX.HTMLAttributes<HTMLButtonElement>, 'size'> {
+// Intrinsic button attrs, not the generic HTMLAttributes: button-specific
+// props like `disabled` only exist on the intrinsic element type.
+interface ButtonProps extends Omit<JSX.IntrinsicElements['button'], 'size' | 'children'> {
   variant?: Variant;
   children: ComponentChildren;
 }

@@ -223,6 +223,17 @@ export async function deleteScheduledCascade(id: string): Promise<{
   return { setLogs: setKeys.length, esdLogs: esdKeys.length };
 }
 
+/**
+ * Sessions started but never finished. Drives the launch resume sheet.
+ */
+export async function findUnfinishedSessions(): Promise<ScheduledSession[]> {
+  const db = await getDb();
+  const all = await db.getAll('scheduled');
+  return all
+    .filter((s) => s.startedAt !== null && s.completedAt === null)
+    .sort((a, b) => (b.startedAt ?? 0) - (a.startedAt ?? 0));
+}
+
 /* ---------------- set logs ---------------- */
 
 export async function listSetLogs(): Promise<SetLog[]> {

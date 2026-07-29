@@ -10,11 +10,18 @@ import type {
  * placeholder that will be replaced.
  */
 
+/** Prescription fields the ledger never reads; kept minimal on purpose. */
+const RX = {
+  sets: 3, reps: 3, perSide: false, restSec: 90,
+  restPurpose: 'TEST', intent: 'test intent', terminationRule: 'test rule',
+  source: 'test', regression: 'easier', progression: 'harder',
+} as const;
+
 export const exercises: Exercise[] = [
-  { id: 'ex.throw', name: 'Throw', liftRef: null, tags: [], maxIntent: true },
-  { id: 'ex.jump', name: 'Jump', liftRef: null, tags: [], maxIntent: true },
-  { id: 'ex.squat', name: 'Squat', liftRef: 'lift.squat', tags: [], maxIntent: false },
-  { id: 'ex.bike', name: 'Bike', liftRef: null, tags: [], maxIntent: false },
+  { id: 'ex.throw', name: 'Throw', liftRef: null, tags: [], maxIntent: true, ...RX },
+  { id: 'ex.jump', name: 'Jump', liftRef: null, tags: [], maxIntent: true, ...RX },
+  { id: 'ex.squat', name: 'Squat', liftRef: 'lift.squat', tags: [], maxIntent: false, ...RX },
+  { id: 'ex.bike', name: 'Bike', liftRef: null, tags: [], maxIntent: false, ...RX },
 ];
 
 export const td1: SessionTemplate = {

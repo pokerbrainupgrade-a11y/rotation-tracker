@@ -1,8 +1,8 @@
 import { TABS, type TabId } from '../types';
 
-export type Route = TabId | 'settings' | 'setup';
+export type Route = TabId | 'settings' | 'setup' | 'session';
 
-const VALID: Route[] = [...TABS.map((t) => t.id), 'settings', 'setup'];
+const VALID: Route[] = [...TABS.map((t) => t.id), 'settings', 'setup', 'session'];
 
 export const DEFAULT_ROUTE: Route = 'dashboard';
 

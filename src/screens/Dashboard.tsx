@@ -15,9 +15,10 @@ interface DashboardProps {
   data: DashboardData;
   today: string;
   onOpenSettings: () => void;
+  onStart: (sessionId: string) => void;
 }
 
-export function Dashboard({ data, today, onOpenSettings }: DashboardProps) {
+export function Dashboard({ data, today, onOpenSettings, onStart }: DashboardProps) {
   const [dismissed, setDismissed] = useState<string[]>(() => loadDismissed(today));
   const [exporting, setExporting] = useState(false);
 
@@ -94,7 +95,12 @@ export function Dashboard({ data, today, onOpenSettings }: DashboardProps) {
         >
           {next.scheduled ? next.scheduled.localDate : 'UNSCHEDULED'}
         </div>
-        <Button variant="primary" class="next-card__start">
+        <Button
+          variant="primary"
+          class="next-card__start"
+          disabled={!next.scheduled}
+          onClick={() => { if (next.scheduled) onStart(next.scheduled.id); }}
+        >
           START SESSION
         </Button>
         <div class="next-card__links">
