@@ -1,0 +1,121 @@
+{
+  "_placeholder": true,
+  "_note": "STRUCTURAL PLACEHOLDER — NOT A TRAINING PRESCRIPTION. The real program definition has not been supplied yet. IDs here are a permanent contract the moment any session is logged against them, so replace this file BEFORE logging real training. See README 'Replacing the placeholder seed'.",
+  "seedVersion": 1,
+  "lifts": [
+    { "id": "lift.back-squat", "name": "Back Squat" },
+    { "id": "lift.trap-bar-deadlift", "name": "Trap Bar Deadlift" },
+    { "id": "lift.bench-press", "name": "Bench Press" },
+    { "id": "lift.overhead-press", "name": "Overhead Press" },
+    { "id": "lift.weighted-pullup", "name": "Weighted Pull-Up" }
+  ],
+  "exercises": [
+    { "id": "ex.back-squat", "name": "Back Squat", "liftRef": "lift.back-squat", "tags": ["tag.bilateral-squat"] },
+    { "id": "ex.trap-bar-deadlift", "name": "Trap Bar Deadlift", "liftRef": "lift.trap-bar-deadlift", "tags": ["tag.hinge"] },
+    { "id": "ex.bench-press", "name": "Bench Press", "liftRef": "lift.bench-press", "tags": ["tag.horizontal-press"] },
+    { "id": "ex.overhead-press", "name": "Overhead Press", "liftRef": "lift.overhead-press", "tags": ["tag.vertical-press"] },
+    { "id": "ex.weighted-pullup", "name": "Weighted Pull-Up", "liftRef": "lift.weighted-pullup", "tags": ["tag.vertical-pull"] },
+    { "id": "ex.split-squat", "name": "Rear-Foot-Elevated Split Squat", "liftRef": null, "tags": ["tag.unilateral-squat"] },
+    { "id": "ex.broad-jump", "name": "Broad Jump", "liftRef": null, "tags": ["tag.horizontal-jump"] },
+    { "id": "ex.vertical-jump", "name": "Countermovement Jump", "liftRef": null, "tags": ["tag.vertical-jump"] },
+    { "id": "ex.med-ball-throw", "name": "Med Ball Rotational Throw", "liftRef": null, "tags": ["tag.throw"] },
+    { "id": "ex.pogo-hops", "name": "Pogo Hops", "liftRef": null, "tags": ["tag.plyo"] },
+    { "id": "ex.bike-intervals", "name": "Bike Intervals", "liftRef": null, "tags": ["tag.vo2max"] },
+    { "id": "ex.zone2-ride", "name": "Zone 2 Ride", "liftRef": null, "tags": ["tag.zone2"] },
+    { "id": "ex.mobility-flow", "name": "Mobility Flow", "liftRef": null, "tags": ["tag.recovery"] },
+    { "id": "ex.easy-walk", "name": "Easy Walk", "liftRef": null, "tags": ["tag.recovery"] }
+  ],
+  "sessionTemplates": [
+    {
+      "id": "tmpl.td1-velocity",
+      "name": "TD1 — Velocity / Power",
+      "position": "TD1",
+      "sections": [
+        { "id": "sec.td1.jumps", "label": "Jumps", "exerciseIds": ["ex.broad-jump", "ex.vertical-jump"] },
+        { "id": "sec.td1.throws", "label": "Throws", "exerciseIds": ["ex.med-ball-throw"] },
+        { "id": "sec.td1.speed-strength", "label": "Speed-Strength", "exerciseIds": ["ex.back-squat"] }
+      ]
+    },
+    {
+      "id": "tmpl.td2-strength",
+      "name": "TD2 — Max Strength",
+      "position": "TD2",
+      "sections": [
+        { "id": "sec.td2.primary", "label": "Primary", "exerciseIds": ["ex.trap-bar-deadlift"] },
+        { "id": "sec.td2.secondary", "label": "Secondary", "exerciseIds": ["ex.bench-press", "ex.weighted-pullup"] },
+        { "id": "sec.td2.accessory", "label": "Accessory", "exerciseIds": ["ex.split-squat", "ex.overhead-press"] }
+      ]
+    },
+    {
+      "id": "tmpl.td3-elastic",
+      "name": "TD3 — Elastic / VO2max",
+      "position": "TD3",
+      "sections": [
+        { "id": "sec.td3.plyo", "label": "Plyometrics", "exerciseIds": ["ex.pogo-hops"] },
+        { "id": "sec.td3.esd", "label": "ESD", "exerciseIds": ["ex.bike-intervals"] }
+      ]
+    },
+    {
+      "id": "tmpl.td-a",
+      "name": "TD-A — Combined",
+      "position": "TD-A",
+      "sections": [
+        { "id": "sec.tda.jumps", "label": "Jumps", "exerciseIds": ["ex.vertical-jump"] },
+        { "id": "sec.tda.strength", "label": "Strength", "exerciseIds": ["ex.back-squat"] }
+      ]
+    },
+    {
+      "id": "tmpl.td-b-str",
+      "name": "TD-B — Strength Emphasis",
+      "position": "TD-B-STR",
+      "sections": [
+        { "id": "sec.tdbstr.primary", "label": "Primary", "exerciseIds": ["ex.trap-bar-deadlift"] },
+        { "id": "sec.tdbstr.secondary", "label": "Secondary", "exerciseIds": ["ex.bench-press"] }
+      ]
+    },
+    {
+      "id": "tmpl.td-b-esd",
+      "name": "TD-B — ESD Emphasis",
+      "position": "TD-B-ESD",
+      "sections": [
+        { "id": "sec.tdbesd.esd", "label": "ESD", "exerciseIds": ["ex.bike-intervals", "ex.zone2-ride"] }
+      ]
+    },
+    {
+      "id": "tmpl.rd",
+      "name": "RD — Recovery",
+      "position": "RD",
+      "sections": [
+        { "id": "sec.rd.recovery", "label": "Recovery", "exerciseIds": ["ex.mobility-flow", "ex.easy-walk"] }
+      ]
+    }
+  ],
+  "blocks": [
+    { "id": "block.accumulation", "name": "Accumulation", "weeks": 4 },
+    { "id": "block.intensification", "name": "Intensification", "weeks": 3 },
+    { "id": "block.realization", "name": "Realization", "weeks": 2 }
+  ],
+  "substitutionTags": [
+    { "id": "tag.bilateral-squat", "label": "Bilateral Squat", "appliesTo": ["ex.back-squat", "ex.split-squat"] },
+    { "id": "tag.unilateral-squat", "label": "Unilateral Squat", "appliesTo": ["ex.split-squat"] },
+    { "id": "tag.hinge", "label": "Hinge", "appliesTo": ["ex.trap-bar-deadlift"] },
+    { "id": "tag.horizontal-press", "label": "Horizontal Press", "appliesTo": ["ex.bench-press"] },
+    { "id": "tag.vertical-press", "label": "Vertical Press", "appliesTo": ["ex.overhead-press"] },
+    { "id": "tag.vertical-pull", "label": "Vertical Pull", "appliesTo": ["ex.weighted-pullup"] },
+    { "id": "tag.horizontal-jump", "label": "Horizontal Jump", "appliesTo": ["ex.broad-jump"] },
+    { "id": "tag.vertical-jump", "label": "Vertical Jump", "appliesTo": ["ex.vertical-jump"] },
+    { "id": "tag.throw", "label": "Throw", "appliesTo": ["ex.med-ball-throw"] },
+    { "id": "tag.plyo", "label": "Plyometric", "appliesTo": ["ex.pogo-hops"] },
+    { "id": "tag.vo2max", "label": "VO2max", "appliesTo": ["ex.bike-intervals"] },
+    { "id": "tag.zone2", "label": "Zone 2", "appliesTo": ["ex.zone2-ride"] },
+    { "id": "tag.recovery", "label": "Recovery", "appliesTo": ["ex.mobility-flow", "ex.easy-walk"] }
+  ],
+  "testDefs": [
+    { "id": "test.cmj", "name": "Countermovement Jump", "unit": "cm", "battery": "both", "bilateral": false },
+    { "id": "test.broad-jump", "name": "Broad Jump", "unit": "cm", "battery": "both", "bilateral": false },
+    { "id": "test.single-leg-hop", "name": "Single-Leg Hop", "unit": "cm", "battery": "full", "bilateral": true },
+    { "id": "test.imtp", "name": "Isometric Mid-Thigh Pull", "unit": "N", "battery": "full", "bilateral": false },
+    { "id": "test.grip", "name": "Grip Strength", "unit": "kg", "battery": "full", "bilateral": true },
+    { "id": "test.vo2max-est", "name": "Estimated VO2max", "unit": "ml/kg/min", "battery": "full", "bilateral": false }
+  ]
+}

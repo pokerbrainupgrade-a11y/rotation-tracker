@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<style>
+html,body{margin:0;padding:0;background:#0B0B0D;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box;font-variant-numeric:tabular-nums}
+a{color:#C8A24B;text-decoration:none}
+a:hover{color:#C8A24B}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0}
+::-webkit-scrollbar{display:none}
+@keyframes sheetin{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+</style>
+</helmet>
+<div style="position:relative;width:100%;height:100dvh;min-height:640px;background-color:#0B0B0D;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.013) 0 2px,transparent 2px 5px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.0110) 0 2px,transparent 2px 5px);color:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui,sans-serif;font-weight:400;display:flex;flex-direction:column;overflow:hidden">
+
+<div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top) + 10px) 0 calc(env(safe-area-inset-bottom) + 86px)">
+
+<sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+<div style="background-image:linear-gradient(180deg,rgba(11,11,13,0) 0%,rgba(11,11,13,0.6) 70px,#0B0B0D 118px),repeating-linear-gradient(63deg,rgba(255,255,255,0.05) 0 1px,transparent 1px 13px),repeating-linear-gradient(-63deg,rgba(255,255,255,0.05) 0 1px,transparent 1px 13px);background-size:100% 120px;background-repeat:no-repeat">
+
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px 12px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;line-height:1.3">{{ blockLine }}</div>
+<div style="display:flex;align-items:center;gap:12px;flex:none">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">{{ todayLabel }}</div>
+<button onClick="{{ openSettings }}" aria-label="Settings" style="width:32px;height:32px;display:grid;place-items:center;margin:-12px -6px -12px 0;color:#9A9AA4">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.2"></circle><circle cx="12" cy="12" r="8.4" stroke-dasharray="2.6 3.2"></circle></svg>
+</button>
+</div>
+</div>
+
+<div style="background:#16161A;border-top:1px solid #2E2E36;border-bottom:1px solid #2E2E36;border-left:4px solid {{ nsColor }};padding:14px 16px 16px">
+<div style="font-size:44px;font-weight:700;line-height:1;color:{{ nsColor }};letter-spacing:-0.02em">{{ nsPos }}</div>
+<div style="font-size:15px;line-height:1.3;margin-top:8px;text-wrap:pretty">{{ nsName }}</div>
+<sc-if value="{{ hasNext }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:6px;margin-top:10px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;background:#1F1F25;border:1px solid #2E2E36;padding:4px 10px;border-radius:999px">NEURAL {{ nsNeu }}/10</span>
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;background:#1F1F25;border:1px solid #2E2E36;padding:4px 10px;border-radius:999px">METABOLIC {{ nsMet }}/10</span>
+</div>
+</sc-if>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:{{ nsDateColor }};margin-top:12px">{{ nsDate }}</div>
+<sc-if value="{{ hasNext }}" hint-placeholder-val="{{ true }}">
+<div>
+<button onClick="{{ startToday }}" style="margin-top:14px;width:100%;height:64px;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.055) 0 2px,rgba(255,255,255,0) 2px 11px),repeating-linear-gradient(-45deg,rgba(0,0,0,0.07) 0 2px,rgba(0,0,0,0) 2px 11px),linear-gradient(180deg,#D20A0A 0%,#A50808 100%);color:#FFFFFF;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;transition:opacity 120ms linear;border-radius:12px" style-active="opacity:0.72">START SESSION</button>
+<div style="display:flex;gap:20px;margin-top:12px">
+<button onClick="{{ goSchedule }}" style="font-size:13px;color:#9A9AA4;height:24px">Schedule</button>
+<button onClick="{{ deferToday }}" style="font-size:13px;color:#9A9AA4;height:24px">Defer</button>
+</div>
+</div>
+</sc-if>
+</div>
+
+<div style="padding:22px 14px 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF">28-Day Ledger</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66">{{ ledgerWindow }}</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ ledgerRows }}" as="lr" hint-placeholder-count="5">
+<div style="background:#16161A;border:1px solid #2E2E36;padding:11px 12px 12px;border-radius:6px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">{{ lr.label }}</div>
+<div style="font-size:28px;font-weight:600;line-height:1;color:{{ lr.barColor }}">{{ lr.count }}</div>
+</div>
+<div style="position:relative;height:14px;background:#1F1F25;margin-top:9px">
+<div style="position:absolute;top:0;bottom:0;left:0;width:{{ lr.fill }}%;background:{{ lr.barColor }}"></div>
+<sc-if value="{{ lr.hasHatch }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:0;bottom:0;left:{{ lr.fill }}%;width:{{ lr.hatchW }}%;background:repeating-linear-gradient(135deg,rgba(74,158,255,0.34) 0 2px,transparent 2px 5px)"></div>
+</sc-if>
+<div style="position:absolute;left:{{ lr.tick }}%;top:-3px;bottom:-3px;width:2px;background:#FFFFFF"></div>
+</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:{{ lr.subColor }};margin-top:7px">{{ lr.sub }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{ hasWarnings }}" hint-placeholder-val="{{ true }}">
+<div style="padding:22px 14px 0">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;margin-bottom:10px">Active Warnings</div>
+<div style="display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ warnings }}" as="w" hint-placeholder-count="2">
+<div style="display:flex;align-items:flex-start;gap:10px;background:#16161A;border:1px solid #2E2E36;border-left-width:3px;border-left-style:solid;border-left-color:{{ w.color }};padding:11px 4px 11px 11px;border-radius:6px">
+<div style="flex:1;font-size:13px;line-height:1.35;text-wrap:pretty">{{ w.text }}</div>
+<sc-if value="{{ w.canDismiss }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ w.dismiss }}" aria-label="Dismiss" style="flex:none;width:40px;height:40px;margin:-9px 0;display:grid;place-items:center;color:#5C5C66">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5 19 19M19 5 5 19"></path></svg>
+</button>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div style="padding:22px 14px 0">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;margin-bottom:10px">Recent</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ recentRows }}" as="rr" hint-placeholder-count="5">
+<div style="display:flex;align-items:center;gap:9px;background:#16161A;border:1px solid #2E2E36;padding:10px 11px;min-height:56px;border-radius:6px">
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;width:38px;flex:none">{{ rr.date }}</div>
+<div style="flex:none;font-size:11px;font-weight:600;letter-spacing:0.04em;white-space:nowrap;color:{{ rr.chipFg }};background:{{ rr.chipBg }};padding:3px 6px;min-width:56px;text-align:center;border-radius:999px">{{ rr.pos }}</div>
+<div style="flex:1;font-size:13px;line-height:1.25;min-width:0;text-wrap:pretty">{{ rr.name }}</div>
+<sc-if value="{{ rr.hasComp }}" hint-placeholder-val="{{ false }}">
+<div style="flex:none;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#FF7A1A;border:1px solid #FF7A1A;padding:2px 8px;border-radius:999px">{{ rr.compLabel }}</div>
+</sc-if>
+<sc-if value="{{ rr.hasSub }}" hint-placeholder-val="{{ false }}">
+<div style="flex:none;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#9A9AA4;border:1px solid #3E3E48;padding:2px 8px;border-radius:999px">SUB</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+
+<button onClick="{{ doExport }}" style="width:100%;text-align:left;padding:20px 14px 6px;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:{{ exportColor }}">{{ exportLine }}</button>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isCal }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 14px">
+
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">{{ calTitle }}</div>
+<div style="display:flex;gap:2px">
+<button onClick="{{ prevMonth }}" style="width:36px;height:32px;background:#16161A;border:1px solid #2E2E36;color:#9A9AA4;font-size:13px">‹</button>
+<button onClick="{{ nextMonth }}" style="width:36px;height:32px;background:#16161A;border:1px solid #2E2E36;color:#9A9AA4;font-size:13px">›</button>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #3E3E48;margin-bottom:14px">
+<button onClick="{{ seg.m.go }}" style="height:44px;font-size:11px;font-weight:600;letter-spacing:0.06em;background:{{ seg.m.bg }};color:{{ seg.m.fg }};transition:background 120ms linear">MONTH</button>
+<button onClick="{{ seg.w.go }}" style="height:44px;font-size:11px;font-weight:600;letter-spacing:0.06em;border-left:1px solid #3E3E48;border-right:1px solid #3E3E48;background:{{ seg.w.bg }};color:{{ seg.w.fg }};transition:background 120ms linear">WEEK</button>
+<button onClick="{{ seg.d.go }}" style="height:44px;font-size:11px;font-weight:600;letter-spacing:0.06em;background:{{ seg.d.bg }};color:{{ seg.d.fg }};transition:background 120ms linear">DAY</button>
+</div>
+
+<sc-if value="{{ isMonth }}" hint-placeholder-val="{{ true }}">
+<div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px">
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;text-align:center">S</div>
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;text-align:center">M</div>
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;text-align:center">T</div>
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;text-align:center">W</div>
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;text-align:center">T</div>
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;text-align:center">F</div>
+<div style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;text-align:center">S</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:#1F1F25;border:1px solid #2E2E36">
+<sc-for list="{{ cells }}" as="c" hint-placeholder-count="42">
+<button onClick="{{ c.go }}" style="height:56px;background:#0F0F11;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-shadow:inset 0 0 0 1px {{ c.ring }};border-radius:12px">
+<span style="font-size:13px;color:{{ c.numColor }}">{{ c.num }}</span>
+<span style="display:flex;gap:3px;height:6px">
+<sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="1">
+<span style="width:6px;height:6px;border-radius:50%;background:{{ d.bg }};box-shadow:inset 0 0 0 1px {{ d.bd }}"></span>
+</sc-for>
+</span>
+</button>
+</sc-for>
+</div>
+
+<div style="margin-top:18px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-bottom:7px">Legend</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px 14px">
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#C8A24B"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">VELOCITY / POWER</span></span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#E08600"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">MAX STRENGTH</span></span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#4A9EFF"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">ELASTIC / VO2MAX</span></span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#5A5A62"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">RECOVERY</span></span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#FF7A1A"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">MISSED</span></span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#2E2E36"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">DEFERRED</span></span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#C8A24B;opacity:0.35"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">FADED = PLANNED</span></span>
+<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;flex:none;background:#1F1F25;border:1px solid #2E2E36;box-sizing:border-box"></span><span style="font-size:10px;letter-spacing:0.05em;color:#9A9AA4">EMPTY</span></span>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWeek }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66;margin-bottom:8px">{{ weekLabel }}</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ weekRows }}" as="r" hint-placeholder-count="7">
+<div style="display:flex;align-items:stretch;background:#16161A;border:1px solid #2E2E36;border-radius:6px">
+<div style="width:44px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-right:1px solid #2E2E36">
+<span style="font-size:11px;letter-spacing:0.06em;color:#5C5C66">{{ r.dow }}</span>
+<span style="font-size:15px;font-weight:600;color:{{ r.numColor }}">{{ r.num }}</span>
+</div>
+<sc-if value="{{ r.has }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ r.go }}" style="flex:1;min-width:0;text-align:left;padding:10px 11px;display:flex;flex-direction:column;gap:5px;min-height:56px;border-radius:12px">
+<span style="display:flex;align-items:center;gap:7px">
+<span style="font-size:11px;font-weight:600;letter-spacing:0.04em;white-space:nowrap;background:{{ r.chipBg }};color:{{ r.chipFg }};padding:3px 6px;border-radius:999px">{{ r.pos }}</span>
+<span style="font-size:11px;letter-spacing:0.06em;color:{{ r.statusColor }}">{{ r.status }}</span>
+</span>
+<span style="font-size:13px;color:#FFFFFF;line-height:1.25">{{ r.name }}</span>
+</button>
+</sc-if>
+<sc-if value="{{ r.empty }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ r.add }}" style="flex:1;min-height:56px;display:grid;place-items:center;font-size:20px;color:#FFFFFF;opacity:0.3;border-radius:12px">+</button>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDay }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-bottom:10px">{{ dayLabel }}</div>
+<sc-if value="{{ hasDay }}" hint-placeholder-val="{{ true }}">
+<div style="background:#16161A;border-top:1px solid #2E2E36;border-right:1px solid #2E2E36;border-bottom:1px solid #2E2E36;border-left:4px solid {{ dayColor }};padding:14px 14px 16px">
+<div style="font-size:28px;font-weight:700;line-height:1;color:{{ dayColor }}">{{ dayPos }}</div>
+<div style="font-size:15px;margin-top:8px;line-height:1.3;text-wrap:pretty">{{ dayName }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:9px;line-height:1.7">{{ dayLoads }}<br>{{ dayBlock }} · {{ dayStatus }}</div>
+<div style="border-top:1px solid #2E2E36;margin-top:12px;padding-top:10px;display:flex;flex-direction:column;gap:7px">
+<sc-for list="{{ dayEx }}" as="e" hint-placeholder-count="4">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+<span style="font-size:13px;color:#FFFFFF;flex:1;min-width:0;line-height:1.25">{{ e.n }}</span>
+<span style="font-size:11px;letter-spacing:0.06em;color:#9A9AA4;flex:none">{{ e.p }}</span>
+<span style="font-size:11px;letter-spacing:0.06em;color:{{ dayColor }};flex:none;width:56px;text-align:right">{{ e.w }}</span>
+</div>
+</sc-for>
+</div>
+<button onClick="{{ dayStart }}" style="margin-top:14px;width:100%;height:64px;background:{{ dayColor }};color:#0B0B0D;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;transition:opacity 120ms linear;border-radius:12px" style-active="opacity:0.72">START</button>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px">
+<button onClick="{{ dayEdit }}" style="height:56px;background:#1F1F25;border:1px solid #3E3E48;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#FFFFFF;border-radius:12px">EDIT</button>
+<button onClick="{{ dayDefer }}" style="height:56px;background:#1F1F25;border:1px solid #3E3E48;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#FFFFFF;border-radius:12px">DEFER</button>
+<button onClick="{{ dayDelete }}" style="height:56px;background:#1F1F25;border:1px solid #3E3E48;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#FF7A1A;border-radius:12px">DELETE</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ noDay }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ dayAdd }}" style="width:100%;height:64px;background:#1F1F25;border:1px solid #3E3E48;font-size:13px;font-weight:700;letter-spacing:0.06em;color:#FFFFFF;border-radius:12px">+ SCHEDULE SESSION</button>
+</sc-if>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isTrain }}" hint-placeholder-val="{{ false }}">
+<div>
+<sc-if value="{{ noSession }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 14px">
+<div style="border:1px solid #2E2E36;background:#16161A;padding:24px;text-align:center;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66">NO SESSION SCHEDULED</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasSession }}" hint-placeholder-val="{{ true }}">
+<div>
+<div style="background-color:#16161A;background-image:repeating-linear-gradient(63deg,rgba(255,255,255,0.03) 0 1px,transparent 1px 13px),repeating-linear-gradient(-63deg,rgba(255,255,255,0.03) 0 1px,transparent 1px 13px);border-top:1px solid #2E2E36;border-bottom:1px solid #2E2E36;border-left:4px solid {{ sColor }};padding:12px 14px 13px;display:flex;align-items:flex-start;gap:12px">
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font-size:28px;font-weight:700;line-height:1;color:{{ sColor }}">{{ sPos }}</span>
+<sc-if value="{{ compBadge }}" hint-placeholder-val="{{ false }}">
+<span style="font-size:11px;font-weight:600;letter-spacing:0.06em;color:#FF7A1A;border:1px solid #FF7A1A;padding:2px 8px;border-radius:999px">{{ compLabel }}</span>
+</sc-if>
+</div>
+<div style="font-size:13px;margin-top:6px;line-height:1.3;text-wrap:pretty">{{ sName }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:6px">{{ sDate }} · {{ sMeta }}</div>
+<sc-if value="{{ hasCap }}" hint-placeholder-val="{{ true }}">
+<div style="font-size:11px;letter-spacing:0.04em;color:#FF7A1A;margin-top:5px;line-height:1.35">{{ sCap }}</div>
+</sc-if>
+</div>
+<sc-if value="{{ notRD }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ openCompress }}" style="flex:none;height:56px;padding:0 12px;background:#1F1F25;border:1px solid #3E3E48;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#FFFFFF;border-radius:12px">COMPRESS</button>
+</sc-if>
+</div>
+
+<sc-if value="{{ isRD }}" hint-placeholder-val="{{ false }}">
+<div style="padding:14px">
+<div style="background:#16161A;border:1px solid #2E2E36;padding:14px;border-radius:6px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">ROTATING TARGET</div>
+<div style="font-size:20px;font-weight:600;margin-top:6px;color:#FFFFFF;line-height:1.2">{{ rdTarget }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:12px">CEILING</div>
+<div style="font-size:15px;font-weight:600;margin-top:4px;color:#FFFFFF">{{ rdCeiling }}</div>
+<sc-if value="{{ rdHasNote }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:13px;color:#9A9AA4;margin-top:8px;line-height:1.35;text-wrap:pretty">{{ rdNote }}</div>
+</sc-if>
+<sc-if value="{{ rdHard }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:12px;border-left:3px solid #FF7A1A;background:#1F1F25;padding:10px 11px;font-size:13px;line-height:1.35;text-wrap:pretty">{{ rdConstraint }}</div>
+</sc-if>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;border-top:1px solid #2E2E36;padding-top:14px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">MINUTES</div>
+<div style="display:flex;align-items:center;gap:2px">
+<button onClick="{{ rdDown }}" style="width:56px;height:56px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF;border-radius:12px">−</button>
+<div style="min-width:76px;text-align:center;font-size:28px;font-weight:700">{{ rdMin }}</div>
+<button onClick="{{ rdUp }}" style="width:56px;height:56px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF;border-radius:12px">+</button>
+</div>
+</div>
+<button onClick="{{ rdSave }}" style="margin-top:14px;width:100%;height:64px;background:#5A5A62;color:#FFFFFF;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">LOG</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ notRD }}" hint-placeholder-val="{{ true }}">
+<div style="padding:6px 14px 0">
+<sc-for list="{{ sections }}" as="sec" hint-placeholder-count="5">
+<div style="border-bottom:1px solid #1F1F25;padding:14px 0 0">
+<button onClick="{{ sec.toggle }}" style="width:100%;display:flex;align-items:center;gap:10px;text-align:left;min-height:44px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;flex:1;min-width:0">{{ sec.title }}</span>
+<span style="font-size:11px;letter-spacing:0.06em;color:#C8A24B;flex:none">{{ sec.mark }}</span>
+<span style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;flex:none">{{ sec.count }}</span>
+</button>
+<sc-if value="{{ sec.open }}" hint-placeholder-val="{{ true }}">
+<div style="padding-bottom:14px">
+
+<sc-if value="{{ sec.isCheck }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+<button onClick="{{ it.toggle }}" style="display:flex;align-items:center;gap:11px;background:#16161A;border:1px solid {{ it.bd }};min-height:56px;padding:0 12px;text-align:left;width:100%;transition:border-color 120ms linear;border-radius:12px">
+<span style="width:20px;height:20px;flex:none;border:1px solid #3E3E48;display:grid;place-items:center;font-size:13px;color:#C8A24B">{{ it.mark }}</span>
+<span style="font-size:13px;color:{{ it.color }};flex:1;min-width:0;line-height:1.25">{{ it.text }}</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ sec.isRegen }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ sec.rgToggle }}" style="width:100%;text-align:left;display:flex;align-items:flex-start;gap:11px;background:#16161A;border:1px solid {{ sec.rgBd }};padding:12px;transition:border-color 120ms linear">
+<span style="width:20px;height:20px;flex:none;border:1px solid #3E3E48;display:grid;place-items:center;font-size:13px;color:#C8A24B;margin-top:1px">{{ sec.rgMark }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:15px;font-weight:600;color:{{ sec.rgColor }};line-height:1.2">{{ sec.rgTarget }}</span>
+<span style="display:block;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:5px">{{ sec.rgMin }}</span>
+<sc-if value="{{ sec.rgHasNote }}" hint-placeholder-val="{{ false }}">
+<span style="display:block;font-size:13px;font-style:italic;color:#9A9AA4;margin-top:7px;line-height:1.35">{{ sec.rgNote }}</span>
+</sc-if>
+</span>
+</button>
+</sc-if>
+
+<sc-if value="{{ sec.notCheck }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ sec.exs }}" as="ex" hint-placeholder-count="3">
+<div style="background:#16161A;border:1px solid #2E2E36;padding:12px;opacity:{{ ex.dim }};border-radius:6px">
+<div style="display:flex;align-items:flex-start;gap:10px">
+<div style="flex:1;min-width:0">
+<div style="font-size:15px;font-weight:600;line-height:1.2;color:{{ ex.nameColor }};text-decoration:{{ ex.strike }}">{{ ex.n }}</div>
+<div style="font-size:13px;color:#9A9AA4;margin-top:5px">{{ ex.p }}</div>
+<div style="font-size:13px;font-weight:600;color:{{ ex.wcolor }};margin-top:3px">{{ ex.wline }}</div>
+</div>
+<sc-if value="{{ ex.canSub }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ ex.openSub }}" style="flex:none;height:44px;padding:0 14px;border-radius:999px;background:#1F1F25;border:1px solid #3E3E48;font-size:11px;font-weight:600;letter-spacing:0.06em;color:#FFFFFF">SUB ⇄</button>
+</sc-if>
+</div>
+<div style="border-top:1px solid #2E2E36;margin-top:11px;padding-top:9px">
+<div style="font-size:13px;font-style:italic;color:#9A9AA4;line-height:1.35;text-wrap:pretty">{{ ex.it }}</div>
+<sc-if value="{{ ex.hasTerm }}" hint-placeholder-val="{{ true }}">
+<div style="font-size:11px;letter-spacing:0.04em;color:#FF7A1A;margin-top:6px;line-height:1.4">⚠ {{ ex.tm }}</div>
+</sc-if>
+</div>
+<div style="border-top:1px solid #2E2E36;margin-top:10px;padding-top:10px;display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ ex.rows }}" as="r" hint-placeholder-count="4">
+<div onClick="{{ r.pick }}" style="display:flex;align-items:center;gap:8px;min-height:56px;background:{{ r.bg }};border:1px solid {{ r.bd }};padding:0 11px;cursor:pointer;border-radius:6px">
+<span style="font-size:11px;letter-spacing:0.06em;color:#5C5C66;flex:none;width:44px">{{ r.label }}</span>
+<span style="font-size:15px;font-weight:600;color:{{ r.color }};flex:1;min-width:0">{{ r.left }}</span>
+<span style="font-size:15px;font-weight:600;color:{{ r.color }};flex:1;min-width:0">{{ r.right }}</span>
+<span style="font-size:13px;color:#C8A24B;flex:none;width:14px;text-align:right">{{ r.mark }}</span>
+</div>
+<sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:12px;font-style:italic;color:#9A9AA4;padding:4px 11px 8px;background:{{ r.bg }};border:1px solid {{ r.bd }};border-top:none;margin-top:-1px">{{ r.note }}</div>
+</sc-if>
+</sc-for>
+</div>
+
+<sc-if value="{{ ex.isCurrent }}" hint-placeholder-val="{{ true }}">
+<div style="background:#1F1F25;border:1px solid #3E3E48;margin-top:8px;padding:11px;border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.06)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+<span style="font-size:11px;letter-spacing:0.06em;color:#9A9AA4">{{ ex.actLabel }}</span>
+<sc-if value="{{ ex.bi }}" hint-placeholder-val="{{ true }}">
+<span style="display:flex;border:1px solid #3E3E48;border-radius:12px;overflow:hidden">
+<button onClick="{{ ex.setL }}" style="width:56px;height:40px;font-size:13px;font-weight:600;background:{{ ex.sideLbg }};color:{{ ex.sideLfg }}">L</button>
+<button onClick="{{ ex.setR }}" style="width:56px;height:40px;font-size:13px;font-weight:600;background:{{ ex.sideRbg }};color:{{ ex.sideRfg }}">R</button>
+</span>
+</sc-if>
+</div>
+<sc-if value="{{ ex.hasLoad }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px">
+<span style="font-size:11px;letter-spacing:0.06em;color:#9A9AA4;width:44px;flex:none">{{ ex.f1 }}</span>
+<button onClick="{{ ex.d1 }}" style="width:56px;height:56px;flex:none;border-radius:12px 0 0 12px;background:#16161A;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">−</button>
+<input value="{{ ex.v1 }}" onChange="{{ ex.t1 }}" style="flex:1;min-width:0;height:56px;text-align:center;font-size:28px;font-weight:600;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-family:inherit;padding:0 8px">
+<button onClick="{{ ex.u1 }}" style="width:56px;height:56px;flex:none;border-radius:0 12px 12px 0;background:#16161A;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">+</button>
+</div>
+</sc-if>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px">
+<span style="font-size:11px;letter-spacing:0.06em;color:#9A9AA4;width:44px;flex:none">{{ ex.f2 }}</span>
+<button onClick="{{ ex.d2 }}" style="width:56px;height:56px;flex:none;border-radius:12px 0 0 12px;background:#16161A;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">−</button>
+<input value="{{ ex.v2 }}" onChange="{{ ex.t2 }}" style="flex:1;min-width:0;height:56px;text-align:center;font-size:28px;font-weight:600;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-family:inherit;padding:0 8px">
+<button onClick="{{ ex.u2 }}" style="width:56px;height:56px;flex:none;border-radius:0 12px 12px 0;background:#16161A;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">+</button>
+</div>
+<input value="{{ ex.noteVal }}" onChange="{{ ex.tNote }}" placeholder="NOTE — optional" style="margin-top:6px;width:100%;height:48px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:14px;padding:0 11px;font-family:inherit;box-sizing:border-box;border-radius:12px">
+<button onClick="{{ ex.complete }}" style="margin-top:10px;width:100%;height:64px;background:{{ ex.wcolor }};color:#0B0B0D;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;transition:opacity 120ms linear;border-radius:12px" style-active="opacity:0.72">COMPLETE SET</button>
+</div>
+</sc-if>
+
+<div style="border-top:1px solid #2E2E36;margin-top:10px;padding-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66">{{ ex.src }}</span>
+<sc-if value="{{ ex.canInfo }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ ex.openInfo }}" style="width:44px;height:44px;margin:-10px -12px -8px 0;display:grid;place-items:center;font-size:13px;color:#9A9AA4">ⓘ</button>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+</div>
+</sc-for>
+
+<button onClick="{{ finish }}" style="margin:18px 0 0;width:100%;height:64px;background:{{ sColor }};color:#0B0B0D;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;transition:opacity 120ms linear;border-radius:12px" style-active="opacity:0.72">FINISH SESSION</button>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTests }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 14px">
+
+<div style="background:#16161A;border:1px solid #2E2E36;padding:11px 12px;margin-bottom:14px;display:flex;flex-direction:column;gap:7px;border-radius:6px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">TRAINING DAYS SINCE FULL BATTERY</span>
+<span style="font-size:15px;font-weight:600;color:{{ cadTDColor }};flex:none">{{ cadTD }}</span>
+</div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">DAYS SINCE FULL BATTERY</span>
+<span style="font-size:15px;font-weight:600;color:{{ cadCalColor }};flex:none">{{ cadCal }}</span>
+</div>
+</div>
+
+<sc-if value="{{ testListOpen }}" hint-placeholder-val="{{ true }}">
+<div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;margin-bottom:8px">Full Battery</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ fullTests }}" as="t" hint-placeholder-count="8">
+<button onClick="{{ t.go }}" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;background:#16161A;border:1px solid #2E2E36;min-height:56px;padding:9px 11px;border-radius:12px">
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:13px;color:#FFFFFF;line-height:1.25">{{ t.name }}</span>
+<span style="display:flex;align-items:baseline;gap:7px;margin-top:4px">
+<span style="font-size:11px;letter-spacing:0.06em;color:#5C5C66">{{ t.unit }}</span>
+<sc-if value="{{ t.hasRatio }}" hint-placeholder-val="{{ false }}">
+<span style="font-size:11px;letter-spacing:0.06em;color:{{ t.ratioColor }}">L:R Δ {{ t.ratio }}</span>
+</sc-if>
+</span>
+</span>
+<sc-if value="{{ t.hasSpark }}" hint-placeholder-val="{{ true }}">
+<svg width="72" height="22" viewBox="0 0 72 22" fill="none" style="flex:none;opacity:0.85"><polyline points="{{ t.spark }}" stroke="#9A9AA4" stroke-width="1.25" vector-effect="non-scaling-stroke"></polyline></svg>
+</sc-if>
+<span style="flex:none;text-align:right;min-width:62px">
+<span style="display:block;font-size:20px;font-weight:600;color:{{ t.latestColor }};line-height:1">{{ t.latest }}</span>
+<sc-if value="{{ t.hasD }}" hint-placeholder-val="{{ true }}">
+<span style="display:block;font-size:11px;letter-spacing:0.04em;color:{{ t.dColor }};margin-top:4px">{{ t.dTxt }}</span>
+</sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;margin:20px 0 8px">Mini Battery</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ miniTests }}" as="t" hint-placeholder-count="4">
+<button onClick="{{ t.go }}" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;background:#16161A;border:1px solid #2E2E36;min-height:56px;padding:9px 11px;border-radius:12px">
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:13px;color:#FFFFFF;line-height:1.25">{{ t.name }}</span>
+<span style="display:flex;align-items:baseline;gap:7px;margin-top:4px">
+<span style="font-size:11px;letter-spacing:0.06em;color:#5C5C66">{{ t.unit }}</span>
+<sc-if value="{{ t.hasRatio }}" hint-placeholder-val="{{ false }}">
+<span style="font-size:11px;letter-spacing:0.06em;color:{{ t.ratioColor }}">L:R Δ {{ t.ratio }}</span>
+</sc-if>
+</span>
+</span>
+<sc-if value="{{ t.hasSpark }}" hint-placeholder-val="{{ true }}">
+<svg width="72" height="22" viewBox="0 0 72 22" fill="none" style="flex:none;opacity:0.85"><polyline points="{{ t.spark }}" stroke="#9A9AA4" stroke-width="1.25" vector-effect="non-scaling-stroke"></polyline></svg>
+</sc-if>
+<span style="flex:none;text-align:right;min-width:62px">
+<span style="display:block;font-size:20px;font-weight:600;color:{{ t.latestColor }};line-height:1">{{ t.latest }}</span>
+<sc-if value="{{ t.hasD }}" hint-placeholder-val="{{ true }}">
+<span style="display:block;font-size:11px;letter-spacing:0.04em;color:{{ t.dColor }};margin-top:4px">{{ t.dTxt }}</span>
+</sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+
+<button onClick="{{ exportCsv }}" style="margin-top:20px;width:100%;height:64px;background:#1F1F25;border:1px solid #3E3E48;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;border-radius:12px">EXPORT BATTERY (CSV)</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ testDetail }}" hint-placeholder-val="{{ false }}">
+<div>
+<button onClick="{{ closeTest }}" style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;height:44px;margin-top:-8px">‹ ALL TESTS</button>
+<div style="font-size:20px;font-weight:600;line-height:1.2;margin-top:2px">{{ tName }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:5px">{{ tUnit }}</div>
+<sc-if value="{{ tHasSub }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66;margin-top:5px">{{ tSub }}</div>
+</sc-if>
+<sc-if value="{{ tHasNote }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:13px;font-style:italic;color:#9A9AA4;margin-top:8px;line-height:1.35;text-wrap:pretty">{{ tNote }}</div>
+</sc-if>
+
+<sc-if value="{{ tHasChart }}" hint-placeholder-val="{{ true }}">
+<div style="background:#16161A;border:1px solid #2E2E36;padding:11px 12px;margin-top:14px;border-radius:6px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66">
+<span>{{ tMin }}</span>
+<span>{{ tMax }}</span>
+</div>
+<svg width="100%" height="88" viewBox="0 0 100 40" preserveAspectRatio="none" fill="none" style="margin-top:6px;display:block"><polyline points="{{ tChart }}" stroke="#C8A24B" stroke-width="1.5" vector-effect="non-scaling-stroke"></polyline></svg>
+</div>
+</sc-if>
+
+<sc-if value="{{ tHasRatioChart }}" hint-placeholder-val="{{ false }}">
+<div style="background:#16161A;border:1px solid #2E2E36;padding:11px 12px;margin-top:2px;border-radius:6px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">CONTRALATERAL RATIO TREND</div>
+<svg width="100%" height="56" viewBox="0 0 100 24" preserveAspectRatio="none" fill="none" style="margin-top:6px;display:block"><polyline points="{{ tRatioChart }}" stroke="#FF7A1A" stroke-width="1.5" vector-effect="non-scaling-stroke"></polyline></svg>
+</div>
+</sc-if>
+
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:1px">
+<div style="display:flex;align-items:center;gap:8px;padding:0 11px 6px;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66">
+<span style="width:62px;flex:none">DATE</span>
+<span style="flex:1;text-align:right">L</span>
+<sc-if value="{{ tBilateral }}" hint-placeholder-val="{{ false }}">
+<span style="flex:1;text-align:right">R</span>
+</sc-if>
+<sc-if value="{{ tBilateral }}" hint-placeholder-val="{{ false }}">
+<span style="flex:1;text-align:right">Δ</span>
+</sc-if>
+</div>
+<sc-for list="{{ tRows }}" as="h" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:8px;background:#16161A;border:1px solid #2E2E36;min-height:56px;padding:0 11px;border-radius:6px">
+<span style="width:62px;flex:none;font-size:11px;letter-spacing:0.06em;color:#9A9AA4">{{ h.date }}</span>
+<span style="flex:1;text-align:right;font-size:15px;font-weight:600">{{ h.l }}</span>
+<sc-if value="{{ tBilateral }}" hint-placeholder-val="{{ false }}">
+<span style="flex:1;text-align:right;font-size:15px;font-weight:600">{{ h.r }}</span>
+</sc-if>
+<sc-if value="{{ tBilateral }}" hint-placeholder-val="{{ false }}">
+<span style="flex:1;text-align:right;font-size:13px;font-weight:600;color:{{ h.ratioColor }}">{{ h.ratio }}</span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+
+<button onClick="{{ openLog }}" style="margin-top:14px;width:100%;height:64px;background:#D20A0A;color:#FFFFFF;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">+ LOG RESULT</button>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isRef }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 14px">
+<div style="display:flex;gap:2px;margin-bottom:14px">
+<input value="{{ refQ }}" onChange="{{ refType }}" placeholder="SEARCH REFERENCE" style="flex:1;min-width:0;height:56px;background:#16161A;border:1px solid #2E2E36;color:#FFFFFF;font-size:15px;padding:0 12px;font-family:inherit;border-radius:12px">
+<sc-if value="{{ refHasQ }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ refClear }}" style="width:56px;height:56px;flex:none;background:#1F1F25;border:1px solid #3E3E48;color:#9A9AA4;display:grid;place-items:center;border-radius:12px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5 19 19M19 5 5 19"></path></svg>
+</button>
+</sc-if>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ refSecs }}" as="sec" hint-placeholder-count="5">
+<div style="background:#16161A;border:1px solid #2E2E36;border-radius:6px">
+<button onClick="{{ sec.toggle }}" style="width:100%;display:flex;align-items:center;gap:10px;text-align:left;min-height:56px;padding:0 12px;border-radius:12px">
+<span style="flex:1;min-width:0;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF">{{ sec.title }}</span>
+<span style="flex:none;font-size:11px;letter-spacing:0.06em;color:#5C5C66">{{ sec.count }}</span>
+</button>
+<sc-if value="{{ sec.open }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 12px 12px">
+<sc-if value="{{ sec.hasNote }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FF7A1A;border-top:1px solid #2E2E36;padding-top:10px;margin-bottom:4px">{{ sec.note }}</div>
+</sc-if>
+<sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+<div style="border-top:1px solid #2E2E36;padding:11px 0 3px">
+<div style="font-size:13px;font-weight:600;letter-spacing:0.04em;line-height:1.25">{{ it.h }}</div>
+<sc-for list="{{ it.lines }}" as="ln" hint-placeholder-count="2">
+<div style="margin-top:8px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66">{{ ln.label }}</div>
+<div style="font-size:13px;line-height:1.4;margin-top:3px;color:{{ ln.color }};text-wrap:pretty">{{ ln.text }}</div>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ showRest }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 56px);background:#1F1F25;border-top:1px solid #3E3E48;z-index:10">
+<div style="height:3px;background:#0B0B0D"><div style="height:3px;background:{{ restColor }};width:{{ restPct }}%;transition:width 120ms linear"></div></div>
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px 10px">
+<div style="flex:1;min-width:0">
+<div style="font-size:44px;font-weight:700;line-height:1;color:{{ restColor }}">{{ restTime }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:4px">{{ restWhy }}</div>
+</div>
+<div style="display:flex;gap:2px;flex:none">
+<button onClick="{{ restMinus }}" style="width:56px;height:56px;background:#16161A;border:1px solid #3E3E48;font-size:11px;font-weight:600;color:#FFFFFF;border-radius:12px">−30s</button>
+<button onClick="{{ restPlus }}" style="width:56px;height:56px;background:#16161A;border:1px solid #3E3E48;font-size:11px;font-weight:600;color:#FFFFFF;border-radius:12px">+30s</button>
+<button onClick="{{ restSkip }}" style="width:56px;height:56px;background:#16161A;border:1px solid #3E3E48;font-size:11px;font-weight:600;color:#9A9AA4;border-radius:12px">SKIP</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<div style="position:fixed;left:0;right:0;bottom:0;background-color:#16161A;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.028) 0 2px,transparent 2px 5px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.0238) 0 2px,transparent 2px 5px);border-top:1px solid #2E2E36;padding-bottom:env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(5,1fr);z-index:11">
+
+<button onClick="{{ nav.dash }}" style="height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:{{ tint.dash }};transition:color 120ms linear;border-radius:12px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7.5" height="7.5"></rect><rect x="13.5" y="3" width="7.5" height="7.5"></rect><rect x="3" y="13.5" width="7.5" height="7.5"></rect><rect x="13.5" y="13.5" width="7.5" height="7.5"></rect></svg>
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase">DASH</span>
+</button>
+
+<button onClick="{{ nav.cal }}" style="height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:{{ tint.cal }};transition:color 120ms linear;border-radius:12px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase">CAL</span>
+</button>
+
+<button onClick="{{ nav.train }}" style="height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:{{ tint.train }};transition:color 120ms linear;border-radius:12px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 12h20"></path><rect x="4" y="7.5" width="4" height="9"></rect><rect x="16" y="7.5" width="4" height="9"></rect></svg>
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase">TRAIN</span>
+</button>
+
+<button onClick="{{ nav.tests }}" style="height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:{{ tint.tests }};transition:color 120ms linear;border-radius:12px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18"></path><rect x="4" y="13" width="4" height="6"></rect><rect x="10" y="8" width="4" height="11"></rect><rect x="16" y="4" width="4" height="15"></rect></svg>
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase">TESTS</span>
+</button>
+
+<button onClick="{{ nav.ref }}" style="height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:{{ tint.ref }};transition:color 120ms linear;border-radius:12px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg>
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase">REF</span>
+</button>
+
+</div>
+
+<sc-if value="{{ dbFail }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#0B0B0D;z-index:60;display:flex;flex-direction:column;justify-content:center;padding:calc(env(safe-area-inset-top) + 24px) 20px calc(env(safe-area-inset-bottom) + 24px)">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FF7A1A">STORAGE UNAVAILABLE</div>
+<div style="font-size:20px;font-weight:600;line-height:1.3;margin-top:10px;text-wrap:pretty">{{ dbFailMsg }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66;margin-top:14px;line-height:1.7">{{ dbLine }}</div>
+<button onClick="{{ doExport }}" style="margin-top:20px;width:100%;height:64px;background:#D20A0A;color:#FFFFFF;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">EXPORT ALL (JSON)</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ importOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.82);display:flex;flex-direction:column;justify-content:flex-end;z-index:50">
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FF7A1A">FULL REPLACE — DESTRUCTIVE</div>
+<div style="font-size:44px;font-weight:700;line-height:1;margin-top:8px;color:#FF7A1A">{{ importCount }}</div>
+<div style="font-size:13px;line-height:1.35;margin-top:8px;text-wrap:pretty">records will be destroyed and replaced by the imported file. This cannot be undone.</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:12px;line-height:1.7">{{ importDetail }}<br>{{ importVersion }}</div>
+<button onClick="{{ importConfirm }}" style="margin-top:16px;width:100%;height:64px;background:#FF7A1A;color:#0B0B0D;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">REPLACE ALL DATA</button>
+<button onClick="{{ importCancel }}" style="margin-top:2px;width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#9A9AA4;text-transform:uppercase;border-radius:12px">CANCEL</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ logOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.72);display:flex;flex-direction:column;justify-content:flex-end;z-index:30">
+<button onClick="{{ closeLog }}" aria-label="Close" style="position:absolute;inset:0;cursor:default"></button>
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">LOG RESULT</div>
+<div style="font-size:15px;font-weight:600;margin-top:5px;line-height:1.2">{{ logName }}</div>
+<sc-if value="{{ logBinary }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:2px;margin-top:14px">
+<button onClick="{{ setPass }}" style="flex:1;height:64px;border:1px solid #3E3E48;background:{{ passBg }};color:{{ passFg }};font-size:15px;font-weight:700;letter-spacing:0.06em;border-radius:12px">PASS</button>
+<button onClick="{{ setFail }}" style="flex:1;height:64px;border:1px solid #3E3E48;background:{{ failBg }};color:{{ failFg }};font-size:15px;font-weight:700;letter-spacing:0.06em;border-radius:12px">FAIL</button>
+</div>
+</sc-if>
+<sc-if value="{{ logNumeric }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:2px;margin-top:14px">
+<div style="flex:1">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-bottom:5px">L · {{ logUnit }}</div>
+<input value="{{ logL }}" onChange="{{ typeL }}" inputmode="decimal" style="width:100%;height:64px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:28px;font-weight:600;padding:0 12px;font-family:inherit;border-radius:12px">
+</div>
+<sc-if value="{{ logBilateral }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-bottom:5px">R · {{ logUnit }}</div>
+<input value="{{ logR }}" onChange="{{ typeR }}" inputmode="decimal" style="width:100%;height:64px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:28px;font-weight:600;padding:0 12px;font-family:inherit;border-radius:12px">
+</div>
+</sc-if>
+</div>
+</sc-if>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin:14px 0 5px">NOTE</div>
+<input value="{{ logNote }}" onChange="{{ typeNote }}" style="width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:15px;padding:0 12px;font-family:inherit;border-radius:12px">
+<button onClick="{{ saveLog }}" style="margin-top:16px;width:100%;height:64px;background:{{ logBg }};color:{{ logFg }};font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">SAVE</button>
+<button onClick="{{ closeLog }}" style="margin-top:2px;width:100%;height:56px;background:transparent;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#9A9AA4;border-radius:12px">CANCEL</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ subOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.72);display:flex;flex-direction:column;justify-content:flex-end;z-index:30">
+<button onClick="{{ closeSub }}" aria-label="Close" style="position:absolute;inset:0;cursor:default"></button>
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;max-height:92%;overflow-y:auto;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+<div style="font-size:15px;font-weight:600;line-height:1.2;flex:1;min-width:0">{{ subName }}</div>
+<button onClick="{{ closeSub }}" style="width:44px;height:44px;margin:-12px -12px 0 0;flex:none;display:grid;place-items:center;color:#9A9AA4">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5 19 19M19 5 5 19"></path></svg>
+</button>
+</div>
+
+<sc-if value="{{ subNotLogging }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:12px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">TARGET QUALITY</div>
+<div style="font-size:15px;font-weight:600;margin-top:4px;line-height:1.25">{{ subQ }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:12px">DOSING SIGNATURE</div>
+<div style="font-size:13px;margin-top:4px;line-height:1.35;text-wrap:pretty">{{ subD }}</div>
+
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:16px;margin-bottom:6px">VALID SUBSTITUTION</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ subOk }}" as="o" hint-placeholder-count="3">
+<div style="background:#16161A;border-left:3px solid #C8A24B;padding:10px 11px;font-size:13px;line-height:1.35;text-wrap:pretty">{{ o }}</div>
+</sc-for>
+</div>
+
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:14px;margin-bottom:6px">INVALID SUBSTITUTION</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ subBad }}" as="b" hint-placeholder-count="3">
+<div style="background:#16161A;border-left:3px solid #FF7A1A;padding:10px 11px;font-size:13px;line-height:1.35;text-wrap:pretty">{{ b }}</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ subHasFail }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:14px;background:#16161A;border:1px solid #2E2E36;padding:10px 11px;border-radius:6px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FF7A1A">FAILURE MODE</div>
+<div style="font-size:13px;line-height:1.35;margin-top:5px;text-wrap:pretty">{{ subFail }}</div>
+</div>
+</sc-if>
+<button onClick="{{ startLog }}" style="margin-top:16px;width:100%;height:64px;background:#D20A0A;color:#FFFFFF;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">LOG AS SUBSTITUTE</button>
+<button onClick="{{ closeSub }}" style="margin-top:2px;width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;border-radius:12px">CANCEL</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ subLogging }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:12px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-bottom:6px">WHAT WAS ACTUALLY DONE</div>
+<input value="{{ subText }}" onChange="{{ subType }}" placeholder="e.g. Bike 4 × 4 min @ 92% HRmax" style="width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:15px;padding:0 12px;font-family:inherit;border-radius:12px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:16px;margin-bottom:6px">DOSING SIGNATURE</div>
+<div style="display:flex;flex-direction:column;gap:2px">
+<button onClick="{{ metYes }}" style="width:100%;min-height:56px;padding:10px 12px;text-align:left;border:1px solid #3E3E48;background:{{ metYesBg }};color:{{ metYesFg }};font-size:13px;font-weight:600;line-height:1.3;border-radius:12px">Met the dosing signature — counts toward the ledger</button>
+<button onClick="{{ metNo }}" style="width:100%;min-height:56px;padding:10px 12px;text-align:left;border:1px solid #3E3E48;background:{{ metNoBg }};color:{{ metNoFg }};font-size:13px;font-weight:600;line-height:1.3;border-radius:12px">Did not meet it — logs as a miss, counts nothing</button>
+</div>
+<button onClick="{{ subConfirm }}" style="margin-top:16px;width:100%;height:64px;background:{{ subConfirmBg }};color:{{ subConfirmFg }};font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">CONFIRM</button>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ infoOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.72);display:flex;flex-direction:column;justify-content:flex-end;z-index:30">
+<button onClick="{{ closeInfo }}" aria-label="Close" style="position:absolute;inset:0;cursor:default"></button>
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="font-size:15px;font-weight:600">{{ infoName }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:14px;margin-bottom:6px">REGRESSION</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ infoReg }}" as="o" hint-placeholder-count="3">
+<div style="background:#16161A;border:1px solid #2E2E36;padding:10px 11px;font-size:13px;line-height:1.35;border-radius:6px">{{ o }}</div>
+</sc-for>
+</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:14px;margin-bottom:6px">PROGRESSION</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ infoPro }}" as="o" hint-placeholder-count="3">
+<div style="background:#16161A;border:1px solid #2E2E36;padding:10px 11px;font-size:13px;line-height:1.35;border-radius:6px">{{ o }}</div>
+</sc-for>
+</div>
+<button onClick="{{ closeInfo }}" style="margin-top:16px;width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#9A9AA4;border-radius:12px">CLOSE</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ compressOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.72);display:flex;flex-direction:column;justify-content:flex-end;z-index:30">
+<button onClick="{{ closeCompress }}" aria-label="Close" style="position:absolute;inset:0;cursor:default"></button>
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-bottom:10px">COMPRESS SESSION</div>
+<div style="font-size:13px;color:#9A9AA4;line-height:1.35;margin-bottom:12px;text-wrap:pretty">{{ compRule }}</div>
+<div style="display:flex;flex-direction:column;gap:2px">
+<button onClick="{{ c100 }}" style="width:100%;height:64px;background:#16161A;border:1px solid #3E3E48;font-size:20px;font-weight:600;color:#FFFFFF;border-radius:12px">100%</button>
+<button onClick="{{ c75 }}" style="width:100%;height:64px;background:#16161A;border:1px solid #3E3E48;font-size:20px;font-weight:600;color:#FFFFFF;border-radius:12px">75%</button>
+<button onClick="{{ c50 }}" style="width:100%;height:64px;background:#16161A;border:1px solid #3E3E48;font-size:20px;font-weight:600;color:#FFFFFF;border-radius:12px">50%</button>
+<button onClick="{{ c25 }}" style="width:100%;height:64px;background:#16161A;border:1px solid #3E3E48;font-size:20px;font-weight:600;color:#FFFFFF;border-radius:12px">25%</button>
+</div>
+<button onClick="{{ closeCompress }}" style="margin-top:12px;width:100%;height:56px;background:transparent;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#9A9AA4;border-radius:12px">CANCEL</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ finishOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.72);display:flex;flex-direction:column;justify-content:flex-end;z-index:30">
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-bottom:12px">SESSION SUMMARY</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#16161A;border:1px solid #2E2E36;padding:12px 12px;border-radius:6px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">SETS</span>
+<span style="font-size:20px;font-weight:600">{{ fSets }}</span>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#16161A;border:1px solid #2E2E36;padding:12px 12px;border-radius:6px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">TONNAGE</span>
+<span style="font-size:20px;font-weight:600">{{ fTon }}</span>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#16161A;border:1px solid #2E2E36;padding:12px 12px;border-radius:6px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">SUBSTITUTIONS</span>
+<span style="font-size:20px;font-weight:600">{{ fSub }}</span>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#16161A;border:1px solid #2E2E36;padding:12px 12px;border-radius:6px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">COMPRESSION</span>
+<span style="font-size:20px;font-weight:600">{{ fComp }}</span>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#16161A;border:1px solid #2E2E36;padding:12px 12px;border-radius:6px">
+<span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">LEDGER</span>
+<span style="font-size:13px;font-weight:600;color:#C8A24B;letter-spacing:0.04em">{{ fDelta }}</span>
+</div>
+</div>
+<button onClick="{{ closeFinish }}" style="margin-top:14px;width:100%;height:64px;background:#D20A0A;color:#FFFFFF;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">DONE</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ schedOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.72);display:flex;flex-direction:column;justify-content:flex-end;z-index:30">
+<button onClick="{{ closeSched }}" aria-label="Close" style="position:absolute;inset:0;cursor:default"></button>
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;max-height:92%;overflow-y:auto;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">SCHEDULE · {{ schedDate }}</div>
+<div style="background:#16161A;border-top:1px solid #2E2E36;border-right:1px solid #2E2E36;border-bottom:1px solid #2E2E36;border-left:4px solid {{ schedSuggestColor }};padding:12px 14px;margin-top:10px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">SUGGESTED</div>
+<div style="font-size:28px;font-weight:700;line-height:1;margin-top:6px;color:{{ schedSuggestColor }}">{{ schedSuggest }}</div>
+<div style="font-size:13px;margin-top:6px;line-height:1.3">{{ schedSuggestName }}</div>
+</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin-top:14px;margin-bottom:6px">OVERRIDE</div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px">
+<sc-for list="{{ schedOpts }}" as="o" hint-placeholder-count="7">
+<button onClick="{{ o.pick }}" style="height:56px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-size:13px;font-weight:600;letter-spacing:0.04em;border-radius:12px">{{ o.p }}</button>
+</sc-for>
+</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66;margin-top:12px">{{ schedBlock }}</div>
+<button onClick="{{ schedConfirm }}" style="margin-top:14px;width:100%;height:64px;background:#D20A0A;color:#FFFFFF;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">CONFIRM</button>
+<button onClick="{{ closeSched }}" style="margin-top:2px;width:100%;height:56px;background:transparent;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#9A9AA4;border-radius:12px">CANCEL</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ warnOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.82);display:flex;flex-direction:column;justify-content:flex-end;z-index:40">
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;max-height:92%;overflow-y:auto;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#FF7A1A;margin-bottom:10px">ORDERING CONSTRAINT</div>
+<div style="display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ warnList }}" as="w" hint-placeholder-count="1">
+<div style="background:#16161A;border-left:3px solid #FF7A1A;padding:11px 12px">
+<div style="font-size:11px;letter-spacing:0.06em;color:#9A9AA4">{{ w.id }}</div>
+<div style="font-size:13px;line-height:1.35;margin-top:5px;text-wrap:pretty">{{ w.m }}</div>
+</div>
+</sc-for>
+</div>
+<button onClick="{{ warnAnyway }}" style="margin-top:14px;width:100%;height:64px;background:#D20A0A;color:#FFFFFF;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">SCHEDULE ANYWAY</button>
+<button onClick="{{ warnCancel }}" style="margin-top:2px;width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#9A9AA4;border-radius:12px">CANCEL</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ settingsOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:rgba(11,11,13,0.72);display:flex;flex-direction:column;justify-content:flex-end;z-index:20">
+<button onClick="{{ closeSettings }}" aria-label="Close" style="position:absolute;inset:0;cursor:default"></button>
+<div style="position:relative;background:#1F1F25;padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);animation:sheetin 120ms linear;max-height:88%;overflow-y:auto;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4">Settings</div>
+<button onClick="{{ closeSettings }}" style="width:44px;height:44px;margin:-14px -12px -14px 0;display:grid;place-items:center;color:#9A9AA4">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5 19 19M19 5 5 19"></path></svg>
+</button>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#16161A;border:1px solid #2E2E36;padding:0 12px;min-height:56px;border-radius:6px">
+<div style="font-size:13px">Units</div>
+<div style="display:flex;border:1px solid #3E3E48;border-radius:12px;overflow:hidden">
+<button onClick="{{ setLb }}" style="min-width:56px;height:40px;font-size:13px;font-weight:600;background:{{ unitLbBg }};color:{{ unitLbFg }};transition:opacity 120ms linear">LB</button>
+<button onClick="{{ setKg }}" style="min-width:56px;height:40px;font-size:13px;font-weight:600;background:{{ unitKgBg }};color:{{ unitKgFg }};transition:opacity 120ms linear">KG</button>
+</div>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#16161A;border:1px solid #2E2E36;border-top:0;padding:0 12px;min-height:56px;border-radius:6px">
+<div style="font-size:13px">HR max</div>
+<div style="display:flex;align-items:center;gap:2px">
+<button onClick="{{ hrDown }}" style="width:56px;height:44px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">−</button>
+<div style="min-width:70px;text-align:center;font-size:20px;font-weight:600">{{ hrMax }}</div>
+<button onClick="{{ hrUp }}" style="width:56px;height:44px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">+</button>
+</div>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#16161A;border:1px solid #2E2E36;border-top:0;padding:0 12px;min-height:56px;border-radius:6px">
+<div style="font-size:13px">Bodyweight</div>
+<div style="display:flex;align-items:center;gap:2px">
+<button onClick="{{ bwDown }}" style="width:56px;height:44px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">−</button>
+<div style="min-width:70px;text-align:center;font-size:20px;font-weight:600">{{ bwLabel }}</div>
+<button onClick="{{ bwUp }}" style="width:56px;height:44px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">+</button>
+</div>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#16161A;border:1px solid #2E2E36;border-top:0;padding:0 12px;min-height:56px;border-radius:6px">
+<div style="font-size:13px">Rest timer sound + vibration</div>
+<div style="display:flex;border:1px solid #3E3E48;border-radius:12px;overflow:hidden">
+<button onClick="{{ soundOff }}" style="min-width:56px;height:40px;font-size:13px;font-weight:600;background:{{ soundOffBg }};color:{{ soundOffFg }};transition:opacity 120ms linear">OFF</button>
+<button onClick="{{ soundOn }}" style="min-width:56px;height:40px;font-size:13px;font-weight:600;background:{{ soundOnBg }};color:{{ soundOnFg }};transition:opacity 120ms linear">ON</button>
+</div>
+</div>
+
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#9A9AA4;margin:14px 0 6px">E1RM MAXES</div>
+<div style="display:flex;flex-direction:column;gap:1px">
+<sc-for list="{{ maxRows }}" as="m" hint-placeholder-count="5">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#16161A;border:1px solid #2E2E36;padding:8px 12px;min-height:56px;border-radius:6px">
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;line-height:1.25">{{ m.name }}</div>
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66;margin-top:3px">{{ m.meta }}</div>
+</div>
+<div style="display:flex;align-items:center;gap:2px;flex:none">
+<button onClick="{{ m.down }}" style="width:44px;height:44px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">−</button>
+<div style="min-width:66px;text-align:center;font-size:15px;font-weight:600">{{ m.val }} <span style="font-size:11px;color:#9A9AA4">{{ m.unit }}</span></div>
+<button onClick="{{ m.up }}" style="width:44px;height:44px;background:#1F1F25;border:1px solid #3E3E48;font-size:20px;color:#FFFFFF">+</button>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:2px;margin-top:14px">
+<button onClick="{{ doExport }}" style="width:100%;height:64px;background:#D20A0A;color:#FFFFFF;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;transition:opacity 120ms linear;border-radius:12px" style-active="opacity:0.72">EXPORT ALL (JSON)</button>
+<button onClick="{{ doExportSets }}" style="width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">EXPORT SESSION LOGS (CSV)</button>
+<button onClick="{{ exportCsv }}" style="width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">EXPORT BATTERY (CSV)</button>
+<button onClick="{{ doImport }}" style="width:100%;height:56px;background:#16161A;border:1px solid #3E3E48;color:#FFFFFF;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;border-radius:12px">IMPORT (JSON)</button>
+</div>
+
+<div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5C5C66;margin-top:12px;line-height:1.7">{{ dbLine }}<br>{{ exportLine }}</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:402,&quot;height&quot;:874},&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dash&quot;,&quot;cal&quot;,&quot;train&quot;,&quot;tests&quot;,&quot;ref&quot;],&quot;default&quot;:&quot;dash&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;units&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;lb&quot;,&quot;kg&quot;],&quot;default&quot;:&quot;lb&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;exportDaysAgo&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:6,&quot;min&quot;:0,&quot;max&quot;:40,&quot;unit&quot;:&quot;days&quot;,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = {
+    tab: this.props.startTab || 'dash',
+    settingsOpen: false,
+    calView: 'month',
+    cadDismissed: false,
+    refQ: '',
+    refOpen: { constraints: true },
+    importPending: null,
+    dbFail: null,
+    testSel: null,
+    logFor: null,
+    logL: '',
+    logR: '',
+    logNote: '',
+    calCursor: null,
+    selDate: null,
+    runDate: null,
+    openSec: null,
+    sets: {},
+    checks: {},
+    compression: 100,
+    side: 'L',
+    rest: null,
+    sound: false,
+    rdMin: 45,
+    subFor: null,
+    subLogging: false,
+    subText: '',
+    subMet: null,
+    infoFor: null,
+    compressOpen: false,
+    finishOpen: false,
+    schedSheet: null,
+    warnSheet: null,
+    units: this.props.units || 'lb',
+    hrMax: 188,
+    bwLb: 196,
+    dbStatus: 'INIT',
+    lastExportDays: this.props.exportDaysAgo ?? 6,
+    dismissed: {}
+  };
+
+  SEQ = ['RD', 'TD1', 'TD2', 'TD3', 'RD', 'TD1', 'TD2', 'TD3'];
+
+  POS = {
+    'TD1': { c: '#C8A24B', n: 'Rotational Velocity & Alactic Power', neu: 9, met: 3, tpl: 'TD1' },
+    'TD2': { c: '#E08600', n: 'Max Strength', neu: 7, met: 4, tpl: 'TD2' },
+    'TD3': { c: '#4A9EFF', n: 'Elastic/Reactive + VO2max', neu: 4, met: 9, tpl: 'TD3' },
+    'TD-A': { c: '#C8A24B', n: 'Rotational Velocity & Alactic Power', neu: 9, met: 3, tpl: 'TD1' },
+    'TD-B-STR': { c: '#E08600', n: 'Minimum-Dose Max Strength', neu: 7, met: 4, tpl: 'TD-B-STR' },
+    'TD-B-ESD': { c: '#4A9EFF', n: 'Elastic/Reactive + VO2max', neu: 4, met: 9, tpl: 'TD3' },
+    'RD': { c: '#5A5A62', n: 'Recovery Day', neu: 1, met: 2, tpl: 'RD' }
+  };
+
+  BLOCK = { id: 'b2', name: 'MAX STRENGTH', rotations: 8, density: '3:1', floors: { velocityFull: 5, velocityPrime: 5, vo2max: 4, zone2Min: 120, trainingDays: 15 } };
+
+  MAXES = { squat: 275, trapbar: 405, press: 155, pullup: 45, rdl: 315 };
+
+  EX = {
+    ex_sidetoss: { name: 'Rotational Side Toss (Scoop)', sets: 4, reps: '3/side', bilateral: true, loadType: 'fixed', load: '6–10 lb', rest: 90, restPurpose: 'Full PCr resynthesis, CNS reset', intent: 'Ground-up sequencing: rear hip drives, trunk transmits, arms are passive.', termination: 'Terminate set on 5% decay from best rep.', source: 'Daru / Pavel dosing', regression: 'Half-kneeling side toss — removes lower-body variable', progression: 'Step-behind approach, then rotational throw off a single-leg finish' },
+    ex_stepbehind: { name: 'Step-Behind Rotational Throw', sets: 3, reps: '3/side', bilateral: true, loadType: 'fixed', load: '8–12 lb', rest: 90, restPurpose: 'Full PCr resynthesis', intent: "Adds horizontal momentum — closer to golf's transfer demand.", termination: 'Terminate set on 5% decay from best rep.', source: 'Daru', regression: 'Standing, no step', progression: 'Increase approach distance before ball weight' },
+    ex_chopslam: { name: 'Overhead-to-Floor Rotational Chop Slam', sets: 3, reps: '3/side', bilateral: true, loadType: 'fixed', load: '10–14 lb', rest: 75, restPurpose: 'PCr resynthesis', intent: 'Rotational deceleration under load — the quality nobody trains and everybody needs.', termination: 'Terminate on velocity decay.', source: 'Daru', regression: 'Vertical slam, no rotation', progression: 'Off-axis catch and immediate re-throw' },
+    ex_sidetoss_prime: { name: 'Rotational Side Toss — Prime', sets: 2, reps: '3/side', bilateral: true, loadType: 'fixed', load: 'Same as TD1', rest: 90, restPurpose: 'Full recovery — this block may not generate fatigue', intent: 'Frequency preservation, not development. Post-activation prime for the grinds.', termination: 'Terminate on ANY decay. Hard cap 12 total throws.', source: 'Daru / Pavel dosing' },
+    ex_accel: { name: 'Acceleration', sets: 3, reps: '15 yd', loadType: 'bodyweight', rest: 60, restPurpose: 'Walk-back recovery', intent: 'Horizontal force at max intent — cleanest available transfer to hip drive.', source: 'Exos' },
+    ex_crossover: { name: 'Crossover / Lateral Shuffle to Sprint', sets: 2, reps: '10 yd/direction', loadType: 'bodyweight', rest: 60, intent: 'Frontal-plane force acceptance.', source: 'Exos' },
+    ex_kbswing: { name: 'KB Swing (Ballistic Hinge)', sets: 10, reps: 5, loadType: 'fixed', load: '32–40 kg', rest: 75, restPurpose: 'Antiglycolytic — rest until HR returns to ~120 bpm. Rest IS the prescription.', tempo: 'Explosive concentric, passive eccentric', intent: 'Alactic hip power, repeatable, zero lactate accumulation.', termination: 'Terminate when rep 5 loses peak float.', source: 'StrongFirst A+A', regression: '8 sets × 5', progression: 'Add sets before load. 20 sets before weight moves.' },
+    ex_trapbar: { name: 'Trap Bar Deadlift', sets: 4, reps: 3, loadType: 'velocity', liftRef: 'trapbar', pctLow: 78, pctHigh: 82, velocityTarget: '≥0.8 m/s', rest: 180, restPurpose: 'CNS + PCr', tempo: 'Max concentric intent', intent: 'Strength-speed. Bar speed is the target, not the load.', source: 'StrongFirst', regression: '3×3', progression: 'Load moves only when all reps clear 0.85 m/s' },
+    ex_antirot_iso: { name: 'Anti-Rotation Iso, Loaded', sets: 2, reps: '25s/side', bilateral: true, loadType: 'rpe', rpe: 'Heavy enough to threaten position', rest: 45, intent: 'Reinforces the transfer medium after it has been loaded rotationally.', source: 'Exos', regression: 'Half-kneeling', progression: 'Standing, single-leg' },
+    ex_frontsquat: { name: 'Front Squat', sets: 5, reps: 3, loadType: 'pct1rm', liftRef: 'squat', pctLow: 82, pctHigh: 88, velocityTarget: '≥0.35 m/s', rest: 180, restPurpose: 'CNS + PCr (paired)', intent: 'Maximal strength through a torso-demanding squat. Front rack taxes the pillar directly.', source: 'StrongFirst', regression: 'Goblet or safety bar', progression: 'Add load when all 5 sets clear 0.35 m/s. Wave 5/3/2 in Block 2 R5–R7.' },
+    ex_pullup: { name: 'Weighted Pull-Up', sets: 5, reps: 3, loadType: 'rpe', rpe: 'RPE 8, 2 RIR', liftRef: 'pullup', rest: 180, restPurpose: 'CNS + PCr (paired)', intent: 'Pulling strength; grip load is intentional.', source: 'StrongFirst', regression: 'Band-assisted or heavy row', progression: '+2.5 kg when all sets clean' },
+    ex_press: { name: 'Standing Press', sets: 5, reps: 3, loadType: 'pct1rm', liftRef: 'press', pctLow: 82, pctHigh: 88, rest: 150, restPurpose: 'CNS + PCr (paired)', intent: 'Vertical push through a stable pillar.', source: 'StrongFirst', regression: 'Half-kneeling press', progression: 'Single-arm before load' },
+    ex_rdl: { name: 'RDL', sets: 3, reps: 5, loadType: 'pct1rm', liftRef: 'rdl', pctLow: 73, pctHigh: 77, rpe: 'RPE 7', rest: 150, intent: 'Posterior chain under length. Support work — not a competing max effort.', source: 'StrongFirst', regression: 'Single-leg RDL', progression: 'Load only when position holds at rep 5' },
+    ex_carry: { name: 'Loaded Carry', sets: 3, reps: '40 yd', loadType: 'rpe', rpe: 'Heaviest that holds ribs stacked', rest: 90, intent: 'Pillar under load in gait. The most honest test of trunk stiffness in the program.', source: 'Exos / StrongFirst', regression: "Farmer's", progression: 'Suitcase → overhead' },
+    ex_frontsquat_min: { name: 'Front Squat — Minimum Dose', sets: 2, reps: 3, loadType: 'pct1rm', liftRef: 'squat', pctLow: 85, pctHigh: 88, rest: 180, intent: 'Top-end strength maintenance only.', source: 'StrongFirst' },
+    ex_pullup_min: { name: 'Weighted Pull-Up — Minimum Dose', sets: 2, reps: 3, loadType: 'rpe', rpe: 'RPE 8', rest: 180, intent: 'Top-end strength maintenance only.', source: 'StrongFirst' },
+    ex_pogo: { name: 'Pogo / Ankle Stiffness', sets: 4, reps: '10 contacts', loadType: 'bodyweight', rest: 60, target: 'Ground contact time <180ms', intent: 'Tendon stiffness. Elastic return is the cheapest speed in golf and the first thing lost after 35.', termination: 'Terminate the set the moment GCT rises.', source: 'Exos', regression: '2-leg, lower amplitude', progression: 'Single-leg, then lateral' },
+    ex_dropjump: { name: 'Drop Jump', sets: 4, reps: 3, loadType: 'bodyweight', rest: 90, target: 'Box height that maximizes RSI — not the tallest box', intent: 'Reactive strength index development.', source: 'Exos', regression: 'CMJ, no drop', progression: 'Raise box only when RSI improves at current height' },
+    ex_rotbound: { name: 'Rotational Bound / Rotational Hop', sets: 3, reps: '3/side', bilateral: true, loadType: 'bodyweight', rest: 90, intent: 'Elastic quality in the transverse plane — the bridge between plyo and the throws.', source: 'Daru', regression: 'Static-start rotational jump', progression: 'Continuous, reactive' },
+    ex_rfess: { name: 'Rear-Foot Elevated Split Squat', sets: 3, reps: '8/side', bilateral: true, loadType: 'rpe', rpe: 'RPE 7', rest: 75, intent: 'Unilateral structural work. Sub-grinding by design.', source: 'Exos', regression: 'Split squat', progression: 'Load' },
+    ex_row: { name: 'Single-Arm Row', sets: 3, reps: '8/side', bilateral: true, loadType: 'rpe', rpe: 'RPE 7', rest: 75, intent: 'Anti-rotation under pulling load.', source: 'Exos', regression: 'Chest-supported', progression: 'Standing, contralateral stance' },
+    ex_neck: { name: 'Neck — 4 Directions, Isometric', sets: 2, reps: '20s each direction', loadType: 'rpe', rpe: 'Sub-maximal', rest: 30, intent: 'MMA durability. Sits here because it is the lowest-CNS day and must not compete with anything.', source: 'Daru', regression: 'Manual resistance', progression: 'Harness, progressive' },
+    ex_grip: { name: 'Grip — Thick-Bar or Towel Hold', sets: 3, reps: '30s', loadType: 'rpe', rpe: 'Max hold', rest: 60, intent: 'Combat durability; secondary transfer to club control.', source: 'Daru / StrongFirst', regression: 'Standard bar', progression: 'Time before load' },
+    ex_4x4: { name: 'Norwegian 4×4', sets: 4, reps: '4 min', loadType: 'hr', target: '90–95% HRmax', rest: 180, restPurpose: 'Active @ 60–70% HRmax — clears H+, keeps stroke volume elevated', intent: 'VO2max. Central adaptation — stroke volume and cardiac output.', termination: 'If HR fails to reach 90% during interval 1, this is not a VO2max session. Abort to 25 min Zone 2 and LOG AS A MISSED EXPOSURE.', source: 'Norwegian 4x4 (Attia / Patrick / Greenfield)', regression: 'Bike or treadmill — isolates the stimulus', progression: 'Rower or ski erg — adds posterior chain and trunk cost' }
+  };
+
+  TPL = {
+    'TD1': {
+      ledger: { velocityFull: 1 }, cap: '≤ 36 MAX-INTENT THROWS',
+      sections: {
+        pillarPrep: ['Supine bridge, 2×8, 2s iso top', 'Dead bug family, 2×6/side, 3s exhale', 'Anti-rotation iso (Pallof), 2×20s/side', 'T-spine rotation hips locked, 2×6/side'],
+        movementPrep: ['Active hip flexor + adductor', '90/90 transitions', 'Lateral hip series', 'Ankle dorsiflexion', 'Banded hip separation drill', '2 build-up accelerations', '3 sub-max rotational throws @70%'],
+        power: ['ex_sidetoss', 'ex_stepbehind', 'ex_chopslam'],
+        movementSkills: ['ex_accel', 'ex_crossover'],
+        strength: ['ex_kbswing', 'ex_trapbar', 'ex_antirot_iso'],
+        esd: [],
+        regen: { minutes: 8, target: 'Parasympathetic downshift', note: 'Terminate when nasal-only breathing is comfortable at rest.' }
+      },
+      compression: {
+        '75': { cut: ['ex_accel', 'ex_crossover', 'ex_antirot_iso'], modify: { ex_kbswing: '8×5', ex_trapbar: '3×3' } },
+        '50': { cut: ['ex_accel', 'ex_crossover', 'ex_antirot_iso', 'ex_trapbar'], modify: { ex_sidetoss: '4×3/side', ex_stepbehind: '2×3/side', ex_chopslam: 'cut', ex_kbswing: '6×5' } },
+        '25': { keepOnly: ['ex_sidetoss'], note: 'Pillar Prep 3 min → side toss 4×3/side, full rest, decay-terminated.' }
+      },
+      rule: 'The max-intent throw block is the last thing cut. If it does not run, this was not TD1 — log as a general training day and keep TD1 in the queue.'
+    },
+    'TD2': {
+      ledger: { velocityPrime: 1 }, ceiling: '88% / RPE 8 / ≥ 0.35 m/s. No singles. No AMRAP. No failure.',
+      sections: {
+        pillarPrep: ['Loaded carry hold, 2×20s', 'Hollow-body iso, 2×20s', 'Banded hip hinge patterning, 2×8'],
+        movementPrep: ['Thoracic extension over roller', 'Hip 90/90', 'Ankle/knee tracking series', "2 ramping sets of the day's primary pattern"],
+        power: ['ex_sidetoss_prime'],
+        movementSkills: [],
+        strength: ['ex_frontsquat', 'ex_pullup', 'ex_press', 'ex_rdl', 'ex_carry'],
+        esd: [],
+        regen: { minutes: 6, target: 'Tissue quality — hips, thoracic spine, lats' }
+      },
+      compression: {
+        '75': { cut: ['ex_rdl'], modify: { ex_press: '3 sets' } },
+        '50': { cut: ['ex_sidetoss_prime', 'ex_press', 'ex_rdl'], modify: { ex_pullup: '3×3', ex_carry: '2×40 yd' } },
+        '25': { keepOnly: ['ex_frontsquat'], modify: { ex_frontsquat: '3×3' }, note: '3×3 at prescribed load.' }
+      },
+      rule: 'Load is preserved, volume is cut. Never reduce load to preserve set count — that converts a strength session into hypertrophy with a strength label.'
+    },
+    'TD3': {
+      ledger: { vo2max: 1 }, cap: '≤ 90 PLYO CONTACTS',
+      sections: {
+        pillarPrep: ['Quadruped anti-rotation, 2×8/side', 'Side plank with reach, 2×20s/side', 'Ankle stiffness prep'],
+        movementPrep: ['Ankle/foot series', 'Pogo build-ups', 'Hip mobility'],
+        power: ['ex_pogo', 'ex_dropjump', 'ex_rotbound'],
+        movementSkills: [],
+        strength: ['ex_rfess', 'ex_row', 'ex_neck', 'ex_grip'],
+        esd: ['ex_4x4'],
+        regen: { minutes: 8, target: 'Parasympathetic downshift + lower-limb tissue quality' }
+      },
+      compression: {
+        '75': { cut: ['ex_rfess', 'ex_row', 'ex_rotbound'] },
+        '50': { cut: ['ex_rfess', 'ex_row', 'ex_neck', 'ex_grip', 'ex_dropjump', 'ex_rotbound'], modify: { ex_pogo: '2×10 contacts' } },
+        '25': { keepOnly: ['ex_4x4'], note: 'Pillar Prep 3 min → 4x4, full protocol. Nothing else.' }
+      },
+      rule: 'The 4x4 is the last thing cut. A 3x4 is acceptable compression; a skipped 4x4 is a ledger miss.'
+    },
+    'TD-B-STR': {
+      ledger: { velocityPrime: 1 }, ceiling: 'Top-end only. 2 heavy sets. No accessory volume.',
+      sections: {
+        pillarPrep: ['Loaded carry hold, 2×20s', 'Hollow-body iso, 2×20s'],
+        movementPrep: ['Thoracic extension', 'Hip 90/90', '2 ramping sets'],
+        power: ['ex_sidetoss_prime'],
+        movementSkills: [],
+        strength: ['ex_frontsquat_min', 'ex_pullup_min', 'ex_carry'],
+        esd: [],
+        regen: { minutes: 6, target: 'Tissue quality' }
+      },
+      compression: {
+        '75': { cut: ['ex_carry'] },
+        '50': { cut: ['ex_carry', 'ex_sidetoss_prime'] },
+        '25': { keepOnly: ['ex_frontsquat_min'] }
+      },
+      rule: 'Minimum dose is already compressed. Below 50% this is a single top-end squat exposure.'
+    },
+    'RD': {
+      isRecovery: true,
+      targetCycle: [
+        { target: 'Capillarization — Zone 2', ceiling: '45–60 MIN · STRICTLY ≤ LT1' },
+        { target: 'Positional restoration', ceiling: '30 MIN', note: 'Hips, thoracic spine, ankles. Position under low load, not stretching for its own sake.' },
+        { target: 'Parasympathetic downshift', ceiling: '30 MIN', note: 'Lowest-arousal option available' },
+        { target: 'Tissue quality', ceiling: '30 MIN', note: 'Soft tissue, then reintegrate the pattern under light load' }
+      ],
+      hardConstraint: "The RD immediately preceding TD1 caps Zone 2 at 45 min and stays below LT1. TD1's entire value depends on it.",
+      sections: {}
+    }
+  };
+
+  SUBS = [
+    { id: 'sub_td1_power', appliesTo: ['ex_sidetoss', 'ex_stepbehind', 'ex_chopslam'], quality: 'Max-intent rotational velocity. Alactic. Peak power through hip–trunk separation.', dosing: '3-rep sets, 90s rest, terminate on 5% velocity decay, ≤36 total max-intent efforts, zero lactate accumulation, full recovery between every set.', valid: 'Any max-intent rotational effort meeting the same dosing signature. Range or bag/pad work in an antiglycolytic cadence qualifies — 3 max-intent swings or strikes, 90s complete rest, terminate on speed decay, ≤36 total efforts. Overspeed golf training qualifies. Sled or throw-based rotational work qualifies.', invalid: 'Continuous range sessions. Any striking work with incomplete rest, regardless of perceived intensity. Volume swing work. Technical practice at sub-max intent. A 45-minute range session is not this block — it is 200 sub-max reps with no decay termination, which develops skill and blunts velocity.', ledgerKey: 'velocityFull' },
+    { id: 'sub_td1_ballistic', appliesTo: ['ex_kbswing'], quality: 'Alactic hip power, repeatable. Anti-glycolytic by design.', dosing: '10×5, 60–90s rest, HR returns to ~120 bpm between sets, no burn, no breathlessness.', valid: 'Any ballistic hip-dominant pattern at the same work:rest and HR-recovery signature. Repeated max-intent takedown entries with full recovery. Repeated jump or throw sets.', invalid: "Anything producing sustained elevated HR or local burn. Kettlebell complexes, EMOM circuits, and 'conditioning with kettlebells' are the exact opposite of this block — same tool, inverted energy system. Rounds of anything.", ledgerKey: null },
+    { id: 'sub_td2_prime', appliesTo: ['ex_sidetoss_prime'], quality: 'Rotational velocity frequency preservation. Non-fatiguing.', dosing: '12 total throws, max intent, 90s rest, terminate on any decay.', valid: '12 max-intent golf swings or rotational strikes with 90s rest between sets of 3.', invalid: "Anything above 12 efforts. Volume defeats the block's purpose — it preserves frequency without adding fatigue to a strength day.", ledgerKey: 'velocityPrime' },
+    { id: 'sub_td3_plyo', appliesTo: ['ex_pogo', 'ex_dropjump', 'ex_rotbound'], quality: 'Elastic/reactive — tendon stiffness, RSI, short ground contact.', dosing: '<90 total contacts, GCT-terminated, submaximal amplitude, full rest.', valid: 'Any reactive/elastic modality with contact-time quality control — jump rope at speed with GCT discipline, reactive footwork, low-amplitude bounding.', invalid: 'Fatigue-based jumping. High-volume rope as conditioning. Any plyometric work performed after ESD. Amplitude-maximizing jump work.', ledgerKey: null },
+    { id: 'sub_vo2max', appliesTo: ['ex_4x4'], quality: 'VO2max. Central — stroke volume and cardiac output.', dosing: '4×4 min @ 90–95% HRmax, 3 min active recovery @ 60–70%. 16 minutes total time in zone. Time-in-zone is the entire prescription.', valid: 'Any modality meeting the same HR and duration profile. 4-minute grappling rounds alternated with 4-minute rest qualify — but only if HR is measured and actually reaches 90–95% for the majority of each round. Assault bike, ski erg, rower, treadmill, hill repeats, uphill carries all qualify at the correct HR.', invalid: "Any glycolytic work that feels hard but does not hold 90–95% HRmax for 4 continuous minutes. Specifically: 30s–2min interval formats, circuit training, 'hard rounds' without HR data, most sparring. These are lactate tolerance work, not VO2max work. Same recovery cost, different adaptation.", failureMode: 'Assuming a hard session was a 4x4. Wear the strap or log it as a miss.', ledgerKey: 'vo2max' },
+    { id: 'sub_zone2', appliesTo: ['RD'], quality: 'Aerobic base — mitochondrial density, capillarization, fat oxidation.', dosing: '45–60 min continuous at or just below LT1. Conversational. Nasal breathing sustainable.', valid: 'Any continuous modality at the correct intensity. Walking a course while carrying qualifies — 18 holes walking is 3–4 hours of Zone 1–2. Light technical drilling at controlled HR qualifies.', invalid: 'Anything with HR excursions above LT1. Riding a cart. Intermittent effort of any kind — intervals do not aggregate into Zone 2.', ledgerKey: 'zone2Min' }
+  ];
+
+  TESTS = [
+    { id: 't_screen', name: 'Exos Movement Screen + Pillar Checks', unit: 'pass/fail', battery: 'full', nonNumeric: true, note: 'Gates all progression. A failed pillar position stops the block.', base: 1 },
+    { id: 't_mb_standing', name: 'Standing MB Rotational Throw', unit: 'ft', bilateral: true, battery: 'both', base: 41.2, drift: 0.7, asym: 2.4 },
+    { id: 't_mb_seated', name: 'Seated MB Rotational Throw', unit: 'ft', bilateral: true, battery: 'full', base: 30.4, drift: 0.5, asym: 3.1, note: 'Delta vs standing tells you where the leak is.' },
+    { id: 't_cmj', name: 'CMJ', unit: 'in', battery: 'both', base: 20.8, drift: 0.35, sub: 'mRSI · force asymmetry %' },
+    { id: 't_broad', name: 'Broad Jump', unit: 'in', battery: 'full', base: 89.5, drift: 0.9 },
+    { id: 't_dropjump', name: 'Drop Jump', unit: 'RSI', battery: 'both', base: 1.34, drift: 0.03, sub: 'GCT ms', note: 'Box height held constant across tests.' },
+    { id: 't_squat', name: 'Front Squat e1RM', unit: 'lb', battery: 'full', base: 250, drift: 8 },
+    { id: 't_trapbar', name: 'Trap Bar e1RM', unit: 'lb', battery: 'full', base: 375, drift: 10 },
+    { id: 't_press', name: 'Press e1RM', unit: 'lb', battery: 'full', base: 145, drift: 3.5 },
+    { id: 't_pullup', name: 'Pull-Up e1RM', unit: 'lb', battery: 'full', base: 32, drift: 4 },
+    { id: 't_grip', name: 'Grip — Thick-Bar Hold', unit: 's', bilateral: true, battery: 'full', base: 56, drift: 2, asym: 4.8 },
+    { id: 't_neck', name: 'Neck Isometric, 4 Directions', unit: 'lb', battery: 'full', base: 34, drift: 1.2 },
+    { id: 't_vo2', name: 'VO2max Estimate', unit: 'ml/kg/min', battery: 'full', base: 44.1, drift: 0.9 },
+    { id: 't_z2', name: 'Zone 2 Output at Fixed HR', unit: 'W', battery: 'full', base: 198, drift: 6, note: 'Most sensitive marker of aerobic drift in this battery.' },
+    { id: 't_hrr', name: 'HR Recovery, 60s Post-Interval', unit: 'bpm drop', battery: 'full', base: 29, drift: 1.5 },
+    { id: 't_chs', name: 'Club Head Speed', unit: 'mph', battery: 'both', base: 107.4, drift: 1.3, note: 'Headline metric.' },
+    { id: 't_ballspeed', name: 'Ball Speed', unit: 'mph', battery: 'full', base: 157.8, drift: 1.9 },
+    { id: 't_smash', name: 'Smash Factor', unit: 'ratio', battery: 'full', base: 1.44, drift: 0.005, note: 'Skill metric. Expect slow movement. Do not attribute to this program.' },
+    { id: 't_handspeed', name: 'Hand Speed', unit: 'mph', battery: 'full', base: 22.9, drift: 0.3 },
+    { id: 't_decay', name: 'Output Decay R1→R3', unit: '%', battery: 'full', base: 8.2, drift: -0.45, lowerBetter: true, note: 'Decay percentage matters more than absolute output.' }
+  ];
+
+  CADENCE = { fullTD: 24, fullCal: 45, miniTD: 9 };
+
+  testHist() {
+    if (this._th) return this._th;
+    const today = this.iso(new Date()), out = {};
+    this.TESTS.forEach(t => {
+      const dates = [-166, -121, -76, -31].concat(t.battery === 'both' ? [-8] : []);
+      out[t.id] = dates.map((d, k) => {
+        const date = this.shift(today, d);
+        if (t.nonNumeric) return { date, v: null, pass: k !== 1, note: '' };
+        const j = ((k * 37) % 7 - 3) / 100;
+        const v = t.base + (t.drift || 0) * k * (1 + j);
+        const r = t.bilateral ? v * (1 - (t.asym || 0) / 100 * (1 + j)) : null;
+        const rd = (n) => Math.round(n * 100) / 100;
+        return { date, v: rd(v), r: t.bilateral ? rd(r) : null, note: '' };
+      });
+    });
+    this._th = out;
+    return out;
+  }
+
+  lastFullDate() {
+    const th = this.testHist();
+    let best = null;
+    this.TESTS.forEach(t => {
+      if (t.battery !== 'full') return;
+      (th[t.id] || []).forEach(h => { if (!best || h.date > best) best = h.date; });
+    });
+    return best;
+  }
+
+  spark(vals, w, h) {
+    if (!vals.length) return '';
+    const min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+    const span = max - min || 1;
+    return vals.map((v, i) => {
+      const x = vals.length === 1 ? w / 2 : (i / (vals.length - 1)) * (w - 2) + 1;
+      const y = h - 2 - ((v - min) / span) * (h - 4);
+      return (Math.round(x * 10) / 10) + ',' + (Math.round(y * 10) / 10);
+    }).join(' ');
+  }
+
+  subTagFor(id) { for (const t of this.SUBS) if (t.appliesTo.indexOf(id) >= 0) return t; return null; }
+
+  repsSpec(reps) {
+    if (typeof reps === 'number') return { v: reps, label: 'REPS' };
+    const str = String(reps), m = str.match(/([\d.]+)/);
+    const v = m ? parseFloat(m[1]) : 1;
+    let label = 'REPS';
+    if (/yd/i.test(str)) label = 'YD';
+    else if (/min/i.test(str)) label = 'MIN';
+    else if (/\d\s*s\b|\ds\//i.test(str)) label = 'SEC';
+    else if (/contact/i.test(str)) label = 'CONTACTS';
+    return { v, label };
+  }
+
+  LIFTS = [['squat', 'Front Squat'], ['trapbar', 'Trap Bar Deadlift'], ['press', 'Standing Press'], ['pullup', 'Weighted Pull-Up'], ['rdl', 'RDL']];
+
+  e1rm(id) { return (this._maxes && this._maxes[id] && this._maxes[id].e1rm) || this.MAXES[id] || 0; }
+
+  loadSpec(e) {
+    if (e.loadType === 'pct1rm' || e.loadType === 'velocity') {
+      const lb = this.e1rm(e.liftRef) * ((e.pctLow + e.pctHigh) / 2) / 100;
+      const kg = this.state.units === 'kg';
+      const v = kg ? Math.round(lb * 0.45359 / 2.5) * 2.5 : Math.round(lb / 5) * 5;
+      const u = kg ? 'KG' : 'LB';
+      return { v, unit: u, label: 'LOAD', step: kg ? 2.5 : 5, text: v + ' ' + u + ' · ' + e.pctLow + '–' + e.pctHigh + '%' + (e.velocityTarget ? ' · ' + e.velocityTarget : '') };
+    }
+    if (e.loadType === 'fixed') {
+      const m = String(e.load).match(/([\d.]+)/);
+      const kg = /kg/i.test(String(e.load));
+      if (!m) return { v: null, text: String(e.load).toUpperCase() };
+      return { v: parseFloat(m[1]), unit: kg ? 'KG' : 'LB', label: 'LOAD', step: kg ? 4 : 2, text: String(e.load).toUpperCase() };
+    }
+    if (e.loadType === 'rpe') return { v: null, text: String(e.rpe || 'RPE').toUpperCase() };
+    if (e.loadType === 'bodyweight') return { v: null, text: 'BODYWEIGHT' };
+    if (e.loadType === 'hr') return { v: Math.round((this.state.hrMax || 188) * 0.92), unit: 'BPM', label: 'AVG HR', step: 1, text: String(e.target || 'HR TARGET').toUpperCase() };
+    return { v: null, text: '' };
+  }
+
+  SECS = [['pillarPrep', 'PILLAR PREP', 'check'], ['movementPrep', 'MOVEMENT PREP', 'check'], ['power', 'PLYO / MED BALL / ROTATIONAL POWER', 'ex'], ['movementSkills', 'MOVEMENT SKILLS', 'ex'], ['strength', 'STRENGTH & POWER', 'ex'], ['esd', 'ESD', 'ex'], ['regen', 'REGENERATION', 'regen']];
+
+  componentDidMount() { this.openDb(); }
+
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  parse(s) { const p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  shift(s, n) { const d = this.parse(s); d.setDate(d.getDate() + n); return this.iso(d); }
+
+  schedule() {
+    if (this._sched) return this._sched;
+    const out = [], today = new Date();
+    for (let i = -56; i <= 28; i++) {
+      const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+      const k = i + 57;
+      if (k % 13 === 0 && i < -2) continue;
+      let pos = this.SEQ[((k % this.SEQ.length) + this.SEQ.length) % this.SEQ.length];
+      let status = i < 0 ? 'done' : 'planned';
+      if (i < 0 && k % 17 === 0) status = 'missed';
+      if (i < 0 && k % 23 === 0) status = 'deferred';
+      out.push({ date: this.iso(d), pos, status, comp: i < 0 && k % 11 === 0 ? 75 : 100, subbed: i < 0 && k % 19 === 0, rot: 4 + Math.floor(i / this.SEQ.length) });
+    }
+    const t = this.iso(today);
+    const cur = out.find(x => x.date === t);
+    if (cur) { cur.status = 'planned'; cur.comp = 100; cur.subbed = false; }
+    else out.push({ date: t, pos: 'TD1', status: 'planned', comp: 100, subbed: false, rot: 4 });
+    out.sort((a, b) => a.date < b.date ? -1 : 1);
+    this._sched = out;
+    return out;
+  }
+
+  rec(date) { return this.schedule().find(x => x.date === date) || null; }
+
+  nextPos() {
+    const t = this.iso(new Date());
+    const past = this.schedule().filter(x => x.date < t && x.status === 'done');
+    const last = past[past.length - 1];
+    if (!last) return 'RD';
+    const i = this.SEQ.indexOf(last.pos);
+    return this.SEQ[(i + 1) % this.SEQ.length];
+  }
+
+  evalConstraints(date, pos) {
+    const out = [], sch = this.schedule();
+    const prev = sch.filter(x => x.date < date && x.status !== 'missed').slice(-1)[0];
+    const P = this.POS[pos];
+    const maxIntent = (p) => p === 'TD1' || p === 'TD-A';
+    if (maxIntent(pos) && (!prev || prev.pos !== 'RD')) out.push({ id: 'TD1_NOT_OFF_RD', m: 'TD1 must follow a Recovery Day. Max-intent velocity behind fatigue produces fatigue, not adaptation.' });
+    if (maxIntent(pos)) {
+      const near = sch.filter(x => Math.abs(this.parse(x.date) - this.parse(date)) <= 2 * 864e5 && x.date !== date && maxIntent(x.pos));
+      if (near.length) out.push({ id: 'DOUBLE_MAXINTENT', m: 'Two max-intent sessions inside 48h. One fresh slot per work stretch.' });
+    }
+    if ((pos === 'TD3' || pos === 'TD-B-ESD') && prev && prev.pos === 'RD') out.push({ id: 'ESD_AFTER_RD', m: 'Conditioning is consuming the only fresh slot in the rotation.' });
+    if (pos === 'TD3') {
+      const p2 = sch.filter(x => x.date === this.shift(date, -1) || x.date === this.shift(date, 1));
+      if (p2.some(x => x.pos === 'TD3' || x.pos === 'TD-B-ESD')) out.push({ id: 'VO2_ADJACENT', m: 'VO2max sessions not adjacent.' });
+    }
+    if (prev && prev.pos !== 'RD' && P.neu > this.POS[prev.pos].neu) out.push({ id: 'CNS_ASCENT', m: 'CNS load must descend across the work stretch.' });
+    return out;
+  }
+
+  CONSTRAINTS = [
+    ['TD1_NOT_OFF_RD', 'TD1 or TD-A scheduled and the preceding session is not RD', 'TD1 must follow a Recovery Day. Max-intent velocity behind fatigue produces fatigue, not adaptation.'],
+    ['DOUBLE_MAXINTENT', 'Two TD1/TD-A within 48h', 'Two max-intent sessions inside 48h. One fresh slot per work stretch.'],
+    ['ESD_AFTER_RD', 'TD3 or TD-B-ESD immediately follows an RD', 'Conditioning is consuming the only fresh slot in the rotation.'],
+    ['VO2_ADJACENT', 'Two VO2max sessions on consecutive training days', 'VO2max sessions not adjacent.'],
+    ['CNS_ASCENT', "Neural load of a session exceeds the preceding session's, without an RD between", 'CNS load must descend across the work stretch.'],
+    ['GAP_4D', '4+ consecutive days, no session logged', '4 days without a training day. Rotation has drifted.'],
+    ['LEDGER_FLOOR', 'Any 28-day count below floor', '[Quality] below 28-day floor: [n] of [floor].']
+  ];
+
+  READINESS = [
+    ['GREEN', '#C8A24B', 'HRV within 0.5 SD of baseline · sleep ≥ 7h · resting HR ≤ baseline +3 · no joint pain', 'Run the session as written.'],
+    ['AMBER', '#FF7A1A', 'One marker outside range', 'TD1 → 75% compression, intent preserved. TD2 → cap at 85%, cut the last accessory. TD3 → 3×4 instead of 4×4. TD-B-STR → minimum dose only.'],
+    ['RED', '#FF7A1A', 'Two or more markers outside range, or resting HR ≥ baseline +8', 'RD only. Zone 2 ≤ 30 min or positional restoration. Do not convert the day into a training day.']
+  ];
+
+  PROGRESSION = [
+    ['Front Squat', 'All 5 sets clear 0.35 m/s', '+5 lb. Wave 5/3/2 in Block 2 R5–R7.'],
+    ['Trap Bar Deadlift', 'All reps clear 0.85 m/s', '+10 lb.'],
+    ['Weighted Pull-Up', 'All sets clean at RPE 8, 2 RIR', '+2.5 kg.'],
+    ['Standing Press', 'All 5 sets at prescribed % with no grind', 'Single-arm variant before load.'],
+    ['KB Swing', '20 sets × 5 at current bell, HR back to ~120 between sets', 'Next bell. Sets before load.'],
+    ['Rotational Side Toss', 'No decay across 4 sets, ≤ 36 total efforts', '+2 lb ball, or add the step-behind approach.'],
+    ['Norwegian 4×4', 'HR reaches 90–95% and HRR60 ≥ 30 bpm', 'Hold the protocol. Modality unchanged.'],
+    ['Zone 2', 'Output at fixed HR up 5%', 'Recalibrate the zone against a fresh LT1 estimate.']
+  ];
+
+  COMPRESSION_RULES = [
+    'Cut volume, never intent.',
+    'Load is preserved; sets are cut. Never reduce load to hold set count.',
+    "The block's target quality is the last thing cut.",
+    'A compressed session still counts as a training day. A skipped target quality is a ledger miss.'
+  ];
+
+  refVals() {
+    const s = this.state, q = (s.refQ || '').trim().toLowerCase();
+    const secs = [];
+
+    secs.push({ key: 'constraints', title: 'ORDERING CONSTRAINTS', note: '', hasNote: false, items: this.CONSTRAINTS.map(c => ({ h: c[0], lines: [{ label: 'CONDITION', text: c[1], color: '#FFFFFF' }, { label: 'MESSAGE', text: c[2], color: '#9A9AA4' }] })) });
+
+    secs.push({ key: 'subs', title: 'SUBSTITUTION TAGS', note: '', hasNote: false, items: this.SUBS.map(t => ({ h: t.id.replace('sub_', '').toUpperCase(), lines: [{ label: 'TARGET QUALITY', text: t.quality, color: '#FFFFFF' }, { label: 'DOSING SIGNATURE', text: t.dosing, color: '#FFFFFF' }, { label: 'VALID', text: t.valid, color: '#9A9AA4' }, { label: 'INVALID', text: t.invalid, color: '#9A9AA4' }].concat(t.failureMode ? [{ label: 'FAILURE MODE', text: t.failureMode, color: '#FF7A1A' }] : []).concat(t.ledgerKey ? [{ label: 'LEDGER KEY', text: t.ledgerKey, color: '#5C5C66' }] : []) })) });
+
+    secs.push({ key: 'readiness', title: 'READINESS GATE', note: 'REFERENCE ONLY — NOT EVALUATED BY THIS APP', hasNote: true, items: this.READINESS.map(r => ({ h: r[0], hColor: r[1], lines: [{ label: 'THRESHOLD', text: r[2], color: '#FFFFFF' }, { label: 'DOWNGRADE PATH', text: r[3], color: '#9A9AA4' }] })) });
+
+    secs.push({ key: 'progression', title: 'PROGRESSION TRIGGERS', note: 'REFERENCE ONLY — NOT EVALUATED BY THIS APP', hasNote: true, items: this.PROGRESSION.map(p => ({ h: p[0].toUpperCase(), lines: [{ label: 'TRIGGER', text: p[1], color: '#FFFFFF' }, { label: 'ACTION', text: p[2], color: '#9A9AA4' }] })) });
+
+    const compItems = ['TD1', 'TD2', 'TD3'].map(id => {
+      const tp = this.TPL[id], lines = [];
+      ['75', '50', '25'].forEach(lv => {
+        const c = tp.compression[lv]; if (!c) return;
+        const parts = [];
+        if (c.keepOnly) parts.push('KEEP ONLY ' + c.keepOnly.map(x => this.EX[x] ? this.EX[x].name : x).join(', '));
+        if (c.cut) parts.push('CUT ' + c.cut.map(x => this.EX[x] ? this.EX[x].name : x).join(', '));
+        if (c.modify) parts.push('MODIFY ' + Object.keys(c.modify).map(k => (this.EX[k] ? this.EX[k].name : k) + ' → ' + c.modify[k]).join(', '));
+        if (c.note) parts.push(c.note);
+        lines.push({ label: lv + '%', text: parts.join(' · '), color: '#9A9AA4' });
+      });
+      lines.push({ label: 'RULE', text: tp.rule, color: '#FFFFFF' });
+      return { h: id + ' · ' + this.POS[id].n.toUpperCase(), lines };
+    });
+    compItems.push({ h: 'UNIVERSAL RULES', lines: this.COMPRESSION_RULES.map((r, i) => ({ label: String(i + 1), text: r, color: '#FFFFFF' })) });
+    secs.push({ key: 'compression', title: 'COMPRESSION PROTOCOL', note: '', hasNote: false, items: compItems });
+
+    const out = secs.map(sec => {
+      const items = q ? sec.items.filter(it => (it.h + ' ' + it.lines.map(l => l.label + ' ' + l.text).join(' ')).toLowerCase().indexOf(q) >= 0) : sec.items;
+      return Object.assign({}, sec, {
+        items, count: String(items.length),
+        show: !q || items.length > 0,
+        open: q ? items.length > 0 : !!s.refOpen[sec.key],
+        toggle: () => this.setState(p => ({ refOpen: Object.assign({}, p.refOpen, { [sec.key]: !p.refOpen[sec.key] }) }))
+      });
+    }).filter(sec => sec.show);
+
+    return {
+      refSecs: out, refQ: s.refQ,
+      refType: (e) => this.setState({ refQ: e.target.value }),
+      refClear: () => this.setState({ refQ: '' }), refHasQ: !!q
+    };
+  }
+
+  testVals() {
+    const s = this.state, th = this.testHist(), today = this.iso(new Date());
+    const ratioOf = (l, r) => Math.round(Math.abs(l - r) / Math.max(l, r) * 1000) / 10;
+    const ratioColor = (x) => x > 15 ? '#FF7A1A' : x > 10 ? '#FF7A1A' : '#9A9AA4';
+    const fmt = (v, t) => (t.unit === 'lb' || t.unit === 'W' || t.unit === 'bpm drop' ? String(Math.round(v)) : String(v));
+
+    const mk = (t) => {
+      const h = th[t.id] || [];
+      const last = h[h.length - 1] || null, prev = h[h.length - 2] || null;
+      let dTxt = '', dColor = '#5C5C66', hasD = false;
+      if (last && prev && !t.nonNumeric && prev.v) {
+        const d = (last.v - prev.v) / prev.v * 100;
+        const good = t.lowerBetter ? d < 0 : d > 0;
+        dTxt = (d > 0 ? '+' : '') + (Math.round(d * 10) / 10) + '%';
+        dColor = Math.abs(d) < 0.05 ? '#9A9AA4' : good ? '#C8A24B' : '#FF7A1A';
+        hasD = true;
+      }
+      const nums = h.filter(x => x.v != null).map(x => x.v);
+      const rat = last && last.r != null ? ratioOf(last.v, last.r) : null;
+      return {
+        id: t.id, name: t.name, unit: t.unit.toUpperCase(),
+        latest: last ? (t.nonNumeric ? (last.pass ? 'PASS' : 'FAIL') : fmt(last.v, t)) : '—',
+        latestColor: t.nonNumeric ? (last && last.pass ? '#FFFFFF' : '#FF7A1A') : '#FFFFFF',
+        dTxt, dColor, hasD,
+        spark: this.spark(nums, 72, 22), hasSpark: nums.length > 1,
+        hasRatio: rat != null, ratio: rat != null ? rat + '%' : '', ratioColor: ratioColor(rat || 0),
+        go: () => this.setState({ testSel: t.id })
+      };
+    };
+
+    const full = this.TESTS.filter(t => t.battery === 'full' || t.battery === 'both').map(mk);
+    const mini = this.TESTS.filter(t => t.battery === 'both').map(mk);
+
+    const lf = this.lastFullDate();
+    const calSince = lf ? Math.round((this.parse(today) - this.parse(lf)) / 864e5) : 0;
+    const tdSince = this.schedule().filter(x => lf && x.date > lf && x.date <= today && x.status === 'done' && x.pos !== 'RD').length;
+    const tdOver = tdSince >= this.CADENCE.fullTD, calOver = calSince >= this.CADENCE.fullCal;
+
+    const logT = s.logFor ? this.TESTS.find(x => x.id === s.logFor) : null;
+    const logNonNum = !!(logT && logT.nonNumeric);
+    const logOk = logNonNum ? (s.logL === 'pass' || s.logL === 'fail') : !!parseFloat(s.logL);
+    const t = s.testSel ? this.TESTS.find(x => x.id === s.testSel) : null;
+    const h = t ? (th[t.id] || []) : [];
+    const nums = h.filter(x => x.v != null).map(x => x.v);
+    const ratios = t && t.bilateral ? h.filter(x => x.r != null).map(x => ratioOf(x.v, x.r)) : [];
+
+    return {
+      cadWarn: tdOver || calOver,
+      cadWarnText: 'Full battery due: ' + tdSince + ' training days since last test, ' + calSince + ' calendar days elapsed.',
+      cadTD: tdSince + ' / ' + this.CADENCE.fullTD, cadTDColor: tdOver ? '#FF7A1A' : '#FFFFFF',
+      cadCal: calSince + ' / ' + this.CADENCE.fullCal, cadCalColor: calOver ? '#FF7A1A' : '#FFFFFF',
+      fullTests: full, miniTests: mini,
+      testListOpen: !s.testSel, testDetail: !!t,
+      tName: t ? t.name : '', tUnit: t ? t.unit.toUpperCase() : '',
+      tNote: t && t.note ? t.note : '', tHasNote: !!(t && t.note),
+      tSub: t && t.sub ? 'SUB-METRICS · ' + t.sub.toUpperCase() : '', tHasSub: !!(t && t.sub),
+      tBilateral: !!(t && t.bilateral),
+      tChart: this.spark(nums, 100, 40), tHasChart: nums.length > 1,
+      tMax: nums.length ? String(Math.max.apply(null, nums)) : '', tMin: nums.length ? String(Math.min.apply(null, nums)) : '',
+      tRatioChart: this.spark(ratios, 100, 24), tHasRatioChart: ratios.length > 1,
+      tRows: h.slice().reverse().map(x => ({
+        date: x.date.slice(5).replace('-', '·') + ' · ' + x.date.slice(2, 4),
+        l: t && t.nonNumeric ? (x.pass ? 'PASS' : 'FAIL') : fmt(x.v, t),
+        r: x.r != null ? fmt(x.r, t) : '—',
+        ratio: x.r != null ? ratioOf(x.v, x.r) + '%' : '—',
+        ratioColor: x.r != null ? ratioColor(ratioOf(x.v, x.r)) : '#5C5C66'
+      })),
+      closeTest: () => this.setState({ testSel: null }),
+      openLog: () => this.setState({ logFor: s.testSel, logL: '', logR: '', logNote: '' }),
+      logOpen: !!s.logFor,
+      logName: s.logFor ? (this.TESTS.find(x => x.id === s.logFor) || {}).name : '',
+      logUnit: s.logFor ? ((this.TESTS.find(x => x.id === s.logFor) || {}).unit || '').toUpperCase() : '',
+      logBilateral: !!(s.logFor && (this.TESTS.find(x => x.id === s.logFor) || {}).bilateral),
+      logNumeric: !(s.logFor && (this.TESTS.find(x => x.id === s.logFor) || {}).nonNumeric),
+      logBinary: !!(s.logFor && (this.TESTS.find(x => x.id === s.logFor) || {}).nonNumeric),
+      passBg: s.logL === 'pass' ? '#D20A0A' : 'transparent', passFg: s.logL === 'pass' ? '#FFFFFF' : '#FFFFFF',
+      failBg: s.logL === 'fail' ? '#FF7A1A' : 'transparent', failFg: s.logL === 'fail' ? '#0B0B0D' : '#FFFFFF',
+      setPass: () => this.setState({ logL: 'pass' }), setFail: () => this.setState({ logL: 'fail' }),
+      logL: s.logL, logR: s.logR, logNote: s.logNote,
+      typeL: (e) => this.setState({ logL: e.target.value }),
+      typeR: (e) => this.setState({ logR: e.target.value }),
+      typeNote: (e) => this.setState({ logNote: e.target.value }),
+      logReady: !!logOk,
+      logBg: logOk ? '#D20A0A' : '#1F1F25', logFg: logOk ? '#FFFFFF' : '#5C5C66',
+      saveLog: () => {
+        if (!logOk) return;
+        const id = s.logFor, tt = this.TESTS.find(x => x.id === id) || {};
+        if (logNonNum) {
+          this._th[id] = (this._th[id] || []).concat([{ date: today, v: null, pass: s.logL === 'pass', note: s.logNote }]);
+          this.dbPut('tests', { date: today, testId: id, side: null, value: s.logL, unit: tt.unit, note: s.logNote });
+        } else {
+          const lv = parseFloat(s.logL), rv = parseFloat(s.logR) || null;
+          this._th[id] = (this._th[id] || []).concat([{ date: today, v: lv, r: rv, note: s.logNote }]);
+          this.dbPut('tests', { date: today, testId: id, side: tt.bilateral ? 'L' : null, value: lv, unit: tt.unit, note: s.logNote });
+          if (rv != null) this.dbPut('tests', { date: today, testId: id, side: 'R', value: rv, unit: tt.unit, note: s.logNote });
+          if (tt.liftRef) {
+            this._maxes = this._maxes || {};
+            this._maxes[tt.liftRef] = { e1rm: lv, testedOn: today, method: 'tested' };
+            this.dbPut('maxes', Object.assign({ liftId: tt.liftRef }, this._maxes[tt.liftRef]));
+          }
+        }
+        this.setState({ logFor: null, logL: '', logR: '', logNote: '' });
+      },
+      closeLog: () => this.setState({ logFor: null }),
+      exportCsv: () => {
+        const rows = [['date', 'testId', 'testName', 'side', 'value', 'unit', 'note']];
+        this.TESTS.forEach(tt => (th[tt.id] || []).forEach(x => {
+          if (tt.nonNumeric) { rows.push([x.date, tt.id, tt.name, '', x.pass ? 'pass' : 'fail', tt.unit, x.note || '']); return; }
+          rows.push([x.date, tt.id, tt.name, tt.bilateral ? 'L' : '', x.v, tt.unit, x.note || '']);
+          if (x.r != null) rows.push([x.date, tt.id, tt.name, 'R', x.r, tt.unit, x.note || '']);
+        }));
+        const csv = rows.map(r => r.map(c => /[",\n]/.test(String(c)) ? '"' + String(c).replace(/"/g, '""') + '"' : String(c)).join(',')).join('\n');
+        try {
+          const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+          const a = document.createElement('a');
+          a.href = url; a.download = 'battery-' + today + '.csv';
+          a.click(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+        } catch (e) {}
+      }
+    };
+  }
+
+  calVals() {
+    const s = this.state, today = this.iso(new Date());
+    const sel = s.selDate || today;
+    const cur = s.calCursor ? this.parse(s.calCursor + '-01') : this.parse(sel);
+    const mo = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+    const seg = (k) => ({ bg: s.calView === k ? '#D20A0A' : 'transparent', fg: s.calView === k ? '#FFFFFF' : '#9A9AA4', go: () => this.setState({ calView: k }) });
+    const dotOf = (r) => {
+      const c = this.POS[r.pos].c;
+      if (r.status === 'missed') return { bg: '#FF7A1A', bd: '#FF7A1A' };
+      if (r.status === 'deferred') return { bg: '#5C5C66', bd: '#5C5C66' };
+      if (r.status === 'planned') return { bg: 'transparent', bd: c };
+      return { bg: c, bd: c };
+    };
+    const first = new Date(cur.getFullYear(), cur.getMonth(), 1);
+    const cells = [];
+    for (let i = 0; i < 42; i++) {
+      const d = new Date(cur.getFullYear(), cur.getMonth(), 1 - first.getDay() + i);
+      const ds = this.iso(d), inMo = d.getMonth() === cur.getMonth();
+      const r = this.rec(ds);
+      cells.push({
+        num: d.getDate(),
+        numColor: !inMo ? '#2E2E36' : ds === today ? '#C8A24B' : '#FFFFFF',
+        ring: ds === today ? '#C8A24B' : ds === sel ? '#3E3E48' : 'transparent',
+        dots: r && inMo ? [dotOf(r)] : [],
+        go: () => this.setState({ selDate: ds, calView: 'day' })
+      });
+    }
+    const density = [];
+    for (let i = 27; i >= 0; i--) {
+      const ds = this.shift(today, -i), r = this.rec(ds);
+      density.push({ bg: !r ? '#1F1F25' : r.status === 'missed' ? '#FF7A1A' : r.status === 'deferred' ? '#2E2E36' : this.POS[r.pos].c, op: r && r.status === 'planned' ? 0.35 : 1 });
+    }
+    const wkStart = this.parse(sel); wkStart.setDate(wkStart.getDate() - wkStart.getDay());
+    const dowN = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const weekRows = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(wkStart.getFullYear(), wkStart.getMonth(), wkStart.getDate() + i);
+      const ds = this.iso(d), r = this.rec(ds);
+      weekRows.push({
+        dow: dowN[i], num: String(d.getDate()).padStart(2, '0'),
+        numColor: ds === today ? '#C8A24B' : '#9A9AA4',
+        has: !!r, empty: !r, pos: r ? r.pos : '', name: r ? this.POS[r.pos].n : '',
+        chipBg: r ? this.POS[r.pos].c : '#2E2E36',
+        chipFg: r && r.pos === 'RD' ? '#FFFFFF' : '#0B0B0D',
+        status: r ? r.status.toUpperCase() : '',
+        statusColor: r && r.status === 'missed' ? '#FF7A1A' : r && r.status === 'deferred' ? '#5C5C66' : '#9A9AA4',
+        go: () => this.setState({ selDate: ds, calView: 'day' }),
+        add: () => this.setState({ schedSheet: { date: ds, pos: this.nextPos() } })
+      });
+    }
+    const dr = this.rec(sel), dP = dr ? this.POS[dr.pos] : null;
+    return {
+      calTitle: mo[cur.getMonth()] + ' ' + cur.getFullYear(),
+      seg: { m: seg('month'), w: seg('week'), d: seg('day') },
+      isMonth: s.calView === 'month', isWeek: s.calView === 'week', isDay: s.calView === 'day',
+      prevMonth: () => this.setState({ calCursor: this.iso(new Date(cur.getFullYear(), cur.getMonth() - 1, 1)).slice(0, 7) }),
+      nextMonth: () => this.setState({ calCursor: this.iso(new Date(cur.getFullYear(), cur.getMonth() + 1, 1)).slice(0, 7) }),
+      cells, density,
+      weekLabel: 'WEEK OF ' + this.iso(wkStart).slice(5).replace('-', '·'),
+      weekRows,
+      dayLabel: dowN[this.parse(sel).getDay()] + ' · ' + sel.slice(5).replace('-', '·') + ' · ' + sel.slice(0, 4),
+      hasDay: !!dr, noDay: !dr,
+      dayPos: dr ? dr.pos : '', dayColor: dP ? dP.c : '#9A9AA4', dayName: dP ? dP.n : '',
+      dayLoads: dP ? 'NEURAL ' + dP.neu + '/10 · METABOLIC ' + dP.met + '/10' : '',
+      dayBlock: dr ? 'BLOCK 2 · MAX STRENGTH · R' + dr.rot : '',
+      dayStatus: dr ? dr.status.toUpperCase() + (dr.comp < 100 ? ' · ' + dr.comp + '%' : '') : '',
+      dayEx: dr ? (() => {
+        const tp = this.TPL[this.POS[dr.pos].tpl] || { sections: {} };
+        const out = [];
+        ['power', 'movementSkills', 'strength', 'esd'].forEach(k => (tp.sections[k] || []).forEach(id => {
+          const e = this.EX[id]; if (!e) return;
+          out.push({ n: String(e.name).toUpperCase(), p: e.sets + ' × ' + e.reps, w: this.loadSpec(e).text });
+        }));
+        return out;
+      })() : [],
+      dayStart: () => { const rr = this.rec(sel); this.stopRest(); this.setState({ tab: 'train', runDate: sel, sets: this.buildSets(rr), checks: {}, openSec: null, compression: rr && rr.compressionLevel && rr.compressionLevel !== 100 ? rr.compressionLevel : 100 }); },
+      dayEdit: () => { const r = this.rec(sel); this.setState({ schedSheet: { date: sel, pos: r ? r.pos : this.nextPos() } }); },
+      dayDefer: () => this.requeue(this.rec(sel)),
+      dayDelete: () => { const r = this.rec(sel); if (r && r.id != null) this.dbDelete('scheduled', r.id); this._sched = this.schedule().filter(x => x.date !== sel); this.forceUpdate(); },
+      dayAdd: () => this.setState({ schedSheet: { date: sel, pos: this.nextPos() } })
+    };
+  }
+
+  setKey(i, si) { return i + ':' + si; }
+  setVal(i, si, side, f) {
+    const st = this.state.sets[this.setKey(i, si)];
+    if (st && st[side] && st[side][f] != null) return st[side][f];
+    return null;
+  }
+
+  trainVals() {
+    const s = this.state, today = this.iso(new Date());
+    const date = s.runDate || today;
+    const r = this.rec(date);
+    if (!r) return { hasSession: false, noSession: true, sections: [], showRest: false, isRD: false };
+    const P = this.POS[r.pos], comp = s.compression;
+    const isRD = r.pos === 'RD';
+    const nextRec = this.rec(this.shift(date, 1));
+    const tpl = this.TPL[P.tpl] || { sections: {} };
+    const cmap = (tpl.compression && tpl.compression[String(comp)]) || null;
+    const ids = [];
+    ['power', 'movementSkills', 'strength', 'esd'].forEach(k => (tpl.sections[k] || []).forEach(id => ids.push([k, id])));
+    const all = ids.map((pair, i) => {
+      const sec = pair[0], id = pair[1], base = this.EX[id] || { name: id };
+      let cut = false, presOverride = null;
+      if (cmap) {
+        if (cmap.keepOnly && cmap.keepOnly.indexOf(id) < 0) cut = true;
+        if (cmap.cut && cmap.cut.indexOf(id) >= 0) cut = true;
+        if (cmap.modify && cmap.modify[id]) { if (cmap.modify[id] === 'cut') cut = true; else presOverride = cmap.modify[id]; }
+      }
+      return Object.assign({}, base, { id, sec, i, cut, presOverride });
+    });
+
+    let currentIdx = -1;
+    for (const e of all) {
+      if (e.cut) continue;
+      let inc = false;
+      for (let si = 0; si < e.sets; si++) { const st = s.sets[this.setKey(e.i, si)]; if (!st || !st.done) { inc = true; break; } }
+      if (inc) { currentIdx = e.i; break; }
+    }
+
+    const secDone = {};
+    const build = [];
+    this.SECS.forEach(([key, title, isCheck]) => {
+      if (isCheck === 'check') {
+        const src = tpl.sections[key] || [];
+        if (!src.length) return;
+        const items = src.map((t, ci) => {
+          const ck = key + ':' + ci, on = !!s.checks[ck];
+          return { text: t, mark: on ? '✓' : '', color: on ? '#FFFFFF' : '#9A9AA4', bd: on ? '#3E3E48' : '#2E2E36', toggle: () => this.setState(p => ({ checks: Object.assign({}, p.checks, { [ck]: !p.checks[ck] }) })) };
+        });
+        const n = items.filter(x => x.mark).length;
+        secDone[key] = n === items.length;
+        build.push({ key, title, count: n + '/' + items.length, isCheck: true, notCheck: false, isRegen: false, items, exs: [], done: n === items.length });
+      } else if (isCheck === 'regen') {
+        const rg = tpl.sections.regen;
+        if (!rg) return;
+        const ck = 'regen:0', on = !!s.checks[ck];
+        secDone[key] = on;
+        build.push({
+          key, title, count: on ? '1/1' : '0/1', isCheck: false, notCheck: false, isRegen: true, items: [], exs: [], done: on,
+          rgTarget: rg.target, rgMin: rg.minutes + ' MIN', rgNote: rg.note || '', rgHasNote: !!rg.note,
+          rgMark: on ? '✓' : '', rgColor: on ? '#FFFFFF' : '#9A9AA4', rgBd: on ? '#3E3E48' : '#2E2E36',
+          rgToggle: () => this.setState(p => ({ checks: Object.assign({}, p.checks, { [ck]: !p.checks[ck] }) }))
+        });
+      } else {
+        const exs = all.filter(e => e.sec === key);
+        if (!exs.length) return;
+        let cn = 0;
+        const mapped = exs.map(e0 => {
+          let nsets = e0.sets || 1, nreps = e0.reps != null ? e0.reps : 1;
+          if (e0.presOverride) {
+            const m = e0.presOverride.match(/^(\d+)\s*[×x]\s*(.+)$/);
+            if (m) { nsets = +m[1]; nreps = m[2]; }
+            else { const m2 = e0.presOverride.match(/^(\d+)\s*sets?/i); if (m2) nsets = +m2[1]; }
+          }
+          const ls = this.loadSpec(e0), rs = this.repsSpec(nreps), tg = this.subTagFor(e0.id);
+          const e = Object.assign({}, e0, {
+            w: ls.v != null ? ls.v : 0, u: ls.unit || '', step: ls.step || 1, reps: rs.v, sets: nsets,
+            f1: ls.label || 'LOAD', f2: rs.label, hasLoad: ls.v != null, wtext: ls.text,
+            n: String(e0.name || '').toUpperCase(), p: e0.presOverride || (nsets + ' × ' + nreps),
+            it: e0.intent || '', tm: e0.termination || '', hasTerm: !!e0.termination,
+            src: e0.source || '', bi: !!e0.bilateral, sub: !!tg
+          });
+          const rows = [];
+          let allDone = true;
+          for (let si = 0; si < e.sets; si++) {
+            const st = s.sets[this.setKey(e.i, si)] || {};
+            if (!st.done) allDone = false;
+            const lw = this.setVal(e.i, si, 'L', 'w'), lr = this.setVal(e.i, si, 'L', 'r');
+            const rw = this.setVal(e.i, si, 'R', 'w'), rr = this.setVal(e.i, si, 'R', 'r');
+            rows.push({
+              label: (e.sec === 'esd' ? 'INT ' : 'SET ') + (si + 1),
+              left: (e.bi ? 'L ' : '') + (st.done ? (e.hasLoad ? (lw != null ? lw : e.w) + ' × ' : '') + (lr != null ? lr : e.reps) : '—'),
+              right: e.bi ? 'R ' + (st.done ? (e.hasLoad ? (rw != null ? rw : e.w) + ' × ' : '') + (rr != null ? rr : e.reps) : '—') : '',
+              hasRight: !!e.bi,
+              note: st.note || '', hasNote: !!(st.done && st.note),
+              mark: st.done ? '✓' : '',
+              color: st.done ? '#FFFFFF' : '#5C5C66',
+              bg: st.done ? '#16161A' : '#0F0F11',
+              bd: si === (currentIdx === e.i ? rows.length : -1) ? '#3E3E48' : '#2E2E36',
+              pick: e.cut ? null : (() => { const idx = si; return () => this.setState({ editSel: { i: e.i, si: idx } }); })()
+            });
+          }
+          if (allDone) cn++;
+          let act = 0;
+          for (let si = 0; si < e.sets; si++) { const st = s.sets[this.setKey(e.i, si)]; if (!st || !st.done) { act = si; break; } }
+          const sel = s.editSel && s.editSel.i === e.i ? s.editSel : null;
+          if (sel && sel.si < e.sets) act = sel.si;
+          const side = e.bi ? s.side : 'L';
+          const w = this.setVal(e.i, act, side, 'w'); const rp = this.setVal(e.i, act, side, 'r');
+          const wv = w != null ? w : e.w, rv = rp != null ? rp : e.reps;
+          const bump = (f, d) => () => this.setState(p => {
+            const k = this.setKey(e.i, act), prev = p.sets[k] || {}, ps = prev[side] || {};
+            const base = f === 'w' ? (ps.w != null ? ps.w : e.w) : (ps.r != null ? ps.r : e.reps);
+            let num = parseFloat(base);
+            if (isNaN(num)) num = parseFloat(f === 'w' ? e.w : e.reps) || 0;
+            const nv = Math.max(0, num + d * (f === 'w' ? e.step : 1));
+            return { sets: Object.assign({}, p.sets, { [k]: Object.assign({}, prev, { [side]: Object.assign({}, ps, { [f]: nv }) }) }) };
+          });
+          const typeField = (f) => (ev) => {
+            const val = ev.target.value;
+            this.setState(p => {
+              const k = this.setKey(e.i, act), prev = p.sets[k] || {}, ps = prev[side] || {};
+              return { sets: Object.assign({}, p.sets, { [k]: Object.assign({}, prev, { [side]: Object.assign({}, ps, { [f]: val }) }) }) };
+            });
+          };
+          return Object.assign({}, e, {
+            wline: e.wtext + (e.rest ? ' · REST ' + e.rest + 's' : ''),
+            wcolor: e.cut ? '#5C5C66' : P.c,
+            nameColor: e.cut ? '#5C5C66' : '#FFFFFF',
+            strike: e.cut ? 'line-through' : 'none',
+            dim: e.cut ? 0.55 : 1,
+            live: !e.cut,
+            rows,
+            isCurrent: (currentIdx === e.i || !!sel) && !e.cut,
+            f1: e.f1 || 'LOAD', f2: e.f2 || 'REPS',
+            v1: wv, v2: rv,
+            actLabel: (e.sec === 'esd' ? 'INT ' : 'SET ') + (act + 1) + ((s.sets[this.setKey(e.i, act)] || {}).done ? ' · EDIT' : ''),
+            bi: !!e.bi,
+            sideLbg: side === 'L' ? '#D20A0A' : 'transparent', sideLfg: side === 'L' ? '#FFFFFF' : '#9A9AA4',
+            sideRbg: side === 'R' ? '#D20A0A' : 'transparent', sideRfg: side === 'R' ? '#FFFFFF' : '#9A9AA4',
+            setL: () => this.setState({ side: 'L' }), setR: () => this.setState({ side: 'R' }),
+            d1: bump('w', -1), u1: bump('w', 1), d2: bump('r', -1), u2: bump('r', 1),
+            t1: typeField('w'), t2: typeField('r'),
+            tNote: (ev) => {
+              const val = ev.target.value;
+              this.setState(p => {
+                const k = this.setKey(e.i, act), prev = p.sets[k] || {};
+                return { sets: Object.assign({}, p.sets, { [k]: Object.assign({}, prev, { note: val }) }) };
+              });
+            },
+            noteVal: (s.sets[this.setKey(e.i, act)] || {}).note || '',
+            canSub: !!e.sub && !e.cut,
+            canInfo: !e.cut,
+            openSub: () => { if (e.cut) return; this.setState({ subFor: e.id, subLogging: false, subText: '', subMet: null }); },
+            openInfo: () => { if (e.cut) return; this.setState({ infoFor: e.id }); },
+            complete: () => {
+              const k = this.setKey(e.i, act), prev = s.sets[k] || {};
+              const rid = r.id != null ? r.id : date;
+              if (prev.done) {
+                const old = (this._setLogs || []).filter(x => x.scheduledId === rid && x.exerciseId === e.id && x.setIndex === act);
+                old.forEach(x => { if (x.id != null) this.dbDelete('setLogs', x.id); });
+                this._setLogs = (this._setLogs || []).filter(x => old.indexOf(x) < 0);
+              }
+              const cv = (v, dflt) => { if (v == null || v === '') return dflt; const n = Number(v); return isNaN(n) ? v : n; };
+              const fill = (sd) => { const ps = prev[sd] || {}; return { w: cv(ps.w, e.w), r: cv(ps.r, e.reps) }; };
+              const nx = { done: true, L: fill('L') };
+              if (e.bi) nx.R = fill('R');
+              ['L', 'R'].forEach(sd => {
+                if (!nx[sd]) return;
+                const log = { scheduledId: rid, date, position: r.pos, exerciseId: e.id, setIndex: act, side: e.bi ? sd : null, load: nx[sd].w, reps: nx[sd].r, note: prev.note || null, completed: true, ts: Date.now() };
+                this._setLogs = (this._setLogs || []).concat([log]);
+                this.dbPut('setLogs', log).then(id => { if (id != null) log.id = id; });
+              });
+              this.setState(p => ({ sets: Object.assign({}, p.sets, { [k]: Object.assign({}, nx, { note: prev.note || null }) }), side: 'L', editSel: null }));
+              if (e.sec === 'esd' && act === e.sets - 1) {
+                const done = [];
+                for (let si = 0; si < e.sets; si++) { const st = si === act ? nx : s.sets[this.setKey(e.i, si)]; if (st && st.done && st.L) done.push(st.L); }
+                const hrs = done.map(x => x.w).filter(Boolean);
+                const esd = { scheduledId: r.id != null ? r.id : date, date, type: (tpl.ledger && tpl.ledger.vo2max) ? 'vo2max' : 'zone2', minutes: done.reduce((a, b) => a + (b.r || 0), 0), avgHr: hrs.length ? Math.round(hrs.reduce((a, b) => a + b, 0) / hrs.length) : null, peakHr: hrs.length ? Math.max.apply(null, hrs) : null, intervalsCompleted: done.length, counted: true };
+                this._esd = (this._esd || []).concat([esd]); this.dbPut('esdLogs', esd);
+              }
+              if (e.rest) this.startRest(e.rest, String(e.restPurpose || '').toUpperCase(), P.c);
+            }
+          });
+        });
+        const liveN = mapped.filter(m => !m.cut).length;
+        if (!liveN) return;
+        secDone[key] = cn === liveN;
+        build.push({ key, title, count: cn + '/' + liveN, isCheck: false, notCheck: true, items: [], exs: mapped, done: cn === liveN });
+      }
+    });
+
+    const firstOpen = (build.find(b => !b.done) || build[0] || {}).key;
+    const sections = build.map(b => Object.assign({}, b, {
+      open: s.openSec ? s.openSec === b.key : b.key === firstOpen,
+      mark: b.done ? '✓' : '',
+      toggle: () => this.setState(p => ({ openSec: p.openSec === b.key ? '__none' : b.key }))
+    }));
+
+    let sd = 0, sp = 0, ton = 0;
+    all.forEach(e => { if (e.cut) return; sp += e.sets; for (let si = 0; si < e.sets; si++) { const st = s.sets[this.setKey(e.i, si)]; if (st && st.done) { sd++; ['L', 'R'].forEach(k => { if (st[k]) ton += st[k].w * st[k].r; }); } } });
+
+    const rt = s.rest;
+    const cyc = (tpl.targetCycle || [{ target: 'Recovery', ceiling: '' }]);
+    const rdCycle = cyc[((r.rot || 4) % cyc.length + cyc.length) % cyc.length];
+    const lk = tpl.ledger ? Object.keys(tpl.ledger)[0] : null;
+    const lkLabel = { velocityFull: '+1 MAX-INTENT VELOCITY', velocityPrime: '+1 VELOCITY PRIME', vo2max: '+1 VO2MAX', zone2Min: '+ ZONE 2 MINUTES' };
+    return {
+      hasSession: true, noSession: false,
+      sPos: r.pos, sColor: P.c, sName: P.n,
+      sMeta: 'BLOCK 2 · R' + r.rot + ' · NEURAL ' + P.neu + '/10 · METABOLIC ' + P.met + '/10',
+      sDate: date === today ? 'TODAY' : date.slice(5).replace('-', '·'),
+      compBadge: comp < 100 && !isRD, compLabel: comp + '%',
+      openCompress: () => this.setState({ compressOpen: true }),
+      sCap: tpl.cap || tpl.ceiling || '', hasCap: !!(tpl.cap || tpl.ceiling),
+      compRule: tpl.rule || '', compNote: cmap && cmap.note ? cmap.note : '', hasCompNote: !!(cmap && cmap.note),
+      isRD: isRD, notRD: !isRD,
+      rdTarget: rdCycle.target.toUpperCase(),
+      rdCeiling: rdCycle.ceiling,
+      rdNote: rdCycle.note || '', rdHasNote: !!rdCycle.note,
+      rdConstraint: tpl.hardConstraint || '',
+      rdMin: s.rdMin,
+      rdSave: () => {
+        r.status = 'done'; r.compressionLevel = 100; this.dbPut('scheduled', r);
+        const log = { scheduledId: r.id != null ? r.id : date, date, type: 'zone2', minutes: s.rdMin, counted: true };
+        this._esd = (this._esd || []).concat([log]); this.dbPut('esdLogs', log);
+        this.setState({ tab: 'dash' });
+      },
+      rdUp: () => this.setState(p => ({ rdMin: Math.min(90, p.rdMin + 5) })),
+      rdDown: () => this.setState(p => ({ rdMin: Math.max(0, p.rdMin - 5) })),
+      rdHard: !!nextRec && (nextRec.pos === 'TD1' || nextRec.pos === 'TD-A'),
+      sections,
+      finish: () => this.setState({ finishOpen: true }),
+      fSets: sd + ' / ' + sp, fTon: ton.toLocaleString() + ' lb',
+      fComp: comp + '%', fSub: r.subbed ? '1 LOGGED' : 'NONE',
+      fDelta: (lk && lkLabel[lk] ? lkLabel[lk] + ' · ' : '') + '+1 TRAINING DAY',
+      showRest: !!rt,
+      restTime: rt ? Math.floor(rt.left / 60) + ':' + String(rt.left % 60).padStart(2, '0') : '',
+      restPct: rt ? Math.round((rt.left / rt.total) * 100) : 0,
+      restWhy: rt ? rt.why : '', restColor: rt ? rt.color : '#C8A24B',
+      restPlus: () => this.setState(p => ({ rest: p.rest ? Object.assign({}, p.rest, { left: p.rest.left + 30, total: Math.max(p.rest.total, p.rest.left + 30) }) : null })),
+      restMinus: () => this.setState(p => ({ rest: p.rest ? Object.assign({}, p.rest, { left: Math.max(0, p.rest.left - 30) }) : null })),
+      restSkip: () => this.stopRest()
+    };
+  }
+
+  startRest(sec, why, color) {
+    this.stopRest();
+    this.setState({ rest: { left: sec, total: sec, why: why || '', color: color || '#C8A24B' } });
+    this._t = setInterval(() => {
+      this.setState(p => {
+        if (!p.rest) return {};
+        if (p.rest.left <= 1) { clearInterval(this._t); this._t = null; if (p.sound) this.beep(); return { rest: null }; }
+        return { rest: Object.assign({}, p.rest, { left: p.rest.left - 1 }) };
+      });
+    }, 1000);
+  }
+  beep() {
+    try {
+      const C = window.AudioContext || window.webkitAudioContext;
+      if (C) {
+        this._ac = this._ac || new C();
+        const o = this._ac.createOscillator(), g = this._ac.createGain();
+        o.connect(g); g.connect(this._ac.destination);
+        o.frequency.value = 880;
+        g.gain.setValueAtTime(0.15, this._ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, this._ac.currentTime + 0.4);
+        o.start(); o.stop(this._ac.currentTime + 0.4);
+      }
+    } catch (e) {}
+    try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+  }
+
+  requeue(r) {
+    if (!r) return;
+    r.status = 'deferred'; this.dbPut('scheduled', r);
+    let d = null;
+    for (let i = 1; i <= 14; i++) { const nd = this.shift(r.date, i); if (!this.rec(nd)) { d = nd; break; } }
+    if (d) {
+      const nr = { date: d, pos: r.pos, templateId: this.POS[r.pos].tpl, blockId: this.BLOCK.id, status: 'planned', comp: 100, compressionLevel: 100, subbed: false, rot: r.rot || 4 };
+      this._sched = this.schedule().concat([nr]).sort((a, b) => a.date < b.date ? -1 : 1);
+      this.dbPut('scheduled', nr).then(id => { if (id != null) nr.id = id; });
+    }
+    this.forceUpdate();
+  }
+
+  stopRest() { if (this._t) { clearInterval(this._t); this._t = null; } this.setState({ rest: null }); }
+
+  stamp() { return this.iso(new Date()); }
+
+  deliver(name, text, type) {
+    try {
+      const blob = new Blob([text], { type: type });
+      if (navigator.canShare && window.File) {
+        const f = new File([blob], name, { type: type });
+        if (navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: name }).catch(() => {}); this.markExported(); return; }
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = name; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      this.markExported();
+    } catch (e) { this.setState({ dbStatus: 'EXPORT FAILED · ' + (e.message || 'UNKNOWN') }); }
+  }
+
+  markExported() {
+    this.saveProfile({ lastExport: new Date().toISOString() });
+    this.setState({ lastExportDays: 0 });
+  }
+
+  csv(rows) {
+    return rows.map(r => r.map(c => /[",\n]/.test(String(c)) ? '"' + String(c).replace(/"/g, '""') + '"' : String(c)).join(',')).join('\n');
+  }
+
+  exportAll() {
+    const s = this.state;
+    const payload = {
+      schemaVersion: 1, app: 'rotationTracker', exportedAt: new Date().toISOString(),
+      profile: { units: s.units, bodyweight: s.bwLb, hrMax: s.hrMax, lastExport: new Date().toISOString(), currentBlockId: this.BLOCK.id, rotationCounter: 4 },
+      maxes: this._maxes ? Object.keys(this._maxes).map(k => Object.assign({ liftId: k }, this._maxes[k])) : Object.keys(this.MAXES).map(k => ({ liftId: k, e1rm: this.MAXES[k], method: 'tested' })),
+      blocks: [this.BLOCK],
+      scheduled: this.schedule(),
+      setLogs: this.setLogRows(),
+      tests: this.testRows(),
+      esdLogs: this._esd || []
+    };
+    this.deliver('rotation-tracker-' + this.stamp() + '.json', JSON.stringify(payload, null, 2), 'application/json');
+  }
+
+  setLogRows() {
+    return (this._setLogs || []).slice().sort((a, b) => a.date < b.date ? -1 : 1).map(x => ({ date: x.date, position: x.position, exerciseId: x.exerciseId, setIndex: x.setIndex + 1, side: x.side, load: x.load, reps: x.reps, note: x.note || '', completed: true }));
+  }
+
+  testRows() {
+    const th = this.testHist(), out = [];
+    this.TESTS.forEach(t => (th[t.id] || []).forEach(x => {
+      if (t.nonNumeric) { out.push({ date: x.date, testId: t.id, side: null, value: x.pass ? 'pass' : 'fail', unit: t.unit, note: x.note || '' }); return; }
+      out.push({ date: x.date, testId: t.id, side: t.bilateral ? 'L' : null, value: x.v, unit: t.unit, note: x.note || '' });
+      if (x.r != null) out.push({ date: x.date, testId: t.id, side: 'R', value: x.r, unit: t.unit, note: x.note || '' });
+    }));
+    return out;
+  }
+
+  exportSetsCsv() {
+    const rows = [['date', 'position', 'exerciseId', 'exerciseName', 'setIndex', 'side', 'load', 'reps', 'note', 'completed']];
+    this.setLogRows().forEach(r => rows.push([r.date, r.position, r.exerciseId, this.EX[r.exerciseId] ? this.EX[r.exerciseId].name : '', r.setIndex, r.side || '', r.load, r.reps, r.note || '', 'true']));
+    this.deliver('session-logs-' + this.stamp() + '.csv', this.csv(rows), 'text/csv');
+  }
+
+  pickImport() {
+    const i = document.createElement('input');
+    i.type = 'file'; i.accept = 'application/json,.json';
+    i.onchange = () => {
+      if (!i.files || !i.files[0]) return;
+      i.files[0].text().then(txt => {
+        let d;
+        try { d = JSON.parse(txt); } catch (e) { this.setState({ dbStatus: 'IMPORT FAILED · NOT VALID JSON' }); return; }
+        if (d.schemaVersion !== 1) { this.setState({ dbStatus: 'IMPORT REFUSED · SCHEMA v' + d.schemaVersion + ' ≠ v1' }); return; }
+        const cur = { scheduled: this.schedule().length, setLogs: this.setLogRows().length, tests: this.testRows().length, maxes: Object.keys(this.MAXES).length };
+        const total = cur.scheduled + cur.setLogs + cur.tests + cur.maxes + 1;
+        this.setState({
+          importPending: {
+            data: d, total,
+            version: 'SCHEMA v' + d.schemaVersion + ' · EXPORTED ' + String(d.exportedAt || '').slice(0, 10),
+            detail: cur.scheduled + ' scheduled · ' + cur.setLogs + ' set logs · ' + cur.tests + ' test results · ' + cur.maxes + ' maxes · 1 profile'
+          }
+        });
+      });
+    };
+    i.click();
+  }
+
+  async applyImport() {
+    const p = this.state.importPending;
+    if (!p) return;
+    try {
+      const d = p.data;
+      await this.dbClear('scheduled'); await this.dbClear('tests'); await this.dbClear('setLogs'); await this.dbClear('esdLogs');
+      if (Array.isArray(d.scheduled)) this._sched = d.scheduled.slice().sort((a, b) => a.date < b.date ? -1 : 1);
+      for (const rr of (d.scheduled || [])) { const id = await this.dbPut('scheduled', rr); if (id != null) rr.id = id; }
+      this._setLogs = Array.isArray(d.setLogs) ? d.setLogs : [];
+      for (const lg of this._setLogs) await this.dbPut('setLogs', lg);
+      this._esd = Array.isArray(d.esdLogs) ? d.esdLogs : [];
+      for (const lg of this._esd) await this.dbPut('esdLogs', lg);
+      for (const trow of (d.tests || [])) await this.dbPut('tests', trow);
+      if (Array.isArray(d.maxes)) {
+        await this.dbClear('maxes');
+        this._maxes = this._maxes || {};
+        for (const m of d.maxes) { this._maxes[m.liftId] = { e1rm: m.e1rm, testedOn: m.testedOn || null, method: m.method || 'estimated' }; await this.dbPut('maxes', Object.assign({ liftId: m.liftId }, this._maxes[m.liftId])); }
+      }
+      if (Array.isArray(d.tests)) {
+        const th = {};
+        this.TESTS.forEach(t => { th[t.id] = []; });
+        d.tests.forEach(x => {
+          if (!th[x.testId]) th[x.testId] = [];
+          const row = th[x.testId];
+          if (x.side === 'R' && row.length) row[row.length - 1].r = parseFloat(x.value);
+          else row.push({ date: x.date, v: x.value === 'pass' || x.value === 'fail' ? null : parseFloat(x.value), pass: x.value === 'pass', r: null, note: x.note || '' });
+        });
+        this._th = th;
+      }
+      const pr = d.profile || {};
+      this.setState({
+        importPending: null, settingsOpen: false, sets: {}, checks: {}, compression: 100, testSel: null,
+        units: pr.units || this.state.units, hrMax: pr.hrMax || this.state.hrMax, bwLb: pr.bodyweight || this.state.bwLb,
+        dbStatus: 'IMPORT APPLIED · ' + p.total + ' RECORDS REPLACED'
+      });
+      this.saveProfile(pr);
+    } catch (e) {
+      this.setState({ importPending: null, dbStatus: 'IMPORT FAILED · ' + (e.message || 'UNKNOWN') });
+    }
+  }
+
+  sheetVals() {
+    const s = this.state, date = s.runDate || this.iso(new Date());
+    const r = this.rec(date);
+    const sx = s.subFor ? this.EX[s.subFor] : null;
+    const tag = s.subFor ? this.subTagFor(s.subFor) : null;
+    const ix = s.infoFor ? this.EX[s.infoFor] : null;
+    const sh = s.schedSheet, wn = s.warnSheet;
+    const posList = ['TD1', 'TD2', 'TD3', 'TD-A', 'TD-B-STR', 'TD-B-ESD', 'RD'];
+    const commit = (date2, pos) => {
+      const ex = this.rec(date2);
+      if (ex) { ex.pos = pos; ex.status = 'planned'; ex.templateId = this.POS[pos].tpl; this.dbPut('scheduled', ex); }
+      else {
+        const nr = { date: date2, pos, templateId: this.POS[pos].tpl, blockId: this.BLOCK.id, status: 'planned', comp: 100, compressionLevel: 100, subbed: false, rot: 4 };
+        this._sched = this.schedule().concat([nr]).sort((a, b) => a.date < b.date ? -1 : 1);
+        this.dbPut('scheduled', nr).then(id => { if (id != null) nr.id = id; });
+      }
+      this.setState({ schedSheet: null, warnSheet: null, selDate: date2 });
+    };
+    return {
+      subOpen: !!sx && !!tag, subName: sx ? String(sx.name).toUpperCase() : '',
+      subQ: tag ? tag.quality : '', subD: tag ? tag.dosing : '',
+      subOk: tag ? [tag.valid] : [], subBad: tag ? [tag.invalid] : [],
+      subFail: tag && tag.failureMode ? tag.failureMode : '', subHasFail: !!(tag && tag.failureMode),
+      subLogging: s.subLogging, subNotLogging: !!sx && !s.subLogging,
+      subText: s.subText,
+      subType: (e) => this.setState({ subText: e.target.value }),
+      startLog: () => this.setState({ subLogging: true }),
+      metYes: () => this.setState({ subMet: true }), metNo: () => this.setState({ subMet: false }),
+      metYesBg: s.subMet === true ? '#D20A0A' : 'transparent', metYesFg: s.subMet === true ? '#FFFFFF' : '#FFFFFF',
+      metNoBg: s.subMet === false ? '#FF7A1A' : 'transparent', metNoFg: s.subMet === false ? '#0B0B0D' : '#FFFFFF',
+      subReady: s.subMet !== null && s.subText.trim().length > 0,
+      subConfirmBg: s.subMet !== null && s.subText.trim().length > 0 ? '#D20A0A' : '#1F1F25',
+      subConfirmFg: s.subMet !== null && s.subText.trim().length > 0 ? '#FFFFFF' : '#5C5C66',
+      subConfirm: () => { if (s.subMet === null || !s.subText.trim()) return; if (r) { r.subbed = true; r.substituted = true; r.substitutionNote = s.subText; r.metDosingSignature = s.subMet; this.dbPut('scheduled', r); } this.setState({ subFor: null, subLogging: false }); },
+      closeSub: () => this.setState({ subFor: null }),
+      infoOpen: !!ix, infoName: ix ? String(ix.name).toUpperCase() : '',
+      infoReg: ix && ix.regression ? [ix.regression] : [],
+      infoPro: ix && ix.progression ? [ix.progression] : [],
+      closeInfo: () => this.setState({ infoFor: null }),
+      compressOpen: s.compressOpen,
+      compSet: (n) => () => this.setState({ compression: n, compressOpen: false }),
+      c75: () => this.setState({ compression: 75, compressOpen: false }),
+      c50: () => this.setState({ compression: 50, compressOpen: false }),
+      c25: () => this.setState({ compression: 25, compressOpen: false }),
+      c100: () => this.setState({ compression: 100, compressOpen: false }),
+      closeCompress: () => this.setState({ compressOpen: false }),
+      finishOpen: s.finishOpen,
+      closeFinish: () => { const rr = this.rec(date); if (rr) { rr.status = 'done'; rr.compressionLevel = s.compression; this.dbPut('scheduled', rr); } this.setState({ finishOpen: false, tab: 'dash' }); },
+      schedOpen: !!sh, schedDate: sh ? sh.date : '',
+      schedSuggest: sh ? sh.pos : '', schedSuggestColor: sh ? this.POS[sh.pos].c : '#C8A24B',
+      schedSuggestName: sh ? this.POS[sh.pos].n : '',
+      schedOpts: sh ? posList.map(p => ({ p, bg: p === sh.pos ? this.POS[p].c : 'transparent', fg: p === sh.pos ? (p === 'RD' ? '#FFFFFF' : '#0B0B0D') : '#9A9AA4', bd: p === sh.pos ? this.POS[p].c : '#2E2E36', pick: () => this.setState({ schedSheet: { date: sh.date, pos: p } }) })) : [],
+      schedBlock: 'BLOCK 2 · MAX STRENGTH · R4',
+      closeSched: () => this.setState({ schedSheet: null }),
+      schedConfirm: () => {
+        if (!sh) return;
+        const w = this.evalConstraints(sh.date, sh.pos);
+        if (w.length) this.setState({ warnSheet: { date: sh.date, pos: sh.pos, list: w } });
+        else commit(sh.date, sh.pos);
+      },
+      warnOpen: !!wn, warnList: wn ? wn.list : [],
+      warnAnyway: () => { if (wn) commit(wn.date, wn.pos); },
+      warnCancel: () => this.setState({ warnSheet: null }),
+      goSchedule: () => this.setState({ tab: 'cal', calView: 'day', selDate: this.iso(new Date()), schedSheet: { date: this.iso(new Date()), pos: 'TD1' } })
+    };
+  }
+
+  openDb() {
+    if (!window.indexedDB) { this.setState({ dbStatus: 'INDEXEDDB UNAVAILABLE', dbFail: 'IndexedDB is unavailable in this browser context. Nothing logged this session will persist. Export before you close this screen.' }); return; }
+    let req;
+    try { req = indexedDB.open('rotationTracker', 1); }
+    catch (e) { this.setState({ dbStatus: 'DB BLOCKED', dbFail: 'IndexedDB is blocked — private browsing or a storage quota block. Nothing logged this session will persist. Export before you close this screen.' }); return; }
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      const mk = (name, opts) => db.objectStoreNames.contains(name) ? null : db.createObjectStore(name, opts);
+      mk('profile', { keyPath: 'id' });
+      mk('maxes', { keyPath: 'liftId' });
+      mk('exercises', { keyPath: 'id' });
+      mk('sessionTemplates', { keyPath: 'id' });
+      mk('blocks', { keyPath: 'id' });
+      const sch = mk('scheduled', { keyPath: 'id', autoIncrement: true });
+      if (sch) sch.createIndex('date', 'date');
+      const sl = mk('setLogs', { keyPath: 'id', autoIncrement: true });
+      if (sl) sl.createIndex('scheduledId', 'scheduledId');
+      const ts = mk('tests', { keyPath: 'id', autoIncrement: true });
+      if (ts) ts.createIndex('date', 'date');
+      mk('esdLogs', { keyPath: 'id', autoIncrement: true });
+    };
+    req.onsuccess = (e) => {
+      this.db = e.target.result;
+      this.db.onerror = () => this.setState({ dbStatus: 'DB WRITE ERROR' });
+      this.setState({ dbStatus: 'DB rotationTracker v' + this.db.version + ' READY' });
+      this.hydrate();
+    };
+    req.onerror = () => this.setState({ dbStatus: 'DB ERROR', dbFail: 'IndexedDB failed to open. Nothing logged this session will persist. Export before you close this screen.' });
+    req.onblocked = () => this.setState({ dbStatus: 'DB BLOCKED BY ANOTHER TAB', dbFail: 'Another open copy of this app is holding the database. Close the other tab, then reload.' });
+  }
+
+  dbPut(store, val) {
+    if (!this.db) return Promise.resolve(null);
+    return new Promise(res => {
+      try {
+        const rq = this.db.transaction(store, 'readwrite').objectStore(store).put(val);
+        rq.onsuccess = () => res(rq.result);
+        rq.onerror = () => { this.setState({ dbStatus: store.toUpperCase() + ' WRITE FAILED' }); res(null); };
+      } catch (e) { this.setState({ dbStatus: store.toUpperCase() + ' WRITE FAILED · ' + (e.message || '') }); res(null); }
+    });
+  }
+  dbAll(store) {
+    if (!this.db) return Promise.resolve([]);
+    return new Promise(res => {
+      try {
+        const rq = this.db.transaction(store, 'readonly').objectStore(store).getAll();
+        rq.onsuccess = () => res(rq.result || []);
+        rq.onerror = () => { this.setState({ dbStatus: store.toUpperCase() + ' READ FAILED' }); res([]); };
+      } catch (e) { this.setState({ dbStatus: store.toUpperCase() + ' READ FAILED · ' + (e.message || '') }); res([]); }
+    });
+  }
+  dbGet(store, key) {
+    if (!this.db) return Promise.resolve(null);
+    return new Promise(res => {
+      try {
+        const rq = this.db.transaction(store, 'readonly').objectStore(store).get(key);
+        rq.onsuccess = () => res(rq.result || null);
+        rq.onerror = () => res(null);
+      } catch (e) { res(null); }
+    });
+  }
+  dbDelete(store, key) {
+    if (!this.db || key == null) return Promise.resolve();
+    return new Promise(res => {
+      try {
+        const rq = this.db.transaction(store, 'readwrite').objectStore(store).delete(key);
+        rq.onsuccess = () => res(); rq.onerror = () => { this.setState({ dbStatus: store.toUpperCase() + ' DELETE FAILED' }); res(); };
+      } catch (e) { res(); }
+    });
+  }
+  dbClear(store) {
+    if (!this.db) return Promise.resolve();
+    return new Promise(res => {
+      try {
+        const rq = this.db.transaction(store, 'readwrite').objectStore(store).clear();
+        rq.onsuccess = () => res(); rq.onerror = () => { this.setState({ dbStatus: store.toUpperCase() + ' CLEAR FAILED' }); res(); };
+      } catch (e) { res(); }
+    });
+  }
+
+  sessionIds(pos) {
+    const tpl = this.TPL[this.POS[pos].tpl] || { sections: {} };
+    const ids = [];
+    ['power', 'movementSkills', 'strength', 'esd'].forEach(k => (tpl.sections[k] || []).forEach(id => ids.push(id)));
+    return ids;
+  }
+
+  buildSets(rec) {
+    if (!rec || rec.id == null || !this._setLogs) return {};
+    const ids = this.sessionIds(rec.pos), sets = {};
+    this._setLogs.filter(x => x.scheduledId === rec.id).forEach(x => {
+      const idx = ids.indexOf(x.exerciseId); if (idx < 0) return;
+      const k = idx + ':' + x.setIndex;
+      sets[k] = sets[k] || { done: true };
+      sets[k][x.side || 'L'] = { w: x.load, r: x.reps };
+    });
+    return sets;
+  }
+
+  thFromRows(rows) {
+    const th = {};
+    this.TESTS.forEach(t => { th[t.id] = []; });
+    rows.slice().sort((a, b) => a.date === b.date ? (a.side === 'R' ? 1 : -1) : (a.date < b.date ? -1 : 1)).forEach(x => {
+      if (!th[x.testId]) th[x.testId] = [];
+      const arr = th[x.testId];
+      if (x.side === 'R') { const last = arr[arr.length - 1]; if (last && last.date === x.date) { last.r = parseFloat(x.value); return; } }
+      arr.push({ date: x.date, v: (x.value === 'pass' || x.value === 'fail') ? null : parseFloat(x.value), pass: x.value === 'pass', r: null, note: x.note || '' });
+    });
+    return th;
+  }
+
+  async hydrate() {
+    try {
+      let sched = await this.dbAll('scheduled');
+      if (!sched.length) {
+        for (const r of this.schedule()) {
+          const id = await this.dbPut('scheduled', r);
+          if (id != null) r.id = id;
+          if (r.pos === 'RD' && r.status === 'done' && r.id != null) {
+            await this.dbPut('esdLogs', { scheduledId: r.id, date: r.date, type: 'zone2', minutes: 42 + (r.id % 3) * 6, counted: true });
+          }
+        }
+        for (const row of this.testRows()) await this.dbPut('tests', row);
+        sched = await this.dbAll('scheduled');
+      }
+      if (sched.length) this._sched = sched.sort((a, b) => a.date < b.date ? -1 : 1);
+      const trows = await this.dbAll('tests');
+      if (trows.length) this._th = this.thFromRows(trows);
+      this._setLogs = await this.dbAll('setLogs');
+      this._esd = await this.dbAll('esdLogs');
+      let mx = await this.dbAll('maxes');
+      if (!mx.length) {
+        mx = Object.keys(this.MAXES).map(k => ({ liftId: k, e1rm: this.MAXES[k], testedOn: this.shift(this.iso(new Date()), -31), method: 'tested' }));
+        for (const m of mx) await this.dbPut('maxes', m);
+      }
+      this._maxes = {};
+      mx.forEach(m => { this._maxes[m.liftId] = { e1rm: m.e1rm, testedOn: m.testedOn, method: m.method }; });
+      const prof = await this.dbGet('profile', 'me');
+      const patch = {};
+      if (prof) {
+        patch.units = prof.units || 'lb'; patch.hrMax = prof.hrMax || 188; patch.bwLb = prof.bodyweight || 196;
+        patch.sound = !!prof.sound;
+        if (prof.lastExport) patch.lastExportDays = Math.max(0, Math.round((Date.now() - new Date(prof.lastExport).getTime()) / 864e5));
+      } else {
+        await this.dbPut('profile', { id: 'me', units: this.state.units, bodyweight: this.state.bwLb, hrMax: this.state.hrMax, lastExport: null, currentBlockId: 'b2', rotationCounter: 4 });
+      }
+      const rec = this.rec(this.iso(new Date()));
+      if (rec) {
+        const sets = this.buildSets(rec);
+        if (Object.keys(sets).length) patch.sets = sets;
+        if (rec.compressionLevel && rec.compressionLevel !== 100) patch.compression = rec.compressionLevel;
+      }
+      this.setState(patch);
+    } catch (e) { this.setState({ dbStatus: 'HYDRATE FAILED · ' + (e.message || '') }); }
+  }
+
+  dashVals() {
+    const s = this.state, today = this.iso(new Date()), from = this.shift(today, -27);
+    const sch = this.schedule();
+    const win = sch.filter(x => x.date >= from && x.date <= today);
+    let vf = 0, vp = 0, vo = 0, voMiss = 0, td = 0;
+    win.forEach(r => {
+      const led = (this.TPL[this.POS[r.pos].tpl] || {}).ledger;
+      const k = led ? Object.keys(led)[0] : null;
+      if (r.status === 'done') {
+        if (r.pos !== 'RD') td++;
+        const miss = r.substituted && r.metDosingSignature === false || r.subbed && r.metDosingSignature === false;
+        if (k === 'velocityFull' && !miss) vf++;
+        else if (k === 'velocityPrime' && !miss) vp++;
+        else if (k === 'vo2max') { if (miss) voMiss++; else vo++; }
+      } else if (r.status === 'missed' && k === 'vo2max') voMiss++;
+    });
+    const z2 = (this._esd || []).filter(x => x.counted !== false && x.date >= from && x.date <= today).reduce((a, b) => a + (b.minutes || 0), 0);
+    const F = this.BLOCK.floors;
+    const rnd = (n) => Math.round(n * 10) / 10;
+    const mkRow = (label, count, floor, color, miss) => {
+      const below = count < floor;
+      const barColor = below ? '#FF7A1A' : color;
+      const scale = Math.max(count + (miss || 0), floor, 1) * 1.35;
+      return {
+        label, count: String(count), barColor,
+        fill: rnd(Math.min(count / scale * 100, 100)),
+        tick: rnd(Math.min(floor / scale * 100, 99)),
+        hasHatch: !!miss, hatchW: miss ? rnd(Math.min(miss / scale * 100, 100)) : 0,
+        sub: below ? (floor - count) + ' BELOW FLOOR' : count + ' / floor ' + floor,
+        subColor: below ? '#FF7A1A' : '#9A9AA4',
+        below, floor
+      };
+    };
+    const ledgerRows = [
+      mkRow('MAX-INTENT VELOCITY', vf, F.velocityFull, '#C8A24B'),
+      mkRow('VELOCITY PRIME', vp, F.velocityPrime, 'rgba(200,162,75,0.6)'),
+      mkRow('VO2MAX', vo, F.vo2max, '#4A9EFF', voMiss),
+      mkRow('ZONE 2 MINUTES', z2, F.zone2Min, 'rgba(74,158,255,0.6)'),
+      mkRow('TRAINING DAYS', td, F.trainingDays, '#9A9AA4')
+    ];
+    const warns = [];
+    ledgerRows.forEach(lr => { if (lr.below) warns.push({ id: 'led_' + lr.label, ledger: true, color: '#FF7A1A', text: lr.label + ' below 28-day floor: ' + lr.count + ' of ' + lr.floor + '.' }); });
+    let gapDays = 0;
+    for (let i = 1; i <= 14; i++) { const ds = this.shift(today, -i); if (sch.find(x => x.date === ds && x.status === 'done')) break; gapDays++; }
+    if (gapDays >= 4) warns.push({ id: 'gap', color: '#FF7A1A', text: 'GAP_4D · ' + gapDays + ' days without a training day. Rotation has drifted.' });
+
+    const next = sch.find(x => x.date >= today && x.status === 'planned');
+    const nP = next ? this.POS[next.pos] : null;
+    const recentRows = sch.filter(x => x.status === 'done' && x.date <= today).slice(-5).reverse().map(r => ({
+      date: r.date.slice(5).replace('-', '·'),
+      pos: r.pos, chipBg: this.POS[r.pos].c, chipFg: r.pos === 'RD' ? '#FFFFFF' : '#0B0B0D',
+      name: this.POS[r.pos].n,
+      hasComp: (r.compressionLevel || r.comp || 100) < 100, compLabel: ((r.compressionLevel || r.comp || 100)) + '%',
+      hasSub: !!(r.subbed || r.substituted)
+    }));
+    return {
+      blockLine: 'BLOCK 2 · MAX STRENGTH · R' + (next ? next.rot : 4),
+      hasNext: !!next,
+      nsPos: next ? next.pos : '—', nsColor: nP ? nP.c : '#9A9AA4',
+      nsName: nP ? nP.n : 'No session in the queue',
+      nsNeu: nP ? String(nP.neu) : '', nsMet: nP ? String(nP.met) : '',
+      nsDate: next ? (next.date === today ? 'TODAY' : next.date.slice(5).replace('-', '·')) : 'UNSCHEDULED',
+      nsDateColor: next ? '#9A9AA4' : '#FF7A1A',
+      startToday: () => { if (!next) return; this.stopRest(); this.setState({ tab: 'train', runDate: next.date, sets: this.buildSets(next), checks: {}, openSec: null, compression: next.compressionLevel && next.compressionLevel !== 100 ? next.compressionLevel : 100 }); },
+      deferToday: () => this.requeue(next),
+      ledgerRows, recentRows, hasRecent: recentRows.length > 0,
+      dashWarns: warns
+    };
+  }
+
+  saveProfile(patch) {
+    if (!this.db) return;
+    try {
+      const st = this.db.transaction('profile', 'readwrite').objectStore('profile');
+      const g = st.get('me');
+      g.onerror = () => this.setState({ dbStatus: 'PROFILE READ FAILED' });
+      g.onsuccess = () => { const put = st.put(Object.assign({ id: 'me' }, g.result || {}, patch)); put.onerror = () => this.setState({ dbStatus: 'PROFILE WRITE FAILED' }); };
+    } catch (e) { this.setState({ dbStatus: 'PROFILE WRITE FAILED · ' + (e.message || '') }); }
+  }
+
+  renderVals() {
+    const s = this.state, tab = s.tab;
+    const now = new Date();
+    const mo = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][now.getMonth()];
+    const dow = ['SUN','MON','TUE','WED','THU','FRI','SAT'][now.getDay()];
+    const start = new Date(now.getTime() - 27 * 864e5);
+    const pad = (n) => String(n).padStart(2, '0');
+    const days = s.lastExportDays;
+    const exportColor = days > 21 ? '#FF7A1A' : days > 14 ? '#FF7A1A' : '#5C5C66';
+    const rf = this.refVals();
+    const cal = this.calVals(), tr = this.trainVals(), sh = this.sheetVals(), te = this.testVals(), dash = this.dashVals();
+    const warnList = dash.dashWarns.concat(te.cadWarn ? [{ id: 'cad', color: '#FF7A1A', text: te.cadWarnText }] : []).filter(w => w.ledger || !s.dismissed[w.id]);
+    const tint = (k) => (tab === k ? '#D20A0A' : '#5C5C66');
+    const nav = {};
+    ['dash','cal','train','tests','ref'].forEach(k => { nav[k] = () => this.setState({ tab: k }); });
+    const on = { bg: '#D20A0A', fg: '#FFFFFF' }, off = { bg: 'transparent', fg: '#9A9AA4' };
+    const lb = s.units === 'lb' ? on : off, kg = s.units === 'kg' ? on : off;
+
+    return Object.assign({}, cal, tr, sh, te, rf, dash, {
+      isDash: tab === 'dash',
+      isCal: tab === 'cal',
+      isTrain: tab === 'train',
+      isTests: tab === 'tests',
+      isRef: tab === 'ref',
+      todayLabel: mo + ' ' + pad(now.getDate()),
+      todayLong: dow + ' ' + mo + ' ' + pad(now.getDate()),
+      ledgerWindow: pad(start.getMonth() + 1) + '·' + pad(start.getDate()) + ' → ' + pad(now.getMonth() + 1) + '·' + pad(now.getDate()),
+      exportLine: 'LAST EXPORT · ' + (days === 0 ? 'TODAY' : days + ' DAY' + (days === 1 ? '' : 'S') + ' AGO'),
+      exportColor,
+      dbLine: s.dbStatus,
+      hasWarnings: warnList.length > 0,
+      warnings: warnList.map(w => Object.assign({}, w, {
+        canDismiss: !w.ledger,
+        dismiss: () => this.setState(p => ({ dismissed: Object.assign({}, p.dismissed, { [w.id]: true }) }))
+      })),
+      tint: { dash: tint('dash'), cal: tint('cal'), train: tint('train'), tests: tint('tests'), ref: tint('ref') },
+      nav,
+      settingsOpen: s.settingsOpen,
+      openSettings: () => this.setState({ settingsOpen: true }),
+      closeSettings: () => this.setState({ settingsOpen: false }),
+      unitLbBg: lb.bg, unitLbFg: lb.fg, unitKgBg: kg.bg, unitKgFg: kg.fg,
+      maxRows: this.LIFTS.map(pair => {
+        const id = pair[0], mrec = (this._maxes || {})[id] || { e1rm: this.MAXES[id], method: 'tested', testedOn: null };
+        const kgMode = s.units === 'kg';
+        const bump = (d) => () => {
+          this._maxes = this._maxes || {};
+          const cur = this._maxes[id] || { e1rm: this.MAXES[id] };
+          const nv = Math.max(20, cur.e1rm + d * 5);
+          this._maxes[id] = { e1rm: nv, testedOn: this.iso(new Date()), method: 'estimated' };
+          this.dbPut('maxes', Object.assign({ liftId: id }, this._maxes[id]));
+          this.forceUpdate();
+        };
+        return {
+          name: pair[1],
+          val: kgMode ? (Math.round(mrec.e1rm * 0.45359 * 10) / 10) : mrec.e1rm,
+          unit: kgMode ? 'KG' : 'LB',
+          meta: String(mrec.method || '').toUpperCase() + (mrec.testedOn ? ' · ' + String(mrec.testedOn).slice(5).replace('-', '·') : ''),
+          up: bump(1), down: bump(-1)
+        };
+      }),
+      soundOnBg: s.sound ? '#D20A0A' : 'transparent', soundOnFg: s.sound ? '#FFFFFF' : '#9A9AA4',
+      soundOffBg: !s.sound ? '#D20A0A' : 'transparent', soundOffFg: !s.sound ? '#FFFFFF' : '#9A9AA4',
+      soundOn: () => { this.setState({ sound: true }); this.saveProfile({ sound: true }); },
+      soundOff: () => { this.setState({ sound: false }); this.saveProfile({ sound: false }); },
+      setLb: () => { this.setState({ units: 'lb' }); this.saveProfile({ units: 'lb' }); },
+      setKg: () => { this.setState({ units: 'kg' }); this.saveProfile({ units: 'kg' }); },
+      hrMax: s.hrMax,
+      hrUp: () => this.setState(p => { const v = Math.min(220, p.hrMax + 1); this.saveProfile({ hrMax: v }); return { hrMax: v }; }),
+      hrDown: () => this.setState(p => { const v = Math.max(120, p.hrMax - 1); this.saveProfile({ hrMax: v }); return { hrMax: v }; }),
+      bwLabel: s.units === 'lb' ? s.bwLb + ' lb' : (Math.round(s.bwLb * 0.4536 * 10) / 10) + ' kg',
+      bwUp: () => this.setState(p => { const v = p.bwLb + 1; this.saveProfile({ bodyweight: v }); return { bwLb: v }; }),
+      bwDown: () => this.setState(p => { const v = Math.max(60, p.bwLb - 1); this.saveProfile({ bodyweight: v }); return { bwLb: v }; }),
+      doExport: () => this.exportAll(),
+      doExportSets: () => this.exportSetsCsv(),
+      doImport: () => this.pickImport(),
+      importOpen: !!s.importPending,
+      importCount: s.importPending ? String(s.importPending.total) : '0',
+      importDetail: s.importPending ? s.importPending.detail : '',
+      importVersion: s.importPending ? s.importPending.version : '',
+      importConfirm: () => this.applyImport(),
+      importCancel: () => this.setState({ importPending: null }),
+      dbFail: !!s.dbFail, dbFailMsg: s.dbFail || ''
+    });
+  }
+}
+</script>
+</body>
+</html>

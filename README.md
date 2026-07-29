@@ -9,14 +9,26 @@ model. Mobile only, portrait only, installs to the iPhone home screen.
 
 ## Status
 
-**Phase 0 — deployable empty shell. Live, CI green.** No data layer, no
-features. Five labeled tabs and a placeholder heading each. The point of this
-phase is to prove the pipeline (build → test gate → Pages deploy → installable
-→ offline) before any data exists that could be lost.
+**Phase 1 — data layer.** Typed, versioned, migratable IndexedDB layer with a
+lossless export/import round trip. No UI: the app still shows five empty tabs,
+which is the correct outcome. The layer boots on launch (migrate → seed →
+profile → request persistence) so it actually runs on the device.
 
-Verified: Actions green · site serves · service worker activated in scope ·
-manifest `scope`/`start_url` both `/rotation-tracker/` · shell precached.
+Phase 0 (deployable shell) is live with CI green. Verified: Actions green ·
+site serves · service worker activated in scope · manifest `scope`/`start_url`
+both `/rotation-tracker/` · shell precached.
 **Still outstanding: the iPhone Airplane-Mode test (check 5 below).**
+
+### ⚠️ The program seed is a placeholder
+
+`src/data/program.seed.json` is a **structural placeholder, not a training
+prescription**. It exists so the schema, validation and tests are exercisable.
+The real program definition has not been supplied.
+
+Exercise, lift, template, block, tag and test IDs are a **permanent contract**
+the moment a session is logged against them — a `setLog` holds `exerciseId` as
+a foreign key forever. **Replace this file before logging any real training.**
+See "Replacing the placeholder seed" below.
 
 ---
 
@@ -83,6 +95,77 @@ before updating" flow possible later. Do not change it to `autoUpdate` — this
 app holds training history that cannot be recreated.
 
 ---
+
+## Data layer
+
+```
+src/data/
+├─ schema.ts        IndexedDB store + index shapes
+├─ migrations.ts    versioned migration registry (idempotent, additive only)
+├─ db.ts            open/close/delete + hard failure states
+├─ dates.ts         PURE local-date helpers, clock injected
+├─ seed.ts          program.seed.json → static stores, with validation
+├─ repo.ts          typed CRUD; cascade delete lives here
+├─ backup.ts        export / prepare+commit import / CSV
+├─ persistence.ts   navigator.storage.persist + honest reporting
+├─ boot.ts          launch sequence + console debug handle
+└─ program.seed.json  ⚠️ PLACEHOLDER — see above
+```
+
+### Decisions that are expensive to reverse
+
+| Decision | Rule |
+| --- | --- |
+| Dates | Every user record stores both `localDate` (YYYY-MM-DD, local) and `ts` (epoch ms). `localDate` is the ledger key; `ts` orders only. |
+| IDs | Exercise/template/block/lift/tag/test IDs are permanent. Never rename, never reuse, never delete — set `deprecated: true` instead. |
+| Versioning | `SCHEMA_VERSION` governs IndexedDB structure. `SEED_VERSION` governs program content. Independent counters. |
+| Reseeding | Replaces static stores only. Never touches user stores. |
+| Backups | User stores only; static stores reseed from code on import. |
+| Deletion | Deleting a `ScheduledSession` cascades to its `setLogs` and `esdLogs` in one transaction. No orphans, ever. |
+
+### The 28-day window
+
+`isWithinLast(n, localDate, now)` is **inclusive of today** and spans exactly
+`n` distinct calendar days — today plus the previous `n-1`. Future-dated
+records are excluded. All date arithmetic goes through the local-midnight
+constructor, never epoch offsets: subtracting `n * 86_400_000` ms drifts by an
+hour across a DST boundary, which silently changes the calendar day for
+anything logged near midnight. `tests/unit/dates.test.ts` pins that bug.
+
+Unit tests run with `TZ=America/New_York` (set in `vitest.config.ts`) so the
+DST cases actually execute — a UTC-only CI box would never exercise them.
+
+### Replacing the placeholder seed
+
+1. Edit `src/data/program.seed.json` with the real program definition.
+2. Bump `SEED_VERSION` in `src/types.ts`.
+3. `npm run test:unit` — the seed's referential integrity is validated on load,
+   and a dangling reference throws rather than producing wrong prescriptions.
+
+Reseeding replaces static stores only; training history is untouched. If any
+real training has already been logged, do **not** change existing IDs — add new
+entries and mark retired ones `deprecated: true`.
+
+### Verifying on the phone (Phase 1 has no Settings screen)
+
+Connect the iPhone to macOS Safari → Develop → your device → the installed PWA,
+then in the console:
+
+```js
+await __rotation.boot()                  // { ok, seeded, persisted }
+await __rotation.storage.status()        // durability + usage/quota
+await __rotation.profile()
+const b = await __rotation.backup()
+await b.downloadBackup()                 // opens the iOS share sheet
+await b.prepareImport(text)              // preview: what a restore destroys
+```
+
+`prepareImport` never writes — it returns `{ destroys, incoming, migrated }`
+for the destructive-replace confirmation. `commitImport(plan)` performs the
+replace in a single transaction.
+
+Storage durability is reported honestly: `persisted: false` means best-effort
+and the browser may evict. It is never presented as safe when it is not.
 
 ## Recovery runbook
 

@@ -1,3 +1,0 @@
-Phase 1 — IndexedDB persistence (via idb) and the export/import format.
-
-All IO is isolated here. src/engine/ must never import from this directory.
