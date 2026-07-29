@@ -1,0 +1,51 @@
+:root {
+  color-scheme: dark;
+
+  --bg: #0B0B0D;
+  --surface: #16161A;
+  --surface-2: #1F1F25;
+  --border: #2E2E36;
+  --border-strong: #3E3E48;
+
+  --text: #FFFFFF;
+  --text-dim: #9A9AA4;
+  --text-faint: #5C5C66;
+
+  --brand: #D20A0A;        /* PRIMARY ACTIONS ONLY — never warnings */
+  --brand-hover: #B00808;
+  --gold: #C8A24B;
+
+  --velocity: #C8A24B;     /* TD1 */
+  --strength: #E08600;     /* TD2 */
+  --aerobic: #2F6DB5;      /* TD3 */
+  --recovery: #55555F;     /* RD  */
+
+  --alert: #FF7A1A;        /* WARNINGS — amber-orange, NEVER red */
+
+  --r-button: 12px;
+  --r-pill: 999px;
+  --r-card: 6px;
+
+  --tap-min: 56px;
+  --tap-primary: 64px;
+
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+body { padding-top: var(--safe-t); }
+
+.num, [data-num] { font-variant-numeric: tabular-nums; }
+
+button { min-height: var(--tap-min); border-radius: var(--r-button); }

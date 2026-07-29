@@ -1,0 +1,77 @@
+/* App shell layout. Colors come only from tokens.css — no hardcoded hex here. */
+
+#app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen {
+  flex: 1;
+  /* Leave room for the fixed tab bar + the iPhone home indicator. */
+  padding: 24px 20px calc(var(--tap-primary) + var(--safe-b) + 32px);
+}
+
+.screen__title {
+  margin: 8px 0 4px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.screen__note {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 15px;
+}
+
+/* ---- Bottom tab bar ---- */
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  /* Respect the home-indicator safe area on fixed elements. */
+  padding-bottom: var(--safe-b);
+}
+
+.tabbar__btn {
+  min-height: var(--tap-min);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+
+.tabbar__btn[aria-current='page'] {
+  color: var(--text);
+}
+
+.tabbar__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: transparent;
+  transition: background-color 120ms ease;
+}
+
+.tabbar__btn[aria-current='page'] .tabbar__dot {
+  background: var(--brand);
+}

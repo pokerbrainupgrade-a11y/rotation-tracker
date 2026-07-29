@@ -1,0 +1,6 @@
+Phase 2 — the ledger / rotation math lives here.
+
+HARD RULE for everything in this directory:
+pure functions over plain data. No IndexedDB, no DOM, no fetch, no Date.now().
+Pass the clock in as an argument. That constraint is the whole reason this
+math is testable.
