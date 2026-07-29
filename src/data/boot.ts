@@ -8,7 +8,19 @@ export interface BootResult {
   ok: boolean;
   seeded: boolean;
   persisted: boolean | null;
+  /** True while the shipped program definition is still the placeholder. */
+  placeholderSeed: boolean;
   error: { code: string; message: string } | null;
+}
+
+/**
+ * The seed ships with `_placeholder: true` until the real program lands.
+ * Exercise ids become a permanent foreign key the moment a set is logged
+ * against them, so this is worth saying out loud on every launch rather than
+ * discovering it after a month of training history is pinned to throwaway ids.
+ */
+export function isPlaceholderSeed(): boolean {
+  return (programSeed as unknown as { _placeholder?: boolean })._placeholder === true;
 }
 
 let bootPromise: Promise<BootResult> | null = null;
@@ -33,6 +45,7 @@ export async function boot(): Promise<BootResult> {
       ok: false,
       seeded: false,
       persisted: null,
+      placeholderSeed: isPlaceholderSeed(),
       error: { code: health.code, message: health.message },
     };
   }
@@ -45,7 +58,16 @@ export async function boot(): Promise<BootResult> {
     await ensureProfile(firstBlock.id);
     const persisted = await requestPersistence();
 
-    return { ok: true, seeded, persisted, error: null };
+    const placeholderSeed = isPlaceholderSeed();
+    if (placeholderSeed) {
+      console.warn(
+        '[rotation-tracker] PLACEHOLDER PROGRAM SEED is active. Exercise ids ' +
+          'become a permanent foreign key once a set is logged against them. ' +
+          'Replace src/data/program.seed.json before logging real training.',
+      );
+    }
+
+    return { ok: true, seeded, persisted, placeholderSeed, error: null };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error('[rotation-tracker] data layer boot failed:', message);
@@ -53,6 +75,7 @@ export async function boot(): Promise<BootResult> {
       ok: false,
       seeded: false,
       persisted: null,
+      placeholderSeed: isPlaceholderSeed(),
       error: { code: 'BOOT_FAILED', message },
     };
   }

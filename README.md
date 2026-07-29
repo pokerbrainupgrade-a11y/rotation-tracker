@@ -167,6 +167,48 @@ replace in a single transaction.
 Storage durability is reported honestly: `persisted: false` means best-effort
 and the browser may evict. It is never presented as safe when it is not.
 
+## Engine layer (Phase 2)
+
+```
+src/engine/
+├─ rotation.ts     free-floating sequencing, deferral, layoff/re-entry
+├─ ledger.ts       28-day rolling counts  (100% branch, enforced)
+├─ constraints.ts  seven ordering warnings, always an array
+├─ load.ts         %1RM resolution, bar rounding, plate math
+└─ blocks.ts       NOT BUILT — see below
+```
+
+**Everything here is a pure function over plain data.** No IndexedDB, no DOM,
+no `Date.now()`, no bare `new Date()` — the clock is always an injected
+argument. This is what makes DST, midnight and timezone-shift cases testable,
+and those are where rolling-window counters break silently.
+
+`eslint.config.js` enforces it: clock reads, `Math.random`, DOM/storage globals
+and IO imports are all errors inside `src/engine/`. `npm run lint` runs in CI
+before the tests. `src/data/dates.ts` is the one `src/data` import allowed —
+it is pure and clock-injected.
+
+Coverage thresholds in `vitest.config.ts` pin `ledger.ts` and `rotation.ts` at
+100% branch. A dropped branch fails the run, it does not merely get reported.
+
+### The ledger rule
+
+A session counts for a quality only if what was actually **logged** earned it.
+A TD1 whose throw block was cut is not a TD1 and does not count. Counting
+sessions by template would over-count, and over-counting makes frequency drift
+invisible — which is the entire purpose of the ledger.
+
+Substituted sessions are judged on `metDosingSignature` instead, because the
+logged movements will not match the template's.
+
+### blocks.ts is deliberately absent
+
+`resolveDose()` needs program data that has never been supplied: per-exercise
+dose definitions, element classification (max-intent throw / grind / ballistic
+/ plyo), per-block multipliers, the compression cut map for 100/75/50/25, and
+the `ResolvedDose` type itself. Inventing those would be writing a training
+prescription. Supply them and the module is a short build.
+
 ## Recovery runbook
 
 > **Stub — fill in as real failures occur.**
