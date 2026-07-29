@@ -72,6 +72,54 @@ export function validateSeed(seed: ProgramSeed): string[] {
           );
         }
       }
+      // The prime must be one of the section's own exercises, or the ledger's
+      // velocityPrime rule silently never matches.
+      if (section.primeExerciseId !== null) {
+        if (!exerciseIds.has(section.primeExerciseId)) {
+          problems.push(
+            `section "${section.id}" prime "${section.primeExerciseId}" is not a known exercise`,
+          );
+        } else if (!section.exerciseIds.includes(section.primeExerciseId)) {
+          problems.push(
+            `section "${section.id}" prime "${section.primeExerciseId}" is not in its own exerciseIds`,
+          );
+        }
+      }
+    }
+
+    // A template eligible for a velocity quality with no power section can
+    // never earn it — that is a silent zero, so it is a seed error.
+    const powerSections = tmpl.sections.filter((s) => s.role === 'power');
+    if (tmpl.ledger?.velocityFull && powerSections.length === 0) {
+      problems.push(`template "${tmpl.id}" claims velocityFull but has no power section`);
+    }
+    if (tmpl.ledger?.velocityPrime && !powerSections.some((s) => s.primeExerciseId)) {
+      problems.push(
+        `template "${tmpl.id}" claims velocityPrime but no power section names a prime`,
+      );
+    }
+    if (tmpl.ledger?.velocityFull) {
+      const anyMaxIntent = powerSections
+        .flatMap((s) => s.exerciseIds)
+        .some((id) => seed.exercises.find((e) => e.id === id)?.maxIntent === true);
+      if (!anyMaxIntent) {
+        problems.push(
+          `template "${tmpl.id}" claims velocityFull but no power-section exercise is maxIntent`,
+        );
+      }
+    }
+  }
+
+  // Blocks must define every ledger bound; a missing floor would read as 0 and
+  // quietly disable the belowFloor warning for that quality.
+  const LEDGER_KEYS = [
+    'velocityFull', 'velocityPrime', 'vo2max', 'zone2Min', 'trainingDays',
+  ] as const;
+  for (const block of seed.blocks) {
+    for (const key of LEDGER_KEYS) {
+      if (block.floors?.[key] === undefined) {
+        problems.push(`block "${block.id}" is missing a floor for "${key}"`);
+      }
     }
   }
 

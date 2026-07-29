@@ -1,121 +1,576 @@
 {
   "_placeholder": true,
-  "_note": "STRUCTURAL PLACEHOLDER — NOT A TRAINING PRESCRIPTION. The real program definition has not been supplied yet. IDs here are a permanent contract the moment any session is logged against them, so replace this file BEFORE logging real training. See README 'Replacing the placeholder seed'.",
+  "_note": "STRUCTURAL PLACEHOLDER \u2014 NOT A TRAINING PRESCRIPTION. The real program definition has not been supplied yet. IDs here are a permanent contract the moment any session is logged against them, so replace this file BEFORE logging real training. See README 'Replacing the placeholder seed'.",
   "seedVersion": 1,
   "lifts": [
-    { "id": "lift.back-squat", "name": "Back Squat" },
-    { "id": "lift.trap-bar-deadlift", "name": "Trap Bar Deadlift" },
-    { "id": "lift.bench-press", "name": "Bench Press" },
-    { "id": "lift.overhead-press", "name": "Overhead Press" },
-    { "id": "lift.weighted-pullup", "name": "Weighted Pull-Up" }
+    {
+      "id": "lift.back-squat",
+      "name": "Back Squat"
+    },
+    {
+      "id": "lift.trap-bar-deadlift",
+      "name": "Trap Bar Deadlift"
+    },
+    {
+      "id": "lift.bench-press",
+      "name": "Bench Press"
+    },
+    {
+      "id": "lift.overhead-press",
+      "name": "Overhead Press"
+    },
+    {
+      "id": "lift.weighted-pullup",
+      "name": "Weighted Pull-Up"
+    }
   ],
   "exercises": [
-    { "id": "ex.back-squat", "name": "Back Squat", "liftRef": "lift.back-squat", "tags": ["tag.bilateral-squat"] },
-    { "id": "ex.trap-bar-deadlift", "name": "Trap Bar Deadlift", "liftRef": "lift.trap-bar-deadlift", "tags": ["tag.hinge"] },
-    { "id": "ex.bench-press", "name": "Bench Press", "liftRef": "lift.bench-press", "tags": ["tag.horizontal-press"] },
-    { "id": "ex.overhead-press", "name": "Overhead Press", "liftRef": "lift.overhead-press", "tags": ["tag.vertical-press"] },
-    { "id": "ex.weighted-pullup", "name": "Weighted Pull-Up", "liftRef": "lift.weighted-pullup", "tags": ["tag.vertical-pull"] },
-    { "id": "ex.split-squat", "name": "Rear-Foot-Elevated Split Squat", "liftRef": null, "tags": ["tag.unilateral-squat"] },
-    { "id": "ex.broad-jump", "name": "Broad Jump", "liftRef": null, "tags": ["tag.horizontal-jump"] },
-    { "id": "ex.vertical-jump", "name": "Countermovement Jump", "liftRef": null, "tags": ["tag.vertical-jump"] },
-    { "id": "ex.med-ball-throw", "name": "Med Ball Rotational Throw", "liftRef": null, "tags": ["tag.throw"] },
-    { "id": "ex.pogo-hops", "name": "Pogo Hops", "liftRef": null, "tags": ["tag.plyo"] },
-    { "id": "ex.bike-intervals", "name": "Bike Intervals", "liftRef": null, "tags": ["tag.vo2max"] },
-    { "id": "ex.zone2-ride", "name": "Zone 2 Ride", "liftRef": null, "tags": ["tag.zone2"] },
-    { "id": "ex.mobility-flow", "name": "Mobility Flow", "liftRef": null, "tags": ["tag.recovery"] },
-    { "id": "ex.easy-walk", "name": "Easy Walk", "liftRef": null, "tags": ["tag.recovery"] }
+    {
+      "id": "ex.back-squat",
+      "name": "Back Squat",
+      "liftRef": "lift.back-squat",
+      "tags": [
+        "tag.bilateral-squat"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.trap-bar-deadlift",
+      "name": "Trap Bar Deadlift",
+      "liftRef": "lift.trap-bar-deadlift",
+      "tags": [
+        "tag.hinge"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.bench-press",
+      "name": "Bench Press",
+      "liftRef": "lift.bench-press",
+      "tags": [
+        "tag.horizontal-press"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.overhead-press",
+      "name": "Overhead Press",
+      "liftRef": "lift.overhead-press",
+      "tags": [
+        "tag.vertical-press"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.weighted-pullup",
+      "name": "Weighted Pull-Up",
+      "liftRef": "lift.weighted-pullup",
+      "tags": [
+        "tag.vertical-pull"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.split-squat",
+      "name": "Rear-Foot-Elevated Split Squat",
+      "liftRef": null,
+      "tags": [
+        "tag.unilateral-squat"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.broad-jump",
+      "name": "Broad Jump",
+      "liftRef": null,
+      "tags": [
+        "tag.horizontal-jump"
+      ],
+      "maxIntent": true
+    },
+    {
+      "id": "ex.vertical-jump",
+      "name": "Countermovement Jump",
+      "liftRef": null,
+      "tags": [
+        "tag.vertical-jump"
+      ],
+      "maxIntent": true
+    },
+    {
+      "id": "ex.med-ball-throw",
+      "name": "Med Ball Rotational Throw",
+      "liftRef": null,
+      "tags": [
+        "tag.throw"
+      ],
+      "maxIntent": true
+    },
+    {
+      "id": "ex.pogo-hops",
+      "name": "Pogo Hops",
+      "liftRef": null,
+      "tags": [
+        "tag.plyo"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.bike-intervals",
+      "name": "Bike Intervals",
+      "liftRef": null,
+      "tags": [
+        "tag.vo2max"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.zone2-ride",
+      "name": "Zone 2 Ride",
+      "liftRef": null,
+      "tags": [
+        "tag.zone2"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.mobility-flow",
+      "name": "Mobility Flow",
+      "liftRef": null,
+      "tags": [
+        "tag.recovery"
+      ],
+      "maxIntent": false
+    },
+    {
+      "id": "ex.easy-walk",
+      "name": "Easy Walk",
+      "liftRef": null,
+      "tags": [
+        "tag.recovery"
+      ],
+      "maxIntent": false
+    }
   ],
   "sessionTemplates": [
     {
       "id": "tmpl.td1-velocity",
-      "name": "TD1 — Velocity / Power",
+      "name": "TD1 \u2014 Velocity / Power",
       "position": "TD1",
       "sections": [
-        { "id": "sec.td1.jumps", "label": "Jumps", "exerciseIds": ["ex.broad-jump", "ex.vertical-jump"] },
-        { "id": "sec.td1.throws", "label": "Throws", "exerciseIds": ["ex.med-ball-throw"] },
-        { "id": "sec.td1.speed-strength", "label": "Speed-Strength", "exerciseIds": ["ex.back-squat"] }
-      ]
+        {
+          "id": "sec.td1.jumps",
+          "label": "Jumps",
+          "role": "power",
+          "exerciseIds": [
+            "ex.broad-jump",
+            "ex.vertical-jump"
+          ],
+          "primeExerciseId": "ex.broad-jump"
+        },
+        {
+          "id": "sec.td1.throws",
+          "label": "Throws",
+          "role": "power",
+          "exerciseIds": [
+            "ex.med-ball-throw"
+          ],
+          "primeExerciseId": "ex.med-ball-throw"
+        },
+        {
+          "id": "sec.td1.speed-strength",
+          "label": "Speed-Strength",
+          "role": "strength",
+          "exerciseIds": [
+            "ex.back-squat"
+          ],
+          "primeExerciseId": "ex.back-squat"
+        }
+      ],
+      "ledger": {
+        "velocityFull": true,
+        "velocityPrime": true
+      }
     },
     {
       "id": "tmpl.td2-strength",
-      "name": "TD2 — Max Strength",
+      "name": "TD2 \u2014 Max Strength",
       "position": "TD2",
       "sections": [
-        { "id": "sec.td2.primary", "label": "Primary", "exerciseIds": ["ex.trap-bar-deadlift"] },
-        { "id": "sec.td2.secondary", "label": "Secondary", "exerciseIds": ["ex.bench-press", "ex.weighted-pullup"] },
-        { "id": "sec.td2.accessory", "label": "Accessory", "exerciseIds": ["ex.split-squat", "ex.overhead-press"] }
-      ]
+        {
+          "id": "sec.td2.primary",
+          "label": "Primary",
+          "role": "strength",
+          "exerciseIds": [
+            "ex.trap-bar-deadlift"
+          ],
+          "primeExerciseId": "ex.trap-bar-deadlift"
+        },
+        {
+          "id": "sec.td2.secondary",
+          "label": "Secondary",
+          "role": "strength",
+          "exerciseIds": [
+            "ex.bench-press",
+            "ex.weighted-pullup"
+          ],
+          "primeExerciseId": "ex.bench-press"
+        },
+        {
+          "id": "sec.td2.accessory",
+          "label": "Accessory",
+          "role": "accessory",
+          "exerciseIds": [
+            "ex.split-squat",
+            "ex.overhead-press"
+          ],
+          "primeExerciseId": null
+        }
+      ],
+      "ledger": {}
     },
     {
       "id": "tmpl.td3-elastic",
-      "name": "TD3 — Elastic / VO2max",
+      "name": "TD3 \u2014 Elastic / VO2max",
       "position": "TD3",
       "sections": [
-        { "id": "sec.td3.plyo", "label": "Plyometrics", "exerciseIds": ["ex.pogo-hops"] },
-        { "id": "sec.td3.esd", "label": "ESD", "exerciseIds": ["ex.bike-intervals"] }
-      ]
+        {
+          "id": "sec.td3.plyo",
+          "label": "Plyometrics",
+          "role": "plyo",
+          "exerciseIds": [
+            "ex.pogo-hops"
+          ],
+          "primeExerciseId": "ex.pogo-hops"
+        },
+        {
+          "id": "sec.td3.esd",
+          "label": "ESD",
+          "role": "esd",
+          "exerciseIds": [
+            "ex.bike-intervals"
+          ],
+          "primeExerciseId": "ex.bike-intervals"
+        }
+      ],
+      "ledger": {
+        "vo2max": true
+      }
     },
     {
       "id": "tmpl.td-a",
-      "name": "TD-A — Combined",
+      "name": "TD-A \u2014 Combined",
       "position": "TD-A",
       "sections": [
-        { "id": "sec.tda.jumps", "label": "Jumps", "exerciseIds": ["ex.vertical-jump"] },
-        { "id": "sec.tda.strength", "label": "Strength", "exerciseIds": ["ex.back-squat"] }
-      ]
+        {
+          "id": "sec.tda.jumps",
+          "label": "Jumps",
+          "role": "power",
+          "exerciseIds": [
+            "ex.vertical-jump"
+          ],
+          "primeExerciseId": "ex.vertical-jump"
+        },
+        {
+          "id": "sec.tda.strength",
+          "label": "Strength",
+          "role": "strength",
+          "exerciseIds": [
+            "ex.back-squat"
+          ],
+          "primeExerciseId": "ex.back-squat"
+        }
+      ],
+      "ledger": {
+        "velocityFull": true,
+        "velocityPrime": true
+      }
     },
     {
       "id": "tmpl.td-b-str",
-      "name": "TD-B — Strength Emphasis",
+      "name": "TD-B \u2014 Strength Emphasis",
       "position": "TD-B-STR",
       "sections": [
-        { "id": "sec.tdbstr.primary", "label": "Primary", "exerciseIds": ["ex.trap-bar-deadlift"] },
-        { "id": "sec.tdbstr.secondary", "label": "Secondary", "exerciseIds": ["ex.bench-press"] }
-      ]
+        {
+          "id": "sec.tdbstr.primary",
+          "label": "Primary",
+          "role": "strength",
+          "exerciseIds": [
+            "ex.trap-bar-deadlift"
+          ],
+          "primeExerciseId": "ex.trap-bar-deadlift"
+        },
+        {
+          "id": "sec.tdbstr.secondary",
+          "label": "Secondary",
+          "role": "strength",
+          "exerciseIds": [
+            "ex.bench-press"
+          ],
+          "primeExerciseId": "ex.bench-press"
+        }
+      ],
+      "ledger": {}
     },
     {
       "id": "tmpl.td-b-esd",
-      "name": "TD-B — ESD Emphasis",
+      "name": "TD-B \u2014 ESD Emphasis",
       "position": "TD-B-ESD",
       "sections": [
-        { "id": "sec.tdbesd.esd", "label": "ESD", "exerciseIds": ["ex.bike-intervals", "ex.zone2-ride"] }
-      ]
+        {
+          "id": "sec.tdbesd.esd",
+          "label": "ESD",
+          "role": "esd",
+          "exerciseIds": [
+            "ex.bike-intervals",
+            "ex.zone2-ride"
+          ],
+          "primeExerciseId": "ex.bike-intervals"
+        }
+      ],
+      "ledger": {
+        "vo2max": true
+      }
     },
     {
       "id": "tmpl.rd",
-      "name": "RD — Recovery",
+      "name": "RD \u2014 Recovery",
       "position": "RD",
       "sections": [
-        { "id": "sec.rd.recovery", "label": "Recovery", "exerciseIds": ["ex.mobility-flow", "ex.easy-walk"] }
-      ]
+        {
+          "id": "sec.rd.recovery",
+          "label": "Recovery",
+          "role": "recovery",
+          "exerciseIds": [
+            "ex.mobility-flow",
+            "ex.easy-walk"
+          ],
+          "primeExerciseId": null
+        }
+      ],
+      "ledger": {}
     }
   ],
   "blocks": [
-    { "id": "block.accumulation", "name": "Accumulation", "weeks": 4 },
-    { "id": "block.intensification", "name": "Intensification", "weeks": 3 },
-    { "id": "block.realization", "name": "Realization", "weeks": 2 }
+    {
+      "id": "block.accumulation",
+      "name": "Accumulation",
+      "weeks": 4,
+      "floors": {
+        "velocityFull": {
+          "floor": 4,
+          "ceiling": null
+        },
+        "velocityPrime": {
+          "floor": 6,
+          "ceiling": null
+        },
+        "vo2max": {
+          "floor": 4,
+          "ceiling": 6
+        },
+        "zone2Min": {
+          "floor": 180,
+          "ceiling": null
+        },
+        "trainingDays": {
+          "floor": 16,
+          "ceiling": 22
+        }
+      }
+    },
+    {
+      "id": "block.intensification",
+      "name": "Intensification",
+      "weeks": 3,
+      "floors": {
+        "velocityFull": {
+          "floor": 3,
+          "ceiling": null
+        },
+        "velocityPrime": {
+          "floor": 5,
+          "ceiling": null
+        },
+        "vo2max": {
+          "floor": 3,
+          "ceiling": 6
+        },
+        "zone2Min": {
+          "floor": 150,
+          "ceiling": null
+        },
+        "trainingDays": {
+          "floor": 14,
+          "ceiling": 22
+        }
+      }
+    },
+    {
+      "id": "block.realization",
+      "name": "Realization",
+      "weeks": 2,
+      "floors": {
+        "velocityFull": {
+          "floor": 2,
+          "ceiling": null
+        },
+        "velocityPrime": {
+          "floor": 4,
+          "ceiling": null
+        },
+        "vo2max": {
+          "floor": 2,
+          "ceiling": 6
+        },
+        "zone2Min": {
+          "floor": 120,
+          "ceiling": null
+        },
+        "trainingDays": {
+          "floor": 12,
+          "ceiling": 22
+        }
+      }
+    }
   ],
   "substitutionTags": [
-    { "id": "tag.bilateral-squat", "label": "Bilateral Squat", "appliesTo": ["ex.back-squat", "ex.split-squat"] },
-    { "id": "tag.unilateral-squat", "label": "Unilateral Squat", "appliesTo": ["ex.split-squat"] },
-    { "id": "tag.hinge", "label": "Hinge", "appliesTo": ["ex.trap-bar-deadlift"] },
-    { "id": "tag.horizontal-press", "label": "Horizontal Press", "appliesTo": ["ex.bench-press"] },
-    { "id": "tag.vertical-press", "label": "Vertical Press", "appliesTo": ["ex.overhead-press"] },
-    { "id": "tag.vertical-pull", "label": "Vertical Pull", "appliesTo": ["ex.weighted-pullup"] },
-    { "id": "tag.horizontal-jump", "label": "Horizontal Jump", "appliesTo": ["ex.broad-jump"] },
-    { "id": "tag.vertical-jump", "label": "Vertical Jump", "appliesTo": ["ex.vertical-jump"] },
-    { "id": "tag.throw", "label": "Throw", "appliesTo": ["ex.med-ball-throw"] },
-    { "id": "tag.plyo", "label": "Plyometric", "appliesTo": ["ex.pogo-hops"] },
-    { "id": "tag.vo2max", "label": "VO2max", "appliesTo": ["ex.bike-intervals"] },
-    { "id": "tag.zone2", "label": "Zone 2", "appliesTo": ["ex.zone2-ride"] },
-    { "id": "tag.recovery", "label": "Recovery", "appliesTo": ["ex.mobility-flow", "ex.easy-walk"] }
+    {
+      "id": "tag.bilateral-squat",
+      "label": "Bilateral Squat",
+      "appliesTo": [
+        "ex.back-squat",
+        "ex.split-squat"
+      ]
+    },
+    {
+      "id": "tag.unilateral-squat",
+      "label": "Unilateral Squat",
+      "appliesTo": [
+        "ex.split-squat"
+      ]
+    },
+    {
+      "id": "tag.hinge",
+      "label": "Hinge",
+      "appliesTo": [
+        "ex.trap-bar-deadlift"
+      ]
+    },
+    {
+      "id": "tag.horizontal-press",
+      "label": "Horizontal Press",
+      "appliesTo": [
+        "ex.bench-press"
+      ]
+    },
+    {
+      "id": "tag.vertical-press",
+      "label": "Vertical Press",
+      "appliesTo": [
+        "ex.overhead-press"
+      ]
+    },
+    {
+      "id": "tag.vertical-pull",
+      "label": "Vertical Pull",
+      "appliesTo": [
+        "ex.weighted-pullup"
+      ]
+    },
+    {
+      "id": "tag.horizontal-jump",
+      "label": "Horizontal Jump",
+      "appliesTo": [
+        "ex.broad-jump"
+      ]
+    },
+    {
+      "id": "tag.vertical-jump",
+      "label": "Vertical Jump",
+      "appliesTo": [
+        "ex.vertical-jump"
+      ]
+    },
+    {
+      "id": "tag.throw",
+      "label": "Throw",
+      "appliesTo": [
+        "ex.med-ball-throw"
+      ]
+    },
+    {
+      "id": "tag.plyo",
+      "label": "Plyometric",
+      "appliesTo": [
+        "ex.pogo-hops"
+      ]
+    },
+    {
+      "id": "tag.vo2max",
+      "label": "VO2max",
+      "appliesTo": [
+        "ex.bike-intervals"
+      ]
+    },
+    {
+      "id": "tag.zone2",
+      "label": "Zone 2",
+      "appliesTo": [
+        "ex.zone2-ride"
+      ]
+    },
+    {
+      "id": "tag.recovery",
+      "label": "Recovery",
+      "appliesTo": [
+        "ex.mobility-flow",
+        "ex.easy-walk"
+      ]
+    }
   ],
   "testDefs": [
-    { "id": "test.cmj", "name": "Countermovement Jump", "unit": "cm", "battery": "both", "bilateral": false },
-    { "id": "test.broad-jump", "name": "Broad Jump", "unit": "cm", "battery": "both", "bilateral": false },
-    { "id": "test.single-leg-hop", "name": "Single-Leg Hop", "unit": "cm", "battery": "full", "bilateral": true },
-    { "id": "test.imtp", "name": "Isometric Mid-Thigh Pull", "unit": "N", "battery": "full", "bilateral": false },
-    { "id": "test.grip", "name": "Grip Strength", "unit": "kg", "battery": "full", "bilateral": true },
-    { "id": "test.vo2max-est", "name": "Estimated VO2max", "unit": "ml/kg/min", "battery": "full", "bilateral": false }
+    {
+      "id": "test.cmj",
+      "name": "Countermovement Jump",
+      "unit": "cm",
+      "battery": "both",
+      "bilateral": false
+    },
+    {
+      "id": "test.broad-jump",
+      "name": "Broad Jump",
+      "unit": "cm",
+      "battery": "both",
+      "bilateral": false
+    },
+    {
+      "id": "test.single-leg-hop",
+      "name": "Single-Leg Hop",
+      "unit": "cm",
+      "battery": "full",
+      "bilateral": true
+    },
+    {
+      "id": "test.imtp",
+      "name": "Isometric Mid-Thigh Pull",
+      "unit": "N",
+      "battery": "full",
+      "bilateral": false
+    },
+    {
+      "id": "test.grip",
+      "name": "Grip Strength",
+      "unit": "kg",
+      "battery": "full",
+      "bilateral": true
+    },
+    {
+      "id": "test.vo2max-est",
+      "name": "Estimated VO2max",
+      "unit": "ml/kg/min",
+      "battery": "full",
+      "bilateral": false
+    }
   ]
 }

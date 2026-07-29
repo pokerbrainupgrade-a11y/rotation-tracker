@@ -115,18 +115,47 @@ export interface Lift {
   deprecated?: boolean;
 }
 
+/** Qualities the 28-day ledger tracks. */
+export type LedgerKey =
+  | 'velocityFull'
+  | 'velocityPrime'
+  | 'vo2max'
+  | 'zone2Min'
+  | 'trainingDays';
+
+/** The three qualities earned by inspecting what was actually logged. */
+export type CountableQuality = 'velocityFull' | 'velocityPrime' | 'vo2max';
+
 export interface Exercise {
   id: string;
   name: string;
   liftRef: string | null;            // FK -> lifts (null = not barbell-loaded)
   tags: string[];                    // substitutionTag ids may target these
+  /**
+   * Max-intent work. `velocityFull` requires >=1 completed set against a
+   * maxIntent exercise in the template's power section — this is what makes a
+   * TD1 whose throw block was cut fail to count as a TD1.
+   */
+  maxIntent: boolean;
   deprecated?: boolean;
 }
+
+/** What a section is for. `power` is load-bearing: the ledger reads it. */
+export type SectionRole =
+  | 'power'
+  | 'strength'
+  | 'plyo'
+  | 'esd'
+  | 'accessory'
+  | 'recovery';
 
 export interface SessionTemplateSection {
   id: string;
   label: string;
+  role: SectionRole;
   exerciseIds: string[];             // FK -> exercises
+  /** The defining movement of this section. FK -> exercises, must be in exerciseIds. */
+  primeExerciseId: string | null;
 }
 
 export interface SessionTemplate {
@@ -134,13 +163,26 @@ export interface SessionTemplate {
   name: string;
   position: RotationPosition;
   sections: SessionTemplateSection[];
+  /**
+   * Qualities this template is ELIGIBLE to contribute. Eligibility is not
+   * achievement: a quality still has to be earned by what was logged.
+   * A key absent here means the template can never contribute that quality.
+   */
+  ledger: Partial<Record<CountableQuality, true>>;
   deprecated?: boolean;
+}
+
+export interface LedgerBounds {
+  floor: number;
+  ceiling: number | null;
 }
 
 export interface Block {
   id: string;
   name: string;
   weeks: number;
+  /** Floors/ceilings are per-block program data — never hardcoded in the engine. */
+  floors: Record<LedgerKey, LedgerBounds>;
   deprecated?: boolean;
 }
 

@@ -63,6 +63,16 @@ export function lastNLocalDates(n: number, now: Date): string[] {
   return out;
 }
 
+/**
+ * `localDate` shifted by `n` calendar days (negative shifts backwards).
+ * Goes through the local-midnight constructor, so DST cannot skew it.
+ */
+export function addDaysLocal(localDate: string, n: number): string {
+  const d = parseLocalDate(localDate);
+  d.setDate(d.getDate() + n);
+  return toLocalDate(d);
+}
+
 /** Parse `YYYY-MM-DD` to local midnight. Throws on malformed input. */
 export function parseLocalDate(localDate: string): Date {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(localDate);

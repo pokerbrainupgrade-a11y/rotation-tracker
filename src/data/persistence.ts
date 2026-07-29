@@ -52,7 +52,7 @@ export async function getStorageStatus(): Promise<StorageStatus> {
     return { persisted: null, supported: false, usageBytes: null, quotaBytes: null };
   }
 
-  let persisted: boolean | null = null;
+  let persisted: boolean | null;
   try {
     persisted = typeof sm.persisted === 'function' ? await sm.persisted() : null;
   } catch {

@@ -103,6 +103,7 @@ describe('acceptance 3 — seed update isolation', () => {
       name: 'Hip Thrust',
       liftRef: null,
       tags: ['tag.hinge'],
+      maxIntent: false,
     });
 
     const didSeed = await ensureSeeded(v2, 2);

@@ -12,5 +12,22 @@ export default defineConfig({
     // whole point — a UTC-only CI box would never exercise the bug class the
     // dual date storage exists to prevent.
     env: { TZ: 'America/New_York' },
+    coverage: {
+      provider: 'v8',
+      include: ['src/engine/**/*.ts', 'src/data/dates.ts'],
+      reporter: ['text', 'json-summary'],
+      // ENFORCED, not merely reported. The ledger and the rotation are where a
+      // silent miscount does real damage: an over-counted ledger hides
+      // frequency drift, and a rotation that banks rest collapses the
+      // CNS-descent architecture. A dropped branch in either must fail CI.
+      thresholds: {
+        'src/engine/ledger.ts': {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+        },
+        'src/engine/rotation.ts': {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+        },
+      },
+    },
   },
 });
