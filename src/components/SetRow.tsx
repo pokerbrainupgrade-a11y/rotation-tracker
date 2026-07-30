@@ -4,6 +4,12 @@ import type { Exercise, SetLog, Units } from '../types';
 export interface SetDraft {
   load: number | null;
   reps: number | null;
+  /**
+   * The exercise's decay metric (velocity m/s or distance). Without a field for
+   * it the decay floor could never display, because nothing would ever record
+   * the number it reads.
+   */
+  metric: number | null;
 }
 
 interface SetRowProps {
@@ -13,6 +19,10 @@ interface SetRowProps {
   /** Existing logs for this set index, keyed by side ('' for bilateral-agnostic). */
   logs: SetLog[];
   draft: Record<string, SetDraft>;
+  /** A rep in this set landed below the decay floor. Styling only. */
+  belowFloor?: boolean;
+  lastPerformance?: { load: number | null; reps: number | null } | null;
+  onAdoptLast?: () => void;
   onDraft: (sideKey: string, patch: Partial<SetDraft>) => void;
   onComplete: () => void;
   onReopen: () => void;
@@ -30,7 +40,8 @@ interface SetRowProps {
  * detect — permanently invisible.
  */
 export function SetRow({
-  exercise, setIndex, units, logs, draft, onDraft, onComplete, onReopen,
+  exercise, setIndex, units, logs, draft, belowFloor = false,
+  lastPerformance = null, onAdoptLast, onDraft, onComplete, onReopen,
 }: SetRowProps) {
   const sides: Array<{ key: string; label: string | null }> = exercise.perSide
     ? [{ key: 'L', label: 'L' }, { key: 'R', label: 'R' }]
@@ -44,6 +55,7 @@ export function SetRow({
       data-testid="set-row"
       data-set-index={setIndex}
       data-done={done ? 'true' : 'false'}
+      data-below-floor={belowFloor ? 'true' : undefined}
       role="button"
       tabIndex={0}
       aria-label={`Set ${setIndex + 1}${done ? ', logged' : ''}`}
@@ -59,7 +71,7 @@ export function SetRow({
 
       <span class="setrow__fields">
         {sides.map(({ key, label }) => {
-          const values = draft[key] ?? { load: null, reps: null };
+          const values = draft[key] ?? { load: null, reps: null, metric: null };
           return (
             <span class="setrow__side" key={key || 'bilateral'} data-side={key || undefined}>
               {label && <span class="setrow__sidelabel">{label}</span>}
@@ -77,10 +89,35 @@ export function SetRow({
                 disabled={done}
                 onChange={(n) => onDraft(key, { reps: n })}
               />
+              {exercise.decayMetric !== null && (
+                <NumberStepper
+                  label={`Set ${setIndex + 1}${label ? ` ${label}` : ''} ${exercise.decayMetric}`}
+                  value={values.metric}
+                  step={exercise.decayMetric === 'velocity' ? 0.05 : 0.5}
+                  suffix={exercise.decayMetric === 'velocity' ? 'm/s' : 'm'}
+                  disabled={done}
+                  onChange={(n) => onDraft(key, { metric: n })}
+                />
+              )}
             </span>
           );
         })}
       </span>
+
+      {lastPerformance && !done && (
+        <button
+          type="button"
+          class="setrow__last num"
+          data-testid="last-chip"
+          aria-label="Adopt last session values"
+          onClick={(e) => {
+            e.stopPropagation();
+            onAdoptLast?.();
+          }}
+        >
+          LAST: {lastPerformance.load ?? '—'} × {lastPerformance.reps ?? '—'}
+        </button>
+      )}
 
       {/*
         A dedicated completion control as well as the row-level tap.

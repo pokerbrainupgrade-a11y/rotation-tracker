@@ -1,6 +1,14 @@
 import { useState } from 'preact/hooks';
 import { SetRow, type SetDraft } from './SetRow';
 import { Sheet } from './Sheet';
+import {
+  contralateralRatio,
+  decayView,
+  isBelowFloor,
+  ratioColorVar,
+  ratioLabel,
+  ratioStatus,
+} from '../engine/instrumentation';
 import type { Exercise, SetLog, Units } from '../types';
 
 interface ExerciseCardProps {
@@ -8,23 +16,55 @@ interface ExerciseCardProps {
   units: Units;
   sessionColor: string;
   logs: SetLog[];
+  /** This exercise's ratio in prior sessions, oldest first. */
+  ratioHistory: Array<number | null>;
+  dose: string;
+  cut: boolean;
+  substitutable: boolean;
+  abortable: boolean;
   drafts: Record<number, Record<string, SetDraft>>;
+  /** Most recent completed set for this exercise, from an earlier session. */
+  lastPerformance: { load: number | null; reps: number | null } | null;
   onDraft: (setIndex: number, sideKey: string, patch: Partial<SetDraft>) => void;
   onComplete: (setIndex: number) => void;
   onReopen: (setIndex: number) => void;
+  onSubstitute: () => void;
+  onAbort: () => void;
+  onAdoptLast: (setIndex: number) => void;
 }
 
 export function ExerciseCard({
-  exercise, units, sessionColor, logs, drafts, onDraft, onComplete, onReopen,
+  exercise, units, sessionColor, logs, ratioHistory, dose, cut,
+  substitutable, abortable, drafts, lastPerformance,
+  onDraft, onComplete, onReopen, onSubstitute, onAbort, onAdoptLast,
 }: ExerciseCardProps) {
   const [info, setInfo] = useState(false);
 
-  const doseLine = `${exercise.sets} × ${exercise.reps}${exercise.perSide ? ' / side' : ''}`;
+  // Instrumentation, all of it DISPLAY ONLY: nothing below prompts, gates or
+  // recommends. The numbers appear; the athlete decides.
+  const ratio = ratioStatus([...ratioHistory, contralateralRatio(logs, exercise.id)]);
 
   return (
-    <article class="exercise" data-testid="exercise-card" data-exercise-id={exercise.id}>
+    <article
+      class="exercise"
+      data-testid="exercise-card"
+      data-exercise-id={exercise.id}
+      data-cut={cut ? 'true' : undefined}
+      aria-disabled={cut ? 'true' : undefined}
+    >
       <header class="exercise__head">
         <h3 class="exercise__name">{exercise.name}</h3>
+        {substitutable && !cut && (
+          <button
+            type="button"
+            class="exercise__sub"
+            data-testid="sub-open"
+            aria-label={`Substitute ${exercise.name}`}
+            onClick={onSubstitute}
+          >
+            SUB ⇄
+          </button>
+        )}
         <button
           type="button"
           class="exercise__info"
@@ -35,35 +75,72 @@ export function ExerciseCard({
         </button>
       </header>
 
-      <p class="exercise__dose num">{doseLine}</p>
+      <p class="exercise__dose num">{dose}</p>
 
       <p class="exercise__load num">
-        {/* Resolved weight needs the load calculator (Phase 6) and dose data
-            that does not exist yet. An em-dash is honest; a number would not be. */}
+        {/* Resolved weight needs the load calculator (Phase 6). An em-dash is
+            honest; a plausible number would not be. */}
         <span style={{ color: sessionColor }}>—</span>
         {exercise.restSec > 0 && <> · REST {exercise.restSec}s</>}
       </p>
 
-      {/* Intent and the termination rule are ALWAYS visible, never behind a
-          tap. They are what replaces a movement demo video. */}
+      {exercise.perSide && ratio.ratio !== null && (
+        <p
+          class="exercise__ratio num"
+          data-testid="ratio"
+          data-status={ratio.status}
+          style={{ color: `var(${ratioColorVar(ratio.status)})` }}
+        >
+          {ratioLabel(ratio)}
+        </p>
+      )}
+
       <p class="exercise__intent">{exercise.intent}</p>
       <p class="exercise__termination">⚠ {exercise.terminationRule}</p>
 
-      <div class="exercise__sets">
-        {Array.from({ length: exercise.sets }, (_, i) => (
-          <SetRow
-            key={i}
-            exercise={exercise}
-            setIndex={i}
-            units={units}
-            logs={logs.filter((l) => l.setIndex === i)}
-            draft={drafts[i] ?? {}}
-            onDraft={(sideKey, patch) => onDraft(i, sideKey, patch)}
-            onComplete={() => onComplete(i)}
-            onReopen={() => onReopen(i)}
-          />
-        ))}
-      </div>
+      {!cut && (
+        <div class="exercise__sets">
+          {Array.from({ length: exercise.sets }, (_, i) => {
+            const decay = decayView(exercise, logs, i);
+            return (
+              <div key={i} class="setblock">
+                {decay.floor !== null && (
+                  <p class="decay num" data-testid="decay-floor">
+                    BEST {decay.setBest} · FLOOR {decay.floor}
+                    {decay.sessionBest !== null && decay.sessionBest !== decay.setBest && (
+                      <span class="decay__session"> · SESSION BEST {decay.sessionBest}</span>
+                    )}
+                  </p>
+                )}
+                <SetRow
+                  exercise={exercise}
+                  setIndex={i}
+                  units={units}
+                  logs={logs.filter((l) => l.setIndex === i)}
+                  draft={drafts[i] ?? {}}
+                  belowFloor={isBelowFloor(exercise, logs, i)}
+                  lastPerformance={lastPerformance}
+                  onDraft={(sideKey, patch) => onDraft(i, sideKey, patch)}
+                  onComplete={() => onComplete(i)}
+                  onReopen={() => onReopen(i)}
+                  onAdoptLast={() => onAdoptLast(i)}
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {abortable && !cut && (
+        <button
+          type="button"
+          class="btn btn--destructive exercise__abort"
+          data-testid="esd-abort"
+          onClick={onAbort}
+        >
+          ABORT — LOG AS MISSED
+        </button>
+      )}
 
       <p class="exercise__source">{exercise.source}</p>
 
@@ -73,7 +150,11 @@ export function ExerciseCard({
           <p class="info__text">{exercise.regression}</p>
           <p class="sheet__label">PROGRESSION</p>
           <p class="info__text">{exercise.progression}</p>
-          <button type="button" class="btn btn--secondary sheet__cancel" onClick={() => setInfo(false)}>
+          <button
+            type="button"
+            class="btn btn--secondary sheet__cancel"
+            onClick={() => setInfo(false)}
+          >
             CLOSE
           </button>
         </Sheet>

@@ -1,4 +1,4 @@
-import { useCallback } from 'preact/hooks';
+import { useCallback, useMemo } from 'preact/hooks';
 import {
   deleteSetLog,
   getScheduled,
@@ -40,31 +40,35 @@ export function useSessionAutosave(sessionId: string): SessionAutosave {
     [sessionId],
   );
 
-  return {
-    logSet: useCallback(async (log: SetLog) => {
-      await putSetLog(log);
-    }, []),
+  const logSet = useCallback(async (log: SetLog) => {
+    await putSetLog(log);
+  }, []);
 
-    removeSet: useCallback(async (id: string) => {
-      await deleteSetLog(id);
-    }, []),
+  const removeSet = useCallback(async (id: string) => {
+    await deleteSetLog(id);
+  }, []);
 
-    setChecklist: useCallback(
-      async (ids: string[]) => {
-        await patchSession({ checklist: ids });
-      },
-      [patchSession],
-    ),
+  const setChecklist = useCallback(
+    async (ids: string[]) => {
+      await patchSession({ checklist: ids });
+    },
+    [patchSession],
+  );
 
-    setTimer: useCallback(
-      async (timer: ActiveTimer | null) => {
-        await patchSession({ activeTimer: timer });
-      },
-      [patchSession],
-    ),
+  const setTimer = useCallback(
+    async (timer: ActiveTimer | null) => {
+      await patchSession({ activeTimer: timer });
+    },
+    [patchSession],
+  );
 
-    patchSession,
+  const loadSets = useCallback(() => getSetLogsByScheduled(sessionId), [sessionId]);
 
-    loadSets: useCallback(() => getSetLogsByScheduled(sessionId), [sessionId]),
-  };
+  // MEMOISED. Returning a fresh object literal would change identity on every
+  // render, and any effect depending on it — including the runner's initial
+  // load — would re-run and cancel its own async work forever.
+  return useMemo(
+    () => ({ logSet, removeSet, setChecklist, setTimer, patchSession, loadSets }),
+    [logSet, removeSet, setChecklist, setTimer, patchSession, loadSets],
+  );
 }

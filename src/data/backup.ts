@@ -180,6 +180,15 @@ export const backupMigrations: Record<number, (b: RawBackup) => RawBackup> = {
       })),
     },
   }),
+  /** v3 — `trainingMode` on the profile. */
+  3: (b) => ({
+    ...b,
+    schemaVersion: 3,
+    data: {
+      ...b.data,
+      profile: { ...b.data.profile, trainingMode: b.data.profile?.trainingMode ?? false },
+    },
+  }),
 };
 
 function migrateBackup(raw: RawBackup): RawBackup {

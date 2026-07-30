@@ -1,6 +1,6 @@
 import type { IDBPDatabase, IDBPTransaction, StoreNames } from 'idb';
 import type { RotationDB } from './schema';
-import type { ScheduledSession } from '../types';
+import type { Profile, ScheduledSession } from '../types';
 
 export type MigrationDb = IDBPDatabase<RotationDB>;
 export type MigrationTx = IDBPTransaction<
@@ -82,7 +82,11 @@ export const migrations: Record<number, Migration> = {
    *
    * Idempotent — re-running only fills rows that are still missing the fields.
    */
-  2: async (_db, tx) => {
+  2: async (db, tx) => {
+    // Guarded: a migration that throws during upgrade leaves the database
+    // unopenable, which for this app means "cannot reach your training data".
+    // Never assume a store exists just because an earlier migration creates it.
+    if (!db.objectStoreNames.contains('scheduled')) return;
     const store = tx.objectStore('scheduled');
     let cursor = await store.openCursor();
     while (cursor) {
@@ -95,6 +99,19 @@ export const migrations: Record<number, Migration> = {
         } as ScheduledSession);
       }
       cursor = await cursor.continue();
+    }
+  },
+
+  /**
+   * v3 — `trainingMode` on the profile. Backfilled to false so no reader ever
+   * sees undefined where it expects a boolean.
+   */
+  3: async (db, tx) => {
+    if (!db.objectStoreNames.contains('profile')) return;
+    const store = tx.objectStore('profile');
+    const current = await store.get('me');
+    if (current && (current as Partial<Profile>).trainingMode === undefined) {
+      await store.put({ ...current, trainingMode: false } as Profile);
     }
   },
 };

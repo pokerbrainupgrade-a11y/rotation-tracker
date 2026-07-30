@@ -32,7 +32,8 @@ export function defaultProfile(blockId: string): Profile {
     currentBlockId: blockId,
     rotationNumber: 1,
     wakeLockEnabled: true,
-    audioCueEnabled: true,
+    audioCueEnabled: false,
+    trainingMode: false,
     schemaVersion: SCHEMA_VERSION,
     seedVersion: SEED_VERSION,
   };

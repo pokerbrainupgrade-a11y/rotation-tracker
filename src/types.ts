@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 export const SEED_VERSION = 1;
 
 export type Units = 'lb' | 'kg';
@@ -27,6 +27,8 @@ export interface Profile {
   rotationNumber: number;
   wakeLockEnabled: boolean;
   audioCueEnabled: boolean;
+  /** Larger numerals, reduced chrome, for reading off a bench. Schema v3. */
+  trainingMode: boolean;
   schemaVersion: number;
   seedVersion: number;
 }
@@ -177,6 +179,14 @@ export interface Exercise {
   /** Harder variant, shown in the [i] sheet. */
   progression: string;
 
+  /**
+   * Decay-termination factor, e.g. 0.95 for "terminate on 5% decay from the
+   * best rep in the set". null = no decay rule, so no floor is displayed.
+   */
+  decayFloorFactor: number | null;
+  /** Which logged field the decay floor reads. null when there is no rule. */
+  decayMetric: 'velocity' | 'distance' | null;
+
   deprecated?: boolean;
 }
 
@@ -212,6 +222,15 @@ export interface SessionTemplate {
    * A key absent here means the template can never contribute that quality.
    */
   ledger: Partial<Record<CountableQuality, true>>;
+  /**
+   * Compression cut maps, keyed by level. Resolved at runtime — never
+   * hardcoded in a component.
+   */
+  compression: Partial<Record<'75' | '50' | '25', CompressionSpec>>;
+  /** Why this template compresses the way it does. Shown at the decision point. */
+  compressionRule: string;
+  /** Live volume counters for this session type. */
+  volumeCap: VolumeCap | null;
   deprecated?: boolean;
 }
 
@@ -233,7 +252,41 @@ export interface SubstitutionTag {
   id: string;
   label: string;
   appliesTo: string[];               // FK -> exercises
+  /** Rendered VERBATIM in the substitution sheet. */
+  targetQuality: string;
+  dosingSignature: string;
+  validSubstitution: string;
+  invalidSubstitution: string;
+  failureMode: string | null;
+  /** Which ledger quality a met substitution counts toward. */
+  ledgerKey: CountableQuality | null;
   deprecated?: boolean;
+}
+
+/** One compression level's effect, resolved from the seed at runtime. */
+export interface CompressionSpec {
+  /** Exercise ids removed entirely. */
+  cut?: string[];
+  /** Exercise id -> replacement dose string. */
+  modify?: Record<string, string>;
+  /** Everything NOT listed is cut. Takes precedence over `cut`. */
+  keepOnly?: string[];
+  /** Shown at the top of the section. */
+  note?: string;
+}
+
+/** A live counter shown in a section header. Never a gate. */
+export interface VolumeCap {
+  /** Header label, e.g. "THROWS". */
+  label: string;
+  limit: number;
+  /**
+   * What contributes: max-intent exercises, the section's prime only, or
+   * plyo contacts. Counts reps (or contacts) across completed sets.
+   */
+  countOf: 'maxIntent' | 'prime' | 'contacts';
+  /** Which Exos section header the counter belongs in. */
+  section: SectionRole;
 }
 
 export interface TestDef {

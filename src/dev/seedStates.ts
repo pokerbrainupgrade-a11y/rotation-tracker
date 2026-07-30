@@ -38,6 +38,9 @@ export type ScenarioName =
   | 'session-ready'
   | 'session-midway'
   | 'session-stale'
+  | 'session-td3'
+  | 'session-at-cap'
+  | 'session-history'
   | 'db-error'
   | 'no-profile';
 
@@ -208,6 +211,45 @@ function build(name: ScenarioName, today: string): Built {
     case 'calendar-empty':
       return { scheduled: [], setLogs: [], esdLogs: [] };
 
+    // A TD3 planned for today, for the ESD abort and TD3 compression paths.
+    case 'session-td3':
+      return {
+        scheduled: [session('TD3', 0, today, { id: 'run-1', status: 'planned' })],
+        setLogs: [], esdLogs: [],
+      };
+
+    // A TD1 already at its 36-throw cap, so the counter starts amber.
+    case 'session-at-cap': {
+      const s = session('TD1', 0, today, { id: 'run-1', status: 'planned' });
+      return {
+        scheduled: [s],
+        setLogs: Array.from({ length: 12 }, (_, i) => ({
+          ...maxIntentSet(s.id, s.ts + i * 1000),
+          id: `cap-${i}`,
+          exerciseId: 'ex.med-ball-throw',
+          setIndex: i % 4,
+          side: (i % 2 === 0 ? 'L' : 'R') as 'L' | 'R',
+          reps: 3,
+        })),
+        esdLogs: [],
+      };
+    }
+
+    // A completed TD1 last week plus today's planned one, so the LAST chip and
+    // the prior-session ratio history both have something to read.
+    case 'session-history': {
+      const past = session('TD1', 7, today, { id: 'past-1' });
+      const todaySession = session('TD1', 0, today, { id: 'run-1', status: 'planned' });
+      return {
+        scheduled: [past, todaySession],
+        setLogs: [
+          { ...maxIntentSet(past.id, past.ts), id: 'h-1', reps: 3, load: 12, distance: 24.0 },
+          { ...maxIntentSet(past.id, past.ts + 1000), id: 'h-2', setIndex: 1, reps: 3, load: 12, distance: 23.0 },
+        ],
+        esdLogs: [],
+      };
+    }
+
     // A TD1 planned for today, never started. The runner's clean entry point.
     case 'session-ready':
       return {
@@ -333,7 +375,10 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
     name !== 'calendar-empty' &&
     name !== 'session-ready' &&
     name !== 'session-midway' &&
-    name !== 'session-stale'
+    name !== 'session-stale' &&
+    name !== 'session-td3' &&
+    name !== 'session-at-cap' &&
+    name !== 'session-history'
   ) {
     const planned = session('TD1', -1, today, { status: 'planned' });
     await db.put('scheduled', planned);

@@ -42,7 +42,9 @@
       "terminationRule": "Stop the set when bar speed visibly drops.",
       "source": "Block strength template",
       "regression": "Box squat to depth",
-      "progression": "Pause squat 2s"
+      "progression": "Pause squat 2s",
+      "decayFloorFactor": 0.95,
+      "decayMetric": "velocity"
     },
     {
       "id": "ex.trap-bar-deadlift",
@@ -61,7 +63,9 @@
       "terminationRule": "Stop when back position changes, not when reps run out.",
       "source": "Block strength template",
       "regression": "Rack pull",
-      "progression": "Deficit pull"
+      "progression": "Deficit pull",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.bench-press",
@@ -80,7 +84,9 @@
       "terminationRule": "Stop at the first rep that slows noticeably.",
       "source": "Block strength template",
       "regression": "Floor press",
-      "progression": "Larsen press"
+      "progression": "Larsen press",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.overhead-press",
@@ -99,7 +105,9 @@
       "terminationRule": "Stop when the rib cage flares to complete a rep.",
       "source": "Accessory",
       "regression": "Half-kneeling press",
-      "progression": "Strict standing press"
+      "progression": "Strict standing press",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.weighted-pullup",
@@ -118,7 +126,9 @@
       "terminationRule": "Stop when the range shortens.",
       "source": "Block strength template",
       "regression": "Band-assisted pull-up",
-      "progression": "Weighted, slower eccentric"
+      "progression": "Weighted, slower eccentric",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.split-squat",
@@ -137,7 +147,9 @@
       "terminationRule": "Stop when the trailing hip cannot stay extended.",
       "source": "Accessory",
       "regression": "Split squat, no elevation",
-      "progression": "Front-foot-elevated"
+      "progression": "Front-foot-elevated",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.broad-jump",
@@ -156,7 +168,9 @@
       "terminationRule": "Stop the moment distance drops off the best rep.",
       "source": "Velocity template",
       "regression": "Standing long jump, submaximal",
-      "progression": "Weighted vest broad jump"
+      "progression": "Weighted vest broad jump",
+      "decayFloorFactor": 0.95,
+      "decayMetric": "distance"
     },
     {
       "id": "ex.vertical-jump",
@@ -175,7 +189,9 @@
       "terminationRule": "Stop when peak height falls below the best rep.",
       "source": "Velocity template",
       "regression": "Squat jump from pause",
-      "progression": "Depth jump"
+      "progression": "Depth jump",
+      "decayFloorFactor": 0.95,
+      "decayMetric": "distance"
     },
     {
       "id": "ex.med-ball-throw",
@@ -194,7 +210,9 @@
       "terminationRule": "Stop when the throw stops feeling ballistic.",
       "source": "Velocity template",
       "regression": "Lighter ball, same intent",
-      "progression": "Heavier ball, same speed"
+      "progression": "Heavier ball, same speed",
+      "decayFloorFactor": 0.95,
+      "decayMetric": "distance"
     },
     {
       "id": "ex.pogo-hops",
@@ -213,7 +231,9 @@
       "terminationRule": "Stop when contacts get loud or slow.",
       "source": "Elastic template",
       "regression": "Two-foot pogo in place",
-      "progression": "Single-leg pogo"
+      "progression": "Single-leg pogo",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.bike-intervals",
@@ -232,7 +252,9 @@
       "terminationRule": "Stop the interval if power drops below target.",
       "source": "ESD template",
       "regression": "3 x 4 min",
-      "progression": "5 x 4 min"
+      "progression": "5 x 4 min",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.zone2-ride",
@@ -251,7 +273,9 @@
       "terminationRule": "Stop if pace requires mouth breathing to hold.",
       "source": "ESD template",
       "regression": "Shorter duration",
-      "progression": "Longer duration"
+      "progression": "Longer duration",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.mobility-flow",
@@ -270,7 +294,9 @@
       "terminationRule": "Stop at the first position that needs forcing.",
       "source": "Regeneration",
       "regression": "Reduced range",
-      "progression": "Longer holds"
+      "progression": "Longer holds",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.easy-walk",
@@ -289,7 +315,9 @@
       "terminationRule": "No termination rule.",
       "source": "Regeneration",
       "regression": "Shorter walk",
-      "progression": "Longer walk"
+      "progression": "Longer walk",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.breathing",
@@ -306,7 +334,9 @@
       "terminationRule": "Stop if position degrades.",
       "source": "Preparation",
       "regression": "Reduced range",
-      "progression": "Full range"
+      "progression": "Full range",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.glute-bridge",
@@ -323,7 +353,9 @@
       "terminationRule": "Stop if position degrades.",
       "source": "Preparation",
       "regression": "Reduced range",
-      "progression": "Full range"
+      "progression": "Full range",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.side-plank",
@@ -340,7 +372,9 @@
       "terminationRule": "Stop if position degrades.",
       "source": "Preparation",
       "regression": "Reduced range",
-      "progression": "Full range"
+      "progression": "Full range",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.leg-swings",
@@ -357,7 +391,9 @@
       "terminationRule": "Stop if position degrades.",
       "source": "Preparation",
       "regression": "Reduced range",
-      "progression": "Full range"
+      "progression": "Full range",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.inchworm",
@@ -374,7 +410,9 @@
       "terminationRule": "Stop if position degrades.",
       "source": "Preparation",
       "regression": "Reduced range",
-      "progression": "Full range"
+      "progression": "Full range",
+      "decayFloorFactor": null,
+      "decayMetric": null
     },
     {
       "id": "ex.lateral-lunge",
@@ -391,7 +429,9 @@
       "terminationRule": "Stop if position degrades.",
       "source": "Preparation",
       "regression": "Reduced range",
-      "progression": "Full range"
+      "progression": "Full range",
+      "decayFloorFactor": null,
+      "decayMetric": null
     }
   ],
   "sessionTemplates": [
@@ -454,6 +494,34 @@
       "ledger": {
         "velocityFull": true,
         "velocityPrime": true
+      },
+      "compression": {
+        "75": {
+          "cut": [
+            "ex.vertical-jump"
+          ],
+          "note": "Secondary jump variant dropped; throws and primary jump intact."
+        },
+        "50": {
+          "cut": [
+            "ex.vertical-jump",
+            "ex.back-squat"
+          ],
+          "note": "Speed-strength dropped. Power block only."
+        },
+        "25": {
+          "keepOnly": [
+            "ex.med-ball-throw"
+          ],
+          "note": "Max-intent throw block only. This is what makes it a TD1."
+        }
+      },
+      "compressionRule": "TD1 compresses inward toward the max-intent throw block. That block is what the session is FOR \u2014 everything else is supporting work, and a TD1 without it does not count as a TD1.",
+      "volumeCap": {
+        "label": "THROWS",
+        "limit": 36,
+        "countOf": "maxIntent",
+        "section": "power"
       }
     },
     {
@@ -513,7 +581,39 @@
           "primeExerciseId": null
         }
       ],
-      "ledger": {}
+      "ledger": {},
+      "compression": {
+        "75": {
+          "cut": [
+            "ex.overhead-press"
+          ],
+          "note": "Accessory press dropped."
+        },
+        "50": {
+          "cut": [
+            "ex.split-squat",
+            "ex.overhead-press",
+            "ex.weighted-pullup"
+          ],
+          "note": "Accessories dropped. Primary and one secondary."
+        },
+        "25": {
+          "keepOnly": [
+            "ex.trap-bar-deadlift"
+          ],
+          "modify": {
+            "ex.trap-bar-deadlift": "3 \u00d7 3"
+          },
+          "note": "Primary only, reduced volume."
+        }
+      },
+      "compressionRule": "TD2 compresses by shedding accessories first, then secondaries. The primary lift is the last thing to go.",
+      "volumeCap": {
+        "label": "PRIME SETS",
+        "limit": 12,
+        "countOf": "prime",
+        "section": "strength"
+      }
     },
     {
       "id": "tmpl.td3-elastic",
@@ -563,6 +663,33 @@
       ],
       "ledger": {
         "vo2max": true
+      },
+      "compression": {
+        "75": {
+          "modify": {
+            "ex.pogo-hops": "3 \u00d7 10"
+          },
+          "note": "Plyo volume reduced."
+        },
+        "50": {
+          "cut": [
+            "ex.pogo-hops"
+          ],
+          "note": "Plyo dropped. Conditioning only."
+        },
+        "25": {
+          "keepOnly": [
+            "ex.bike-intervals"
+          ],
+          "note": "The 4x4 only."
+        }
+      },
+      "compressionRule": "TD3 compresses toward the 4x4. The aerobic exposure is the ledger-bearing element; plyometrics are secondary.",
+      "volumeCap": {
+        "label": "CONTACTS",
+        "limit": 90,
+        "countOf": "contacts",
+        "section": "plyo"
       }
     },
     {
@@ -614,6 +741,30 @@
       "ledger": {
         "velocityFull": true,
         "velocityPrime": true
+      },
+      "compression": {
+        "75": {
+          "note": "No cut at 75%."
+        },
+        "50": {
+          "cut": [
+            "ex.back-squat"
+          ],
+          "note": "Strength dropped."
+        },
+        "25": {
+          "keepOnly": [
+            "ex.vertical-jump"
+          ],
+          "note": "Jump block only."
+        }
+      },
+      "compressionRule": "TD-A compresses toward its jump block, for the same reason TD1 does.",
+      "volumeCap": {
+        "label": "JUMPS",
+        "limit": 36,
+        "countOf": "maxIntent",
+        "section": "power"
       }
     },
     {
@@ -662,7 +813,23 @@
           "primeExerciseId": "ex.bench-press"
         }
       ],
-      "ledger": {}
+      "ledger": {},
+      "compression": {
+        "50": {
+          "cut": [
+            "ex.bench-press"
+          ],
+          "note": "Secondary dropped."
+        },
+        "25": {
+          "keepOnly": [
+            "ex.trap-bar-deadlift"
+          ],
+          "note": "Primary only."
+        }
+      },
+      "compressionRule": "TD-B-STR compresses to its primary lift.",
+      "volumeCap": null
     },
     {
       "id": "tmpl.td-b-esd",
@@ -704,7 +871,23 @@
       ],
       "ledger": {
         "vo2max": true
-      }
+      },
+      "compression": {
+        "50": {
+          "cut": [
+            "ex.zone2-ride"
+          ],
+          "note": "Zone 2 dropped."
+        },
+        "25": {
+          "keepOnly": [
+            "ex.bike-intervals"
+          ],
+          "note": "The 4x4 only."
+        }
+      },
+      "compressionRule": "TD-B-ESD compresses to the 4x4.",
+      "volumeCap": null
     },
     {
       "id": "tmpl.rd",
@@ -744,7 +927,10 @@
           "primeExerciseId": null
         }
       ],
-      "ledger": {}
+      "ledger": {},
+      "compression": {},
+      "compressionRule": "Recovery Days are not compressed \u2014 density is unchanged by design.",
+      "volumeCap": null
     }
   ],
   "blocks": [
@@ -837,84 +1023,156 @@
       "appliesTo": [
         "ex.back-squat",
         "ex.split-squat"
-      ]
+      ],
+      "targetQuality": "Movement quality.",
+      "dosingSignature": "As prescribed.",
+      "validSubstitution": "An equivalent pattern at the same intent.",
+      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
+      "failureMode": null,
+      "ledgerKey": null
     },
     {
       "id": "tag.unilateral-squat",
       "label": "Unilateral Squat",
       "appliesTo": [
         "ex.split-squat"
-      ]
+      ],
+      "targetQuality": "Movement quality.",
+      "dosingSignature": "As prescribed.",
+      "validSubstitution": "An equivalent pattern at the same intent.",
+      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
+      "failureMode": null,
+      "ledgerKey": null
     },
     {
       "id": "tag.hinge",
       "label": "Hinge",
       "appliesTo": [
         "ex.trap-bar-deadlift"
-      ]
+      ],
+      "targetQuality": "Movement quality.",
+      "dosingSignature": "As prescribed.",
+      "validSubstitution": "An equivalent pattern at the same intent.",
+      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
+      "failureMode": null,
+      "ledgerKey": null
     },
     {
       "id": "tag.horizontal-press",
       "label": "Horizontal Press",
       "appliesTo": [
         "ex.bench-press"
-      ]
+      ],
+      "targetQuality": "Movement quality.",
+      "dosingSignature": "As prescribed.",
+      "validSubstitution": "An equivalent pattern at the same intent.",
+      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
+      "failureMode": null,
+      "ledgerKey": null
     },
     {
       "id": "tag.vertical-press",
       "label": "Vertical Press",
       "appliesTo": [
         "ex.overhead-press"
-      ]
+      ],
+      "targetQuality": "Movement quality.",
+      "dosingSignature": "As prescribed.",
+      "validSubstitution": "An equivalent pattern at the same intent.",
+      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
+      "failureMode": null,
+      "ledgerKey": null
     },
     {
       "id": "tag.vertical-pull",
       "label": "Vertical Pull",
       "appliesTo": [
         "ex.weighted-pullup"
-      ]
+      ],
+      "targetQuality": "Movement quality.",
+      "dosingSignature": "As prescribed.",
+      "validSubstitution": "An equivalent pattern at the same intent.",
+      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
+      "failureMode": null,
+      "ledgerKey": null
     },
     {
       "id": "tag.horizontal-jump",
       "label": "Horizontal Jump",
       "appliesTo": [
         "ex.broad-jump"
-      ]
+      ],
+      "targetQuality": "Horizontal power expressed at maximal intent.",
+      "dosingSignature": ">=3 maximal jumps, full reset between reps.",
+      "validSubstitution": "Any maximal horizontal jump variant \u2014 standing long jump, bounds for distance.",
+      "invalidSubstitution": "Repeated jumps for time, or any variant done under fatigue.",
+      "failureMode": "Distance falling across reps means the quality is gone; more reps add fatigue, not power.",
+      "ledgerKey": "velocityFull"
     },
     {
       "id": "tag.vertical-jump",
       "label": "Vertical Jump",
       "appliesTo": [
         "ex.vertical-jump"
-      ]
+      ],
+      "targetQuality": "Vertical power expressed at maximal intent.",
+      "dosingSignature": ">=3 maximal jumps, full reset between reps.",
+      "validSubstitution": "Any maximal vertical jump variant \u2014 CMJ, squat jump, box jump for height.",
+      "invalidSubstitution": "Jump circuits, or anything continuous.",
+      "failureMode": null,
+      "ledgerKey": "velocityFull"
     },
     {
       "id": "tag.throw",
       "label": "Throw",
       "appliesTo": [
         "ex.med-ball-throw"
-      ]
+      ],
+      "targetQuality": "Rotational power expressed at maximal intent.",
+      "dosingSignature": ">=3 maximal throws per side, full reset between reps, no fatigue accumulation.",
+      "validSubstitution": "Any implement thrown at maximal intent with full reset \u2014 rotational cable, shot toss, sledge.",
+      "invalidSubstitution": "Anything performed for reps under fatigue, or at submaximal intent.",
+      "failureMode": "A throw done \"for conditioning\" is not a throw. Intent is the dose.",
+      "ledgerKey": "velocityPrime"
     },
     {
       "id": "tag.plyo",
       "label": "Plyometric",
       "appliesTo": [
         "ex.pogo-hops"
-      ]
+      ],
+      "targetQuality": "Elastic stiffness with minimal ground contact time.",
+      "dosingSignature": "Contacts kept under the prescribed cap, ground contact time short and quiet.",
+      "validSubstitution": "Any low-amplitude, high-stiffness hop variant.",
+      "invalidSubstitution": "Any variant with long ground contact, or contacts past the cap.",
+      "failureMode": "Loud or slow contacts mean the elastic quality is gone.",
+      "ledgerKey": null
     },
     {
       "id": "tag.vo2max",
       "label": "VO2max",
       "appliesTo": [
         "ex.bike-intervals"
-      ]
+      ],
+      "targetQuality": "Aerobic power at or above 90% HRmax.",
+      "dosingSignature": "4 x 4 min at >=90% HRmax, with interval 1 reaching the threshold.",
+      "validSubstitution": "Any modality holding >=90% HRmax for 4 x 4 min \u2014 bike, row, ski, incline run.",
+      "invalidSubstitution": "Anything that never reaches 90% HRmax, or any interval structure shorter than 4 min.",
+      "failureMode": "A 4x4 that never reaches 90% HRmax in interval 1 is not a VO2max session. Log it as missed.",
+      "ledgerKey": "vo2max"
     },
     {
       "id": "tag.zone2",
       "label": "Zone 2",
       "appliesTo": [
         "ex.zone2-ride"
-      ]
+      ],
+      "targetQuality": "Aerobic base at conversational intensity.",
+      "dosingSignature": "Continuous work at nasal-breathing pace.",
+      "validSubstitution": "Any continuous modality held at conversational pace.",
+      "invalidSubstitution": "Anything requiring mouth breathing to sustain.",
+      "failureMode": null,
+      "ledgerKey": null
     },
     {
       "id": "tag.recovery",
@@ -922,7 +1180,13 @@
       "appliesTo": [
         "ex.mobility-flow",
         "ex.easy-walk"
-      ]
+      ],
+      "targetQuality": "Movement quality.",
+      "dosingSignature": "As prescribed.",
+      "validSubstitution": "An equivalent pattern at the same intent.",
+      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
+      "failureMode": null,
+      "ledgerKey": null
     }
   ],
   "testDefs": [

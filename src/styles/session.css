@@ -330,3 +330,251 @@
 .undo-chip__action { color: var(--text); font-weight: 700; }
 
 .info__text { margin: 0 0 14px; font-size: 13px; line-height: 1.45; color: var(--text); }
+
+/* ---- Phase 5b: header controls ---- */
+
+.session__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.session__ctl {
+  min-height: var(--tap-min);
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.session__ctl[aria-pressed='true'] { color: var(--text); border-color: var(--text-dim); }
+
+.session__badge {
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--alert);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.session__compnote {
+  margin: 0 0 14px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+.session__finish { width: 100%; margin-top: 8px; }
+
+/* ---- volume cap in a section header ---- */
+
+.exos__cap {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- SUB control ---- */
+
+.exercise__sub {
+  min-height: var(--tap-min);
+  padding: 0 10px;
+  margin: -12px 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.exercise__abort { width: 100%; margin-top: 12px; }
+
+/* Cut by compression: struck through, dimmed, non-interactive. */
+.exercise[data-cut] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.exercise[data-cut] .exercise__name,
+.exercise[data-cut] .exercise__dose {
+  text-decoration: line-through;
+  color: var(--text-faint);
+}
+
+/* ---- instrumentation ---- */
+
+.exercise__ratio {
+  margin: 6px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.decay {
+  margin: 10px 0 2px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.decay__session { color: var(--text-faint); }
+
+.setrow[data-below-floor] .setrow__label { color: var(--alert); }
+.setrow[data-below-floor] { border-top-color: var(--alert); }
+
+.setrow__last {
+  flex: none;
+  min-height: var(--tap-min);
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: none;
+  color: var(--text-faint);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- substitution sheet ---- */
+
+.sub__body { margin: 0 0 14px; font-size: 13px; line-height: 1.45; }
+
+.sub__valid { border-left: 3px solid var(--velocity); padding-left: 12px; margin-bottom: 14px; }
+.sub__invalid { border-left: 3px solid var(--alert); padding-left: 12px; margin-bottom: 14px; }
+
+.sub__failure {
+  margin: 0 0 16px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--strength);
+}
+
+.sub__note {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-button);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.binary { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+
+.binary__opt {
+  min-height: var(--tap-primary);
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-button);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.binary__opt[aria-checked='true'] {
+  border-color: var(--text);
+  background: var(--border);
+}
+
+/* ---- ESD form ---- */
+
+.esd__field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* ---- compression sheet ---- */
+
+.comp__rule { margin: 0 0 18px; font-size: 13px; line-height: 1.45; color: var(--text-dim); }
+.comp__levels { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+.comp__level {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap-primary);
+  padding: 0 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-button);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.comp__level[aria-pressed='true'] { border-color: var(--text); background: var(--border); }
+.comp__pct { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.comp__hint { font-size: 11px; letter-spacing: 0.06em; color: var(--text-dim); }
+
+/* ---- summary ---- */
+
+.summary { margin: 0 0 18px; }
+
+.summary__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary__key { font-size: 11px; letter-spacing: 0.06em; color: var(--text-dim); }
+
+.summary__val {
+  margin: 0;
+  font-size: 15px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary__sub { display: block; font-size: 12px; }
+
+.summary__ledger { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+
+.summary__delta {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--velocity);
+  font-variant-numeric: tabular-nums;
+}
+
+.summary__delta--none { color: var(--text-faint); }
+
+/* ---- training mode: bigger numerals, less chrome ---- */
+
+.session[data-training-mode] .exercise__intent,
+.session[data-training-mode] .exercise__source,
+.session[data-training-mode] .decay__session { display: none; }
+
+.session[data-training-mode] .exos__head { min-height: 32px; }
+.session[data-training-mode] .exercise__name { font-size: 17px; }
+.session[data-training-mode] .exercise__dose { font-size: 15px; color: var(--text); }
+.session[data-training-mode] .nstep__value,
+.session[data-training-mode] .nstep__input { font-size: 22px; }
+.session[data-training-mode] .setrow__label { font-size: 13px; color: var(--text); }
+.session[data-training-mode] .decay { font-size: 13px; color: var(--text); }

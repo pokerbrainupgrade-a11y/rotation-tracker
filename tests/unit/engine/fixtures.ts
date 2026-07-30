@@ -15,6 +15,7 @@ const RX = {
   sets: 3, reps: 3, perSide: false, restSec: 90,
   restPurpose: 'TEST', intent: 'test intent', terminationRule: 'test rule',
   source: 'test', regression: 'easier', progression: 'harder',
+  decayFloorFactor: null, decayMetric: null,
 } as const;
 
 export const exercises: Exercise[] = [
@@ -45,6 +46,7 @@ export const td1: SessionTemplate = {
     },
   ],
   ledger: { velocityFull: true, velocityPrime: true },
+  compression: {}, compressionRule: 'test rule', volumeCap: null,
 };
 
 export const td2: SessionTemplate = {
@@ -61,6 +63,7 @@ export const td2: SessionTemplate = {
     },
   ],
   ledger: {},
+  compression: {}, compressionRule: 'test rule', volumeCap: null,
 };
 
 export const td3: SessionTemplate = {
@@ -77,6 +80,7 @@ export const td3: SessionTemplate = {
     },
   ],
   ledger: { vo2max: true },
+  compression: {}, compressionRule: 'test rule', volumeCap: null,
 };
 
 export const rd: SessionTemplate = {
@@ -93,6 +97,7 @@ export const rd: SessionTemplate = {
     },
   ],
   ledger: {},
+  compression: {}, compressionRule: 'test rule', volumeCap: null,
 };
 
 export const templates: SessionTemplate[] = [td1, td2, td3, rd];
