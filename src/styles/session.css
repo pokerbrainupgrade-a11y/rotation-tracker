@@ -787,3 +787,159 @@
   font-size: 11px;
   letter-spacing: 0.06em;
 }
+
+/* ---- Phase 7: tests tab ---- */
+
+.tests { padding: calc(var(--safe-t) + 10px) 14px calc(var(--safe-b) + 86px); }
+
+.cadence {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.cadence__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 28px;
+}
+
+.cadence__label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+/* The counter proportionally closer to its threshold leads in --text; the
+   other stays dim. At or past threshold both go --alert. */
+.cadence__value {
+  font-size: 15px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.cadence__row[data-leading] .cadence__value { color: var(--text); }
+.cadence__value[data-due] { color: var(--alert); }
+
+.gate {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.gate[data-status='fail-screen'],
+.gate[data-status='fail-power'] { color: var(--alert); }
+.gate--regression { color: var(--strength); }
+
+.tests__actions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.tests__actions .btn { width: 100%; }
+
+.testrow { border-bottom: 1px solid var(--border); }
+.testrow[data-grouped] { padding-left: 14px; }
+
+.testrow__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: var(--tap-min);
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.testrow__name { flex: 1; min-width: 0; font-size: 15px; }
+.testrow__right { display: flex; align-items: center; gap: 8px; }
+
+.testrow__value {
+  font-size: 20px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.testrow__none { font-size: 11px; letter-spacing: 0.06em; color: var(--text-dim); }
+
+.testrow__delta {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.testrow__ratio {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.testrow__detail { padding: 6px 0 14px; }
+.testrow__log { width: 100%; margin-top: 12px; }
+
+.spark { display: block; overflow: visible; }
+
+/* ---- charts: no gridlines, no legend, transparent ---- */
+
+.chart { margin: 0 0 12px; }
+.chart__svg { width: 100%; height: 200px; display: block; background: none; }
+.chart__label { font-size: 11px; letter-spacing: 0.06em; color: var(--text-dim); }
+
+.chart__axes {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__empty {
+  margin: 0 0 12px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.chart__single {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.history { width: 100%; border-collapse: collapse; font-size: 13px; }
+.history td { padding: 6px 0; border-bottom: 1px solid var(--border); }
+.history td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+
+.log__ratio {
+  margin: 12px 0;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.binary--row { flex-direction: row; }
+
+.run__skip {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: calc(var(--safe-b) + 10px);
+  z-index: 50;
+  min-height: var(--tap-min);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}

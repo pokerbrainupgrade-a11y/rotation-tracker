@@ -2,6 +2,7 @@ import { daysBetweenLocal } from '../data/dates';
 import { toLocalDate } from '../data/dates';
 import type { LedgerKey, RotationPosition, ScheduledSession, SessionTemplate } from '../types';
 import type { LedgerRow } from './ledger';
+import type { BatteryCadence } from './battery';
 
 /**
  * Ordering-constraint warnings.
@@ -23,6 +24,8 @@ export interface ConstraintsInput {
   ledger: LedgerRow[];
   templates: SessionTemplate[];
   now: Date;
+  /** Battery cadence, when the caller has it. Absent = no battery warnings. */
+  cadence?: BatteryCadence | null;
 }
 
 /** Neural load by position. Drives the CNS-descent check. */
@@ -38,6 +41,8 @@ export const NEURAL_LOAD: Record<RotationPosition, number> = {
 
 const MAX_INTENT_POSITIONS: RotationPosition[] = ['TD1', 'TD-A'];
 const ESD_POSITIONS: RotationPosition[] = ['TD3', 'TD-B-ESD'];
+
+export const BATTERY_RATIONALE_IDS = ['BATTERY_DUE_FULL', 'BATTERY_DUE_MINI'] as const;
 
 const QUALITY_LABEL: Record<LedgerKey, string> = {
   velocityFull: 'Velocity (full)',
@@ -196,6 +201,31 @@ function evaluate(input: ConstraintsInput): Warning[] {
         dismissible: true,
       });
     }
+  }
+
+  // BATTERY_DUE_FULL — NOT dismissible, like LEDGER_FLOOR. It clears only on a
+  // completed battery, because a dismissed testing cadence is one you stop
+  // keeping.
+  const cadence = input.cadence;
+  if (cadence?.fullDue) {
+    const cal = cadence.calendarDaysSinceFull < 0 ? '—' : String(cadence.calendarDaysSinceFull);
+    warnings.push({
+      id: 'BATTERY_DUE_FULL',
+      severity: 'alert',
+      message:
+        `Full battery due — ${cadence.trainingDaysSinceFull} training days / ` +
+        `${cal} calendar days since last.`,
+      dismissible: false,
+    });
+  }
+
+  if (cadence?.miniDue) {
+    warnings.push({
+      id: 'BATTERY_DUE_MINI',
+      severity: 'warn',
+      message: `Mini battery due — ${cadence.trainingDaysSinceMini} training days since last.`,
+      dismissible: true,
+    });
   }
 
   // LEDGER_FLOOR — NOT dismissible. It clears only when the count recovers.

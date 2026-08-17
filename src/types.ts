@@ -1,5 +1,5 @@
 export const SCHEMA_VERSION = 3;
-export const SEED_VERSION = 1;
+export const SEED_VERSION = 2;
 
 export type Units = 'lb' | 'kg';
 export type Side = 'L' | 'R' | null;
@@ -352,6 +352,22 @@ export interface TestDef {
   unit: string;
   battery: 'full' | 'mini' | 'both';
   bilateral: boolean;                // true -> results logged per side
+  /**
+   * Which direction counts as improvement. false for metrics where lower is
+   * better — ground contact time, sprint splits. Getting this wrong renders a
+   * genuine improvement in the regression colour, which is the exact bug the
+   * field exists to prevent.
+   */
+  higherIsBetter: boolean;
+  /**
+   * Multi-value tests share a group id, and render indented under the parent.
+   * null for standalone tests.
+   */
+  group: string | null;
+  /** Counts toward the progression gate's power-metric tally. */
+  powerMetric: boolean;
+  /** Pass/fail tests have no chart, no delta, and require a note on fail. */
+  kind: 'numeric' | 'passfail';
   deprecated?: boolean;
 }
 

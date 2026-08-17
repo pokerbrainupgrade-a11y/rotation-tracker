@@ -9,11 +9,13 @@ import {
   listExercises,
   listSetLogs,
   listEsdLogs,
+  listTestResults,
 } from '../data/repo';
 import { computeLedger, type LedgerRow } from '../engine/ledger';
 import { evaluateConstraints, type Warning } from '../engine/constraints';
 import { nextPosition, type Density } from '../engine/rotation';
 import { isDeloadPosition } from '../engine/blocks';
+import { batteryCadence } from '../engine/battery';
 import { exportStatus, type ExportStatusInfo } from '../lib/exportStatus';
 import type {
   Block,
@@ -89,14 +91,16 @@ export function useDashboard(now: Date = new Date()): DashboardState {
         return;
       }
 
-      const [scheduled, setLogs, esdLogs, templates, exercises, blocks] = await Promise.all([
-        listScheduled(),
-        listSetLogs(),
-        listEsdLogs(),
-        listSessionTemplates(),
-        listExercises(),
-        listBlocks(),
-      ]);
+      const [scheduled, setLogs, esdLogs, templates, exercises, blocks, testResults] =
+        await Promise.all([
+          listScheduled(),
+          listSetLogs(),
+          listEsdLogs(),
+          listSessionTemplates(),
+          listExercises(),
+          listBlocks(),
+          listTestResults(),
+        ]);
       if (cancelled) return;
 
       const block =
@@ -113,7 +117,10 @@ export function useDashboard(now: Date = new Date()): DashboardState {
       const ledger = computeLedger({
         scheduled, setLogs, esdLogs, templates, exercises, block, now,
       });
-      const warnings = evaluateConstraints({ schedule: scheduled, ledger, templates, now });
+      const cadence = batteryCadence(testResults, scheduled, now);
+      const warnings = evaluateConstraints({
+        schedule: scheduled, ledger, templates, now, cadence,
+      });
 
       // Next position comes from the engine, never recomputed here.
       const position = nextPosition(scheduled, DENSITY);

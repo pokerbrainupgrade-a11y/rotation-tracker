@@ -44,6 +44,8 @@ export type ScenarioName =
   | 'setup'
   | 'setup-fail'
   | 'deload-position'
+  | 'battery-due'
+  | 'battery-fresh'
   | 'db-error'
   | 'no-profile';
 
@@ -261,6 +263,21 @@ function build(name: ScenarioName, today: string): Built {
         setLogs: [], esdLogs: [],
       };
 
+    // No battery marker at all plus plenty of training days -> full battery due.
+    case 'battery-due':
+      return {
+        scheduled: Array.from({ length: 26 }, (_, i) =>
+          session('TD2', 26 - i, today, { id: `bd-${i}` }),
+        ),
+        setLogs: [], esdLogs: [],
+      };
+
+    case 'battery-fresh':
+      return {
+        scheduled: [session('TD2', 1, today, { id: 'bf-1' })],
+        setLogs: [], esdLogs: [],
+      };
+
     case 'session-ready':
       return {
         scheduled: [session('TD1', 0, today, { id: 'run-1', status: 'planned' })],
@@ -381,6 +398,31 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
     rotationNumber: name === 'deload-position' ? 4 : 2,
   });
 
+  // A recent completion marker keeps the battery counters low. 'healthy' needs
+  // one too: 28 training days with no battery ever logged is genuinely due, so
+  // without this the "no warnings at all" scenario would carry one.
+  if (name === 'battery-fresh' || name === 'healthy') {
+    const ttx = db.transaction('tests', 'readwrite');
+    await ttx.store.clear();
+    // Both markers: a full battery does not reset the mini counter, so a
+    // scenario meaning "nothing is due" has to carry each one.
+    await ttx.store.put({
+      id: 'marker-full', localDate: today, testId: 'test.battery-full-complete',
+      side: null, value: 1, unit: 'marker', battery: 'full' as const,
+      note: null, ts: now.getTime(),
+    });
+    await ttx.store.put({
+      id: 'marker-mini', localDate: today, testId: 'test.battery-mini-complete',
+      side: null, value: 1, unit: 'marker', battery: 'mini' as const,
+      note: null, ts: now.getTime(),
+    });
+    await ttx.done;
+  } else {
+    const ttx = db.transaction('tests', 'readwrite');
+    await ttx.store.clear();
+    await ttx.done;
+  }
+
   const built = build(name, today);
 
   const wtx = db.transaction(['scheduled', 'setLogs', 'esdLogs'], 'readwrite');
@@ -404,7 +446,9 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
     name !== 'session-td3' &&
     name !== 'session-at-cap' &&
     name !== 'session-history' &&
-    name !== 'deload-position'
+    name !== 'deload-position' &&
+    name !== 'battery-due' &&
+    name !== 'battery-fresh'
   ) {
     const planned = session('TD1', -1, today, { status: 'planned' });
     await db.put('scheduled', planned);

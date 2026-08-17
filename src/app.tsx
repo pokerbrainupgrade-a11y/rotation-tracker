@@ -5,6 +5,7 @@ import { ErrorScreen } from './components/ErrorScreen';
 import { Placeholder } from './screens/Placeholder';
 import { Dashboard } from './screens/Dashboard';
 import { Calendar } from './screens/Calendar';
+import { Tests } from './screens/Tests';
 import { Session } from './screens/Session';
 import { Setup } from './screens/Setup';
 import { Maxes } from './screens/Maxes';
@@ -190,6 +191,8 @@ export function App() {
 
       {route === 'calendar' && <Calendar onStart={(id) => setRunningId(id)} />}
 
+      {route === 'tests' && <Tests />}
+
       {route === 'maxes' && (
         <Maxes
           focusLiftId={focusLift}
@@ -219,7 +222,7 @@ export function App() {
       )}
 
       {route !== 'dashboard' && route !== 'settings' && route !== 'calendar' &&
-        route !== 'maxes' && (
+        route !== 'maxes' && route !== 'tests' && (
         <Placeholder title={SCREEN_COPY[activeTab].title} note={SCREEN_COPY[activeTab].note} />
       )}
 

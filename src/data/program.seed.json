@@ -1,7 +1,7 @@
 {
   "_placeholder": true,
   "_note": "STRUCTURAL PLACEHOLDER \u2014 NOT A TRAINING PRESCRIPTION. The real program definition has not been supplied yet. IDs here are a permanent contract the moment any session is logged against them, so replace this file BEFORE logging real training. See README 'Replacing the placeholder seed'.",
-  "seedVersion": 1,
+  "seedVersion": 2,
   "lifts": [
     {
       "id": "lift.back-squat",
@@ -1466,46 +1466,180 @@
   ],
   "testDefs": [
     {
+      "id": "test.mb-throw-standing",
+      "name": "Standing MB Throw",
+      "unit": "m",
+      "battery": "full",
+      "bilateral": true,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": true,
+      "kind": "numeric"
+    },
+    {
+      "id": "test.mb-throw-seated",
+      "name": "Seated MB Throw",
+      "unit": "m",
+      "battery": "full",
+      "bilateral": true,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": true,
+      "kind": "numeric"
+    },
+    {
       "id": "test.cmj",
       "name": "Countermovement Jump",
       "unit": "cm",
       "battery": "both",
-      "bilateral": false
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": "cmj",
+      "powerMetric": true,
+      "kind": "numeric"
+    },
+    {
+      "id": "test.cmj-mrsi",
+      "name": "CMJ mRSI",
+      "unit": "ratio",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": "cmj",
+      "powerMetric": false,
+      "kind": "numeric"
+    },
+    {
+      "id": "test.cmj-asym",
+      "name": "CMJ Asymmetry",
+      "unit": "%",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": false,
+      "group": "cmj",
+      "powerMetric": false,
+      "kind": "numeric"
     },
     {
       "id": "test.broad-jump",
       "name": "Broad Jump",
       "unit": "cm",
       "battery": "both",
-      "bilateral": false
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": true,
+      "kind": "numeric"
+    },
+    {
+      "id": "test.drop-jump-rsi",
+      "name": "Drop Jump RSI",
+      "unit": "ratio",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": "dropjump",
+      "powerMetric": true,
+      "kind": "numeric"
+    },
+    {
+      "id": "test.club-head-speed",
+      "name": "Club Head Speed",
+      "unit": "mph",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": true,
+      "kind": "numeric"
+    },
+    {
+      "id": "test.drop-jump-gct",
+      "name": "Drop Jump GCT",
+      "unit": "ms",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": false,
+      "group": "dropjump",
+      "powerMetric": false,
+      "kind": "numeric"
     },
     {
       "id": "test.single-leg-hop",
       "name": "Single-Leg Hop",
       "unit": "cm",
       "battery": "full",
-      "bilateral": true
+      "bilateral": true,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric"
     },
     {
       "id": "test.imtp",
       "name": "Isometric Mid-Thigh Pull",
       "unit": "N",
       "battery": "full",
-      "bilateral": false
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric"
     },
     {
       "id": "test.grip",
       "name": "Grip Strength",
       "unit": "kg",
       "battery": "full",
-      "bilateral": true
+      "bilateral": true,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric"
     },
     {
       "id": "test.vo2max-est",
       "name": "Estimated VO2max",
       "unit": "ml/kg/min",
       "battery": "full",
-      "bilateral": false
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric"
+    },
+    {
+      "id": "test.movement-screen",
+      "name": "Movement Screen",
+      "unit": "pass/fail",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "passfail"
+    },
+    {
+      "id": "test.battery-full-complete",
+      "name": "Full Battery Completed",
+      "unit": "marker",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "passfail"
+    },
+    {
+      "id": "test.battery-mini-complete",
+      "name": "Mini Battery Completed",
+      "unit": "marker",
+      "battery": "mini",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "passfail"
     }
   ]
 }

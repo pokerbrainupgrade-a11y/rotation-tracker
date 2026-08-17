@@ -94,7 +94,7 @@ describe('acceptance 3 — seed update isolation', () => {
 
     // Bump the seed: rename a label and add an exercise.
     const v2 = clone();
-    v2.seedVersion = 2;
+    v2.seedVersion = 3;
     const firstLift = v2.lifts[0];
     expect(firstLift).toBeDefined();
     if (firstLift) firstLift.name = 'Back Squat (High Bar)';
@@ -116,7 +116,7 @@ describe('acceptance 3 — seed update isolation', () => {
       deloadElement: 'recovery',
     });
 
-    const didSeed = await ensureSeeded(v2, 2);
+    const didSeed = await ensureSeeded(v2, 3);
     expect(didSeed).toBe(true);
 
     // Static stores replaced.
@@ -132,18 +132,18 @@ describe('acceptance 3 — seed update isolation', () => {
 
     // Only the recorded seedVersion moved on the profile.
     const after = await db.get('profile', 'me');
-    expect(after).toEqual({ ...before.profile, seedVersion: 2 });
+    expect(after).toEqual({ ...before.profile, seedVersion: 3 });
   });
 
   it('does not reseed when the stored version already matches', async () => {
     await seededDb();
-    expect(await ensureSeeded(programSeed, 1)).toBe(false);
+    expect(await ensureSeeded(programSeed, 2)).toBe(false);
   });
 
   it('reseeds when static stores are empty even at a matching version', async () => {
     const db = await seededDb();
     await db.clear('exercises');
-    expect(await ensureSeeded(programSeed, 1)).toBe(true);
+    expect(await ensureSeeded(programSeed, 2)).toBe(true);
     expect(await db.count('exercises')).toBe(programSeed.exercises.length);
   });
 });

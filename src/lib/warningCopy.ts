@@ -28,6 +28,14 @@ export const WARNING_RATIONALE: Record<string, string> = {
   GAP_4D:
     'Four days without training means the rotation is no longer rolling. ' +
     'Frequency, not any single session, is what the 28-day floors measure.',
+  BATTERY_DUE_FULL:
+    'Two counters track this — training days and calendar days — because ' +
+    'rotation counts drift against the calendar. Whichever trips first is the ' +
+    'one that matters; testing later than either means comparing against a ' +
+    'baseline that has already moved.',
+  BATTERY_DUE_MINI:
+    'The mini battery is the cheap check between full ones. Skipping it means ' +
+    'the next real signal is a full battery away.',
   LEDGER_FLOOR:
     'This quality has fallen below its 28-day floor. Floors are a frequency ' +
     'contract — recovering one needs exposures scheduled, not a harder session.',
