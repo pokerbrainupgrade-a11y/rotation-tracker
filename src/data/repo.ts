@@ -16,6 +16,7 @@ import {
   type TestResult,
 } from '../types';
 import { getDb } from './db';
+import { setCanary } from './skew';
 
 /* ---------------- profile ---------------- */
 
@@ -49,6 +50,8 @@ export async function putProfile(profile: Profile): Promise<void> {
   const tx = db.transaction('profile', 'readwrite');
   await tx.store.put(profile);
   await tx.done;
+  // Eviction canary: this device has now held a profile at least once.
+  setCanary();
 }
 
 /** Read-modify-write the profile inside one transaction. */
@@ -80,6 +83,7 @@ export async function ensureProfile(blockId: string): Promise<Profile> {
   const created = defaultProfile(blockId);
   await tx.store.put(created);
   await tx.done;
+  setCanary();
   return created;
 }
 

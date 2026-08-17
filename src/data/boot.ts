@@ -1,6 +1,6 @@
 import * as repo from './repo';
 import { checkStorage } from './db';
-import { ensureSeeded, programSeed } from './seed';
+import { SeedValidationError, ensureSeeded, programSeed } from './seed';
 import { getProfile } from './repo';
 import { getStorageStatus, requestPersistence } from './persistence';
 
@@ -8,6 +8,10 @@ export interface BootResult {
   ok: boolean;
   seeded: boolean;
   persisted: boolean | null;
+  /** Seed validator problems, when the shipped program is broken. */
+  seedProblems: string[] | null;
+  /** True when a profile exists — drives eviction detection. */
+  hasProfile: boolean;
   /** True while the shipped program definition is still the placeholder. */
   placeholderSeed: boolean;
   error: { code: string; message: string } | null;
@@ -46,6 +50,8 @@ export async function boot(): Promise<BootResult> {
       seeded: false,
       persisted: null,
       placeholderSeed: isPlaceholderSeed(),
+      seedProblems: null,
+      hasProfile: false,
       error: { code: health.code, message: health.message },
     };
   }
@@ -68,7 +74,13 @@ export async function boot(): Promise<BootResult> {
       );
     }
 
-    return { ok: true, seeded, persisted, placeholderSeed, error: null };
+    const profile = await getProfile();
+    return {
+      ok: true, seeded, persisted, placeholderSeed,
+      seedProblems: null,
+      hasProfile: profile !== undefined,
+      error: null,
+    };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error('[rotation-tracker] data layer boot failed:', message);
@@ -77,6 +89,11 @@ export async function boot(): Promise<BootResult> {
       seeded: false,
       persisted: null,
       placeholderSeed: isPlaceholderSeed(),
+      // A SeedValidationError is a build defect, and naming the broken
+      // reference is the only thing that makes it fixable.
+      seedProblems:
+        err instanceof SeedValidationError ? err.problems : null,
+      hasProfile: false,
       error: { code: 'BOOT_FAILED', message },
     };
   }

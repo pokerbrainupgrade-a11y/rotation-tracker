@@ -8,14 +8,17 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node scripts/check-precache.mjs && node scripts/check-bundle.mjs",
     "preview": "vite preview",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:e2e": "playwright test",
     "lint": "eslint . && node scripts/check-hex.mjs",
     "test:coverage": "vitest run --coverage",
-    "check:hex": "node scripts/check-hex.mjs"
+    "check:hex": "node scripts/check-hex.mjs",
+    "check:bundle": "node scripts/check-bundle.mjs",
+    "check:precache": "node scripts/check-precache.mjs",
+    "test:e2e:prod": "playwright test --config playwright.prod.config.ts"
   },
   "dependencies": {
     "idb": "^8.0.3",

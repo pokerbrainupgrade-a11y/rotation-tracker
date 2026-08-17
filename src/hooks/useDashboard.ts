@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { toLocalDate } from '../data/dates';
 import { ensureBooted } from '../data/boot';
+import { looksEvicted } from '../data/skew';
 import {
   getProfile,
   listBlocks,
@@ -51,6 +52,10 @@ export interface DashboardState {
   error: { code: string; message: string } | null;
   data: DashboardData | null;
   reload: () => void;
+  /** Seed validator problems, when the shipped program is broken. */
+  seedProblems: string[] | null;
+  /** Canary says this device held a profile, and now has none. */
+  evicted: boolean;
 }
 
 /** Density is program configuration; 3:1 until Settings can change it. */
@@ -68,6 +73,8 @@ export function useDashboard(now: Date = new Date()): DashboardState {
   const [error, setError] = useState<{ code: string; message: string } | null>(null);
   const [data, setData] = useState<DashboardData | null>(null);
   const [nonce, setNonce] = useState(0);
+  const [seedProblems, setSeedProblems] = useState<string[] | null>(null);
+  const [evicted, setEvicted] = useState(false);
 
   const reload = useCallback(() => setNonce((n) => n + 1), []);
 
@@ -80,6 +87,7 @@ export function useDashboard(now: Date = new Date()): DashboardState {
 
       if (!boot.ok) {
         setError(boot.error);
+        setSeedProblems(boot.seedProblems);
         setState('error');
         return;
       }
@@ -87,6 +95,7 @@ export function useDashboard(now: Date = new Date()): DashboardState {
       const profile = await getProfile();
       if (cancelled) return;
       if (!profile) {
+        setEvicted(looksEvicted(false));
         setState('no-profile');
         return;
       }
@@ -162,7 +171,7 @@ export function useDashboard(now: Date = new Date()): DashboardState {
     // driven explicitly through `nonce`.
   }, [nonce]);
 
-  return { state, error, data, reload };
+  return { state, error, data, reload, seedProblems, evicted };
 }
 
 function formatToday(now: Date): string {

@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { TabBar } from './components/TabBar';
 import { Skeleton } from './components/Skeleton';
-import { ErrorScreen } from './components/ErrorScreen';
+import {
+  Banner, EvictedScreen, SeedInvalidScreen, SkewScreen, StorageUnavailableScreen,
+} from './components/FailureScreens';
+import { UpdatePrompt } from './components/UpdatePrompt';
+import { useAppUpdate } from './hooks/useAppUpdate';
+import { checkSkew, type SkewState } from './data/skew';
 import { Placeholder } from './screens/Placeholder';
 import { Dashboard } from './screens/Dashboard';
 import { Calendar } from './screens/Calendar';
@@ -9,6 +14,7 @@ import { Tests } from './screens/Tests';
 import { Session } from './screens/Session';
 import { Setup } from './screens/Setup';
 import { Maxes } from './screens/Maxes';
+import { Settings } from './screens/Settings';
 import { ResumeSheet } from './screens/session/ResumeSheet';
 import {
   deleteSetLog, findUnfinishedSessions, getSetLogsByScheduled, putScheduled,
@@ -22,12 +28,32 @@ import type { TabId } from './types';
 
 export function App() {
   const [route, setRoute] = useState<Route>(() => initialRoute());
-  const { state, error, data, reload } = useDashboard();
-  const [exporting, setExporting] = useState(false);
+  const { state, error, data, reload, seedProblems, evicted } = useDashboard();
   const [runningId, setRunningId] = useState<string | null>(null);
   const [resume, setResume] = useState<{ session: ScheduledSession; setCount: number } | null>(null);
   const [resumeChecked, setResumeChecked] = useState(false);
   const [focusLift, setFocusLift] = useState<string | null>(null);
+  const [skew, setSkew] = useState<SkewState | null>(null);
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [quotaError, setQuotaError] = useState<string | null>(null);
+  const update = useAppUpdate();
+
+  // Version skew runs BEFORE anything else touches the database.
+  useEffect(() => {
+    void checkSkew().then(setSkew);
+  }, []);
+
+  // A quota failure anywhere must surface, not vanish into a console.
+  useEffect(() => {
+    const onRejection = (e: PromiseRejectionEvent): void => {
+      const reason = e.reason as { name?: string; message?: string } | undefined;
+      if (reason?.name === 'QuotaExceededError') {
+        setQuotaError(reason.message ?? 'The device is out of storage.');
+      }
+    };
+    addEventListener('unhandledrejection', onRejection);
+    return () => removeEventListener('unhandledrejection', onRejection);
+  }, []);
 
   // Dashboard is the landing route on every launch, so the hash is normalised
   // once on mount rather than restored from wherever the app was last closed.
@@ -54,21 +80,6 @@ export function App() {
     if (prevRoute.current !== 'dashboard' && route === 'dashboard') reload();
     prevRoute.current = route;
   }, [route, reload]);
-
-  const onExport = useCallback(() => {
-    setExporting(true);
-    void (async () => {
-      try {
-        const { downloadBackup } = await import('./data/backup');
-        await downloadBackup();
-      } catch {
-        // Nothing more to offer here — the error screen already says storage
-        // is broken, and a failed export must not mask that.
-      } finally {
-        setExporting(false);
-      }
-    })();
-  }, []);
 
   // Resume detection on launch: a session with startedAt set and completedAt
   // null is one that was interrupted, and the interruption is usually a
@@ -114,6 +125,18 @@ export function App() {
     reload();
   }, [resume, reload]);
 
+  // --- blocking states first: nothing below may touch the database ---
+
+  if (skew === null) {
+    // Still checking. Showing the skeleton rather than the app avoids a frame
+    // of normal UI over data we may not be allowed to write.
+    return <Skeleton />;
+  }
+
+  if (skew.kind === 'newer') {
+    return <SkewScreen dataVersion={skew.dataVersion} appVersion={skew.appVersion} />;
+  }
+
   // --- four explicit app states, no flash of empty content ---
 
   if (state === 'opening') {
@@ -126,15 +149,25 @@ export function App() {
   }
 
   if (state === 'error') {
+    // A broken program definition is a build defect, and naming the broken
+    // reference is the only thing that makes it fixable.
+    if (seedProblems && seedProblems.length > 0) {
+      return <SeedInvalidScreen problems={seedProblems} />;
+    }
     // Blocking on purpose. Never silently degrade around broken storage.
     return (
-      <ErrorScreen
+      <StorageUnavailableScreen
         code={error?.code ?? 'UNKNOWN'}
         message={error?.message ?? 'The database could not be opened.'}
-        onExport={onExport}
-        exportBusy={exporting}
+        onRetry={() => location.reload()}
       />
     );
+  }
+
+  // Best-effort eviction detection: this device held a profile once, and now
+  // does not. Offer the only thing that helps.
+  if (state === 'no-profile' && evicted) {
+    return <EvictedScreen onImport={() => go('settings')} />;
   }
 
   if (state === 'no-profile') {
@@ -166,6 +199,45 @@ export function App() {
 
   return (
     <>
+      {update.available && (
+        <Banner
+          id="update"
+          tone="warn"
+          message="UPDATE AVAILABLE"
+          actionLabel="Update"
+          onAction={() => setShowUpdate(true)}
+          onDismiss={update.dismiss}
+        />
+      )}
+
+      {update.swFailed && (
+        <Banner
+          id="sw-failed"
+          tone="warn"
+          message="Offline mode is unavailable this session — the service worker did not register."
+        />
+      )}
+
+      {quotaError && (
+        <Banner
+          id="quota"
+          tone="alert"
+          message={`Write failed — the device is out of storage. Your last change was NOT saved. Export and free space. (${quotaError})`}
+          onDismiss={() => setQuotaError(null)}
+        />
+      )}
+
+      {showUpdate && (
+        <UpdatePrompt
+          profile={data?.profile ?? null}
+          onCancel={() => setShowUpdate(false)}
+          onApply={async () => {
+            await update.apply();
+            setShowUpdate(false);
+          }}
+        />
+      )}
+
       {resume && (
         <ResumeSheet
           session={resume.session}
@@ -203,23 +275,7 @@ export function App() {
         />
       )}
 
-      {route === 'settings' && (
-        <main class="screen" data-testid="settings">
-          <h1 class="screen__title">Settings</h1>
-          <button
-            type="button"
-            class="btn btn--secondary settings__row"
-            data-testid="open-maxes"
-            onClick={() => go('maxes')}
-          >
-            MAXES
-          </button>
-          <p class="screen__note">
-            Units, storage and backup controls land alongside the testing
-            battery.
-          </p>
-        </main>
-      )}
+      {route === 'settings' && <Settings onOpenMaxes={() => go('maxes')} />}
 
       {route !== 'dashboard' && route !== 'settings' && route !== 'calendar' &&
         route !== 'maxes' && route !== 'tests' && (

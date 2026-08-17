@@ -3,12 +3,7 @@ import {
   SEED_VERSION,
   USER_STORES,
   type BackupFile,
-  type EsdLog,
-  type MaxRecord,
   type Profile,
-  type ScheduledSession,
-  type SetLog,
-  type TestResult,
 } from '../types';
 import { APP_VERSION } from '../version';
 import { getDb } from './db';
@@ -382,7 +377,14 @@ export async function prepareImport(input: unknown): Promise<ImportPlan> {
   };
 }
 
-/** Replace all user stores with the plan's contents, in ONE transaction. */
+/**
+ * Replace all user stores with the plan's contents, in ONE transaction.
+ *
+ * If any write fails, IndexedDB aborts the whole transaction and the original
+ * data is left exactly as it was. The error names the store and record index
+ * that failed, and says explicitly that nothing changed — "import failed" alone
+ * leaves you unable to tell whether you still have your history.
+ */
 export async function commitImport(plan: ImportPlan): Promise<ImportPlan> {
   const db = await getDb();
   const d = plan.backup.data;
@@ -396,17 +398,48 @@ export async function commitImport(plan: ImportPlan): Promise<ImportPlan> {
     tx.objectStore('esdLogs').clear(),
     tx.objectStore('tests').clear(),
   ]);
-  await Promise.all([
-    tx.objectStore('profile').put({ ...d.profile, id: 'me' as const }),
-    ...d.maxes.map((r: MaxRecord) => tx.objectStore('maxes').put(r)),
-    ...d.scheduled.map((r: ScheduledSession) => tx.objectStore('scheduled').put(r)),
-    ...d.setLogs.map((r: SetLog) => tx.objectStore('setLogs').put(r)),
-    ...d.esdLogs.map((r: EsdLog) => tx.objectStore('esdLogs').put(r)),
-    ...d.tests.map((r: TestResult) => tx.objectStore('tests').put(r)),
-    tx.done,
-  ]);
+  try {
+    await tx.objectStore('profile').put({ ...d.profile, id: 'me' as const });
+    await writeAll(tx, 'maxes', d.maxes);
+    await writeAll(tx, 'scheduled', d.scheduled);
+    await writeAll(tx, 'setLogs', d.setLogs);
+    await writeAll(tx, 'esdLogs', d.esdLogs);
+    await writeAll(tx, 'tests', d.tests);
+    await tx.done;
+  } catch (err) {
+    const detail = err instanceof ImportWriteError
+      ? `${err.store} record ${err.index}`
+      : 'the profile record';
+    throw new BackupError(
+      `Import failed while writing ${detail}. The transaction was rolled ` +
+        'back — your existing data is unchanged and nothing was imported.',
+      [err instanceof Error ? err.message : String(err)],
+    );
+  }
 
   return plan;
+}
+
+class ImportWriteError extends Error {
+  constructor(readonly store: string, readonly index: number, cause: unknown) {
+    super(`${store}[${index}]: ${cause instanceof Error ? cause.message : String(cause)}`);
+    this.name = 'ImportWriteError';
+  }
+}
+
+/** Writes sequentially so a failure can name which record broke. */
+async function writeAll<T>(
+  tx: { objectStore: (name: never) => { put: (v: never) => Promise<unknown> } },
+  store: string,
+  rows: T[],
+): Promise<void> {
+  for (let i = 0; i < rows.length; i++) {
+    try {
+      await tx.objectStore(store as never).put(rows[i] as never);
+    } catch (err) {
+      throw new ImportWriteError(store, i, err);
+    }
+  }
 }
 
 /**

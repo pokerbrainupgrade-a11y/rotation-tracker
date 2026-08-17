@@ -46,6 +46,8 @@ export type ScenarioName =
   | 'deload-position'
   | 'battery-due'
   | 'battery-fresh'
+  | 'skew-newer'
+  | 'update-available'
   | 'db-error'
   | 'no-profile';
 
@@ -364,6 +366,18 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
     tx.objectStore('esdLogs').clear(),
   ]);
   await tx.done;
+
+  // Force the version-skew guard by writing a profile from a "newer" build.
+  if (name === 'skew-newer') {
+    const first = programSeed.blocks[0];
+    const profile = await ensureProfile(first?.id ?? 'block.accumulation');
+    await db.put('profile', { ...profile, schemaVersion: 99 });
+    return true;
+  }
+
+  if (name === 'update-available') {
+    (globalThis as { __forceUpdateAvailable?: boolean }).__forceUpdateAvailable = true;
+  }
 
   if (name === 'setup' || name === 'setup-fail') {
     const ptx = db.transaction('profile', 'readwrite');
