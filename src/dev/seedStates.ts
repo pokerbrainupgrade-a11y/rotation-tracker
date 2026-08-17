@@ -77,6 +77,17 @@ const TEMPLATE_BY_POSITION = new Map(
   programSeed.sessionTemplates.map((t) => [t.position, t]),
 );
 
+/**
+ * The block the scenarios run in: the first one that actually programmes a
+ * deload. The real program opens with a calibration block that never deloads
+ * and carries zero floors, so anchoring here keeps both the deload-position
+ * chip and the below-floor warnings reachable — and keeps them derived from
+ * the seed rather than hardcoded against it.
+ */
+const SCENARIO_BLOCK =
+  programSeed.blocks.find((b) => b.deloadRotation != null) ?? programSeed.blocks[0];
+const DELOAD_ROTATION = SCENARIO_BLOCK?.deloadRotation ?? 4;
+
 /** A completed session `daysAgo` back, optionally with its defining block logged. */
 function session(
   position: ScheduledSession['position'],
@@ -90,9 +101,9 @@ function session(
     id: nextId(),
     localDate,
     ts: new Date(`${localDate}T12:00:00`).getTime(),
-    templateId: template?.id ?? 'tmpl.td2-strength',
+    templateId: template?.id ?? 'TD2',
     position,
-    blockId: programSeed.blocks[0]?.id ?? 'block.accumulation',
+    blockId: SCENARIO_BLOCK?.id ?? 'b1',
     rotationNumber: 2,
     status: 'done',
     compressionLevel: 100,
@@ -111,14 +122,14 @@ function session(
 
 function maxIntentSet(scheduledId: string, ts: number): SetLog {
   return {
-    id: nextId(), scheduledId, exerciseId: 'ex.broad-jump', setIndex: 0, side: null,
+    id: nextId(), scheduledId, exerciseId: 'ex_stepbehind', setIndex: 0, side: null,
     load: null, unit: null, reps: 3, rpe: null, velocity: null, distance: 280,
     contacts: null, completed: true, note: null, ts,
   };
 }
 
 function primeSet(scheduledId: string, ts: number): SetLog {
-  return { ...maxIntentSet(scheduledId, ts), id: nextId(), exerciseId: 'ex.med-ball-throw' };
+  return { ...maxIntentSet(scheduledId, ts), id: nextId(), exerciseId: 'ex_sidetoss_prime' };
 }
 
 function vo2(scheduledId: string, ts: number, counted: boolean): EsdLog {
@@ -151,9 +162,11 @@ function healthy(today: string): Built {
     if (!position) continue;
     const s = session(position, d, today);
     scheduled.push(s);
-    if (position === 'TD1') {
-      setLogs.push(maxIntentSet(s.id, s.ts), primeSet(s.id, s.ts + 1000));
-    }
+    // velocityFull is earned on TD1's max-intent throw block; velocityPrime is
+    // earned on TD2's non-fatiguing prime. They are different sessions in this
+    // program, and seeding both onto TD1 would never satisfy the prime floor.
+    if (position === 'TD1') setLogs.push(maxIntentSet(s.id, s.ts));
+    if (position === 'TD2') setLogs.push(primeSet(s.id, s.ts));
     if (position === 'TD3') esdLogs.push(vo2(s.id, s.ts, true));
     if (position === 'RD') esdLogs.push(zone2(s.id, s.ts, 45));
   }
@@ -167,22 +180,21 @@ function build(name: ScenarioName, today: string): Built {
     case 'healthy':
       return base;
 
-    // Strip EVERY max-intent set: the TD1s still happened, but the defining
-    // block did not — exactly the case the ledger rule exists to catch.
-    // Both jump and throw have to go: velocityFull is earned by ANY max-intent
-    // exercise in a power section, not only the prime.
+    // Strip every max-intent set: the TD1s still happened, but the defining
+    // block did not — exactly the case the ledger rule exists to catch. The
+    // TD2 prime survives, so the two velocity rows visibly disagree.
     case 'below-velocity':
       return {
         ...base,
-        setLogs: base.setLogs.filter(
-          (l) => l.exerciseId !== 'ex.broad-jump' && l.exerciseId !== 'ex.med-ball-throw',
-        ),
+        setLogs: base.setLogs.filter((l) => l.exerciseId !== 'ex_stepbehind'),
       };
 
-    // Prime only. velocityFull survives on the jump, velocityPrime does not —
-    // the two rows should visibly disagree here.
+    // The mirror image: TD1's throws survive, TD2's prime does not.
     case 'below-prime':
-      return { ...base, setLogs: base.setLogs.filter((l) => l.exerciseId !== 'ex.med-ball-throw') };
+      return {
+        ...base,
+        setLogs: base.setLogs.filter((l) => l.exerciseId !== 'ex_sidetoss_prime'),
+      };
 
     case 'below-vo2max':
       return { ...base, esdLogs: base.esdLogs.filter((l) => l.type !== 'vo2max') };
@@ -233,7 +245,7 @@ function build(name: ScenarioName, today: string): Built {
         setLogs: Array.from({ length: 12 }, (_, i) => ({
           ...maxIntentSet(s.id, s.ts + i * 1000),
           id: `cap-${i}`,
-          exerciseId: 'ex.med-ball-throw',
+          exerciseId: 'ex_sidetoss',
           setIndex: i % 4,
           side: (i % 2 === 0 ? 'L' : 'R') as 'L' | 'R',
           reps: 3,
@@ -258,10 +270,12 @@ function build(name: ScenarioName, today: string): Built {
     }
 
     // A TD1 planned for today, never started. The runner's clean entry point.
-    // Rotation 4 is block.accumulation's programmed deload position.
+    // Rotation 4 is b1's programmed deload position.
     case 'deload-position':
       return {
-        scheduled: [session('TD1', 0, today, { id: 'run-1', status: 'planned', rotationNumber: 4 })],
+        scheduled: [session('TD1', 0, today, {
+          id: 'run-1', status: 'planned', rotationNumber: DELOAD_ROTATION,
+        })],
         setLogs: [], esdLogs: [],
       };
 
@@ -369,8 +383,7 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
 
   // Force the version-skew guard by writing a profile from a "newer" build.
   if (name === 'skew-newer') {
-    const first = programSeed.blocks[0];
-    const profile = await ensureProfile(first?.id ?? 'block.accumulation');
+    const profile = await ensureProfile(SCENARIO_BLOCK?.id ?? 'b1');
     await db.put('profile', { ...profile, schemaVersion: 99 });
     return true;
   }
@@ -395,8 +408,7 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
     return true;
   }
 
-  const first = programSeed.blocks[0];
-  const profile = await ensureProfile(first?.id ?? 'block.accumulation');
+  const profile = await ensureProfile(SCENARIO_BLOCK?.id ?? 'b1');
 
   const lastExport =
     name === 'export-never'
@@ -409,7 +421,7 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
   await db.put('profile', {
     ...profile,
     lastExport,
-    rotationNumber: name === 'deload-position' ? 4 : 2,
+    rotationNumber: name === 'deload-position' ? DELOAD_ROTATION : 2,
   });
 
   // A recent completion marker keeps the battery counters low. 'healthy' needs

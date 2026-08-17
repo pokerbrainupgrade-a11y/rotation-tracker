@@ -38,7 +38,7 @@ async function readStore<T = Record<string, unknown>>(
 test('8 — substitution confirm is disabled until the binary is chosen', async ({ page }) => {
   await runner(page);
 
-  await page.locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="sub-open"]').click();
+  await page.locator('[data-exercise-id="ex_sidetoss"] [data-testid="sub-open"]').click();
   const sheet = page.getByTestId('substitution-sheet');
   await expect(sheet).toBeVisible();
 
@@ -69,7 +69,7 @@ test('8 — substitution confirm is disabled until the binary is chosen', async 
 test('9 — met counts toward the ledger; not-met does not', async ({ page }) => {
   await runner(page);
 
-  await page.locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="sub-open"]').click();
+  await page.locator('[data-exercise-id="ex_sidetoss"] [data-testid="sub-open"]').click();
   await page.getByTestId('log-as-substitute').click();
   await page.getByTestId('met-yes').click();
   await page.getByTestId('substitution-confirm').click();
@@ -81,7 +81,7 @@ test('9 — met counts toward the ledger; not-met does not', async ({ page }) =>
 
   // Now the other way round.
   await runner(page);
-  await page.locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="sub-open"]').click();
+  await page.locator('[data-exercise-id="ex_sidetoss"] [data-testid="sub-open"]').click();
   await page.getByTestId('log-as-substitute').click();
   await page.getByTestId('met-no').click();
   await page.getByTestId('substitution-confirm').click();
@@ -94,7 +94,7 @@ test('9 — met counts toward the ledger; not-met does not', async ({ page }) =>
 
 test('9b — a met substitution counts on the Dashboard ledger', async ({ page }) => {
   await runner(page);
-  await page.locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="sub-open"]').click();
+  await page.locator('[data-exercise-id="ex_sidetoss"] [data-testid="sub-open"]').click();
   await page.getByTestId('log-as-substitute').click();
   await page.getByTestId('met-yes').click();
   await page.getByTestId('substitution-confirm').click();
@@ -120,7 +120,7 @@ test('10 — the 4x4 abort writes counted:false and increments the miss count', 
 }) => {
   await runner(page, 'session-td3');
 
-  const abort = page.locator('[data-exercise-id="ex.bike-intervals"] [data-testid="esd-abort"]');
+  const abort = page.locator('[data-exercise-id="ex_4x4"] [data-testid="esd-abort"]');
   await expect(abort).toBeVisible();
   await abort.click();
 
@@ -164,15 +164,15 @@ test('11 — compression 25% on TD1 leaves only the max-intent throw block', asy
 
   // Only the throw survives; everything else is cut and non-interactive.
   await expect(
-    page.locator('[data-exercise-id="ex.med-ball-throw"]'),
+    page.locator('[data-exercise-id="ex_sidetoss"]'),
   ).not.toHaveAttribute('data-cut', 'true');
-  for (const id of ['ex.broad-jump', 'ex.vertical-jump', 'ex.back-squat']) {
+  for (const id of ['ex_stepbehind', 'ex_chopslam', 'ex_trapbar']) {
     await expect(page.locator(`[data-exercise-id="${id}"]`)).toHaveAttribute('data-cut', 'true');
   }
 
   // Cut cards expose no set rows to tap.
   await expect(
-    page.locator('[data-exercise-id="ex.back-squat"] [data-testid="set-row"]'),
+    page.locator('[data-exercise-id="ex_frontsquat"] [data-testid="set-row"]'),
   ).toHaveCount(0);
 });
 
@@ -183,10 +183,10 @@ test('12 — compression 25% on TD3 leaves only the 4x4', async ({ page }) => {
   await page.getByTestId('compression-25').click();
 
   await expect(
-    page.locator('[data-exercise-id="ex.bike-intervals"]'),
+    page.locator('[data-exercise-id="ex_4x4"]'),
   ).not.toHaveAttribute('data-cut', 'true');
   await expect(
-    page.locator('[data-exercise-id="ex.pogo-hops"]'),
+    page.locator('[data-exercise-id="ex_pogo"]'),
   ).toHaveAttribute('data-cut', 'true');
 });
 
@@ -194,13 +194,15 @@ test('13 — changing compression mid-session preserves logged sets', async ({ p
   await runner(page);
 
   // Log a couple of sets first.
-  await page.locator('[data-exercise-id="ex.broad-jump"] [data-testid="set-complete"]').first().click();
+  await page.locator('[data-exercise-id="ex_stepbehind"] [data-testid="set-complete"]').first().click();
   await page.getByTestId('rest-skip').click();
-  await page.locator('[data-exercise-id="ex.back-squat"] [data-testid="set-complete"]').first().click();
+  await page.locator('[data-exercise-id="ex_trapbar"] [data-testid="set-complete"]').first().click();
   await page.getByTestId('rest-skip').click();
 
   const before = (await readStore(page, 'setLogs')).length;
-  expect(before).toBe(2);
+  // Three, not two: the step-behind throw is bilateral, so one completed set
+  // writes an L and an R record.
+  expect(before).toBe(3);
 
   // Compress hard, then back to full.
   await page.getByTestId('compress-open').click();
@@ -214,7 +216,7 @@ test('13 — changing compression mid-session preserves logged sets', async ({ p
   expect((await readStore(page, 'setLogs')).length).toBe(before);
   // And they still render as done.
   await expect(
-    page.locator('[data-exercise-id="ex.back-squat"] [data-testid="set-row"][data-done="true"]'),
+    page.locator('[data-exercise-id="ex_trapbar"] [data-testid="set-row"][data-done="true"]'),
   ).toHaveCount(1);
 });
 
@@ -224,7 +226,7 @@ test('14 — summary ledger deltas match the Dashboard after finishing', async (
   await runner(page);
 
   // Earn velocityFull + velocityPrime by logging the throw block.
-  await page.locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="set-complete"]').first().click();
+  await page.locator('[data-exercise-id="ex_sidetoss"] [data-testid="set-complete"]').first().click();
   await page.getByTestId('rest-skip').click();
 
   await page.getByTestId('finish-session').click();
@@ -265,7 +267,7 @@ test('15 — no instrumentation feature prompts, gates, or blocks', async ({ pag
   const beforeSheets = await page.locator('.sheet-root').count();
 
   // --- decay floor: log a declining sequence, entering the metric ---
-  const throwCard = page.locator('[data-exercise-id="ex.med-ball-throw"]');
+  const throwCard = page.locator('[data-exercise-id="ex_sidetoss"]');
   for (let i = 0; i < 3; i++) {
     const row = throwCard.locator('[data-testid="set-row"]').nth(i);
     if (!(await row.count())) break;
@@ -284,7 +286,7 @@ test('15 — no instrumentation feature prompts, gates, or blocks', async ({ pag
   expect(await page.locator('.sheet-root').count()).toBe(beforeSheets);
 
   // --- volume cap: keep logging past it ---
-  const jumpCard = page.locator('[data-exercise-id="ex.broad-jump"]');
+  const jumpCard = page.locator('[data-exercise-id="ex_stepbehind"]');
   const rows = jumpCard.locator('[data-testid="set-row"]');
   const n = await rows.count();
   for (let i = 0; i < n; i++) {
@@ -324,7 +326,7 @@ test('15b — logging past the volume cap turns it amber but keeps working', asy
 
   const before = (await readStore(page, 'setLogs')).length;
   const row = page
-    .locator('[data-exercise-id="ex.broad-jump"] [data-testid="set-row"][data-done="false"]')
+    .locator('[data-exercise-id="ex_stepbehind"] [data-testid="set-row"][data-done="false"]')
     .first();
   if (await row.count()) {
     await row.getByTestId('set-complete').click();
@@ -351,9 +353,9 @@ test('the LAST chip appears only when there is history, and adopts on tap', asyn
   await runner(page);
   await expect(page.getByTestId('last-chip')).toHaveCount(0);
 
-  // session-midway seeds prior sets for ex.broad-jump.
+  // session-midway seeds prior sets for ex_stepbehind.
   await runner(page, 'session-history');
-  const chip = page.locator('[data-exercise-id="ex.broad-jump"] [data-testid="last-chip"]').first();
+  const chip = page.locator('[data-exercise-id="ex_stepbehind"] [data-testid="last-chip"]').first();
   await expect(chip).toBeVisible();
   await chip.click();
   // Adopting fills the draft rather than logging anything.

@@ -7,7 +7,13 @@ import {
   programSeed,
   validateSeed,
 } from '../../src/data/seed';
-import { STATIC_STORES, type ProgramSeed } from '../../src/types';
+import { SEED_VERSION, STATIC_STORES, type ProgramSeed } from '../../src/types';
+import {
+  FULL_CALENDAR_DAY_THRESHOLD,
+  FULL_TRAINING_DAY_THRESHOLD,
+  MINI_TRAINING_DAY_THRESHOLD,
+} from '../../src/engine/battery';
+import { DELOAD_TABLE } from '../../src/engine/blocks';
 import { freshDb, seededDb, throughJson } from './helpers';
 import { esdLog, maxRecord, session, setLog, testResult } from './factories';
 
@@ -94,7 +100,10 @@ describe('acceptance 3 — seed update isolation', () => {
 
     // Bump the seed: rename a label and add an exercise.
     const v2 = clone();
-    v2.seedVersion = 3;
+    // Relative to the shipped version, not a hardcoded number: this test is
+    // about the reseed rule, and must not need editing every seed bump.
+    const nextVersion = SEED_VERSION + 1;
+    v2.seedVersion = nextVersion;
     const firstLift = v2.lifts[0];
     expect(firstLift).toBeDefined();
     if (firstLift) firstLift.name = 'Back Squat (High Bar)';
@@ -102,7 +111,7 @@ describe('acceptance 3 — seed update isolation', () => {
       id: 'ex.hip-thrust',
       name: 'Hip Thrust',
       liftRef: null,
-      tags: ['tag.hinge'],
+      tags: [],
       maxIntent: false,
       sets: 3, reps: 8, perSide: false, restSec: 90,
       restPurpose: 'LOCAL RECOVERY', intent: 'test', terminationRule: 'test',
@@ -116,11 +125,11 @@ describe('acceptance 3 — seed update isolation', () => {
       deloadElement: 'recovery',
     });
 
-    const didSeed = await ensureSeeded(v2, 3);
+    const didSeed = await ensureSeeded(v2, nextVersion);
     expect(didSeed).toBe(true);
 
     // Static stores replaced.
-    expect((await db.get('lifts', 'lift.back-squat'))?.name).toBe('Back Squat (High Bar)');
+    expect((await db.get('lifts', firstLift!.id))?.name).toBe('Back Squat (High Bar)');
     expect(await db.get('exercises', 'ex.hip-thrust')).toBeDefined();
 
     // User stores untouched — counts and contents identical.
@@ -132,18 +141,18 @@ describe('acceptance 3 — seed update isolation', () => {
 
     // Only the recorded seedVersion moved on the profile.
     const after = await db.get('profile', 'me');
-    expect(after).toEqual({ ...before.profile, seedVersion: 3 });
+    expect(after).toEqual({ ...before.profile, seedVersion: nextVersion });
   });
 
   it('does not reseed when the stored version already matches', async () => {
     await seededDb();
-    expect(await ensureSeeded(programSeed, 2)).toBe(false);
+    expect(await ensureSeeded(programSeed, SEED_VERSION)).toBe(false);
   });
 
   it('reseeds when static stores are empty even at a matching version', async () => {
     const db = await seededDb();
     await db.clear('exercises');
-    expect(await ensureSeeded(programSeed, 2)).toBe(true);
+    expect(await ensureSeeded(programSeed, SEED_VERSION)).toBe(true);
     expect(await db.count('exercises')).toBe(programSeed.exercises.length);
   });
 });
@@ -207,5 +216,45 @@ describe('acceptance 12 — seed validation', () => {
 
     await expect(applySeed(db, bad)).rejects.toThrow(SeedValidationError);
     expect(await db.getAll('exercises')).toEqual(before);
+  });
+});
+
+/* ---------- the seed and the engine must agree ---------- */
+
+describe('program constants live in the seed, not the engine', () => {
+  it('battery cadence thresholds match the shipped program', () => {
+    const c = programSeed.testCadence;
+    expect(FULL_TRAINING_DAY_THRESHOLD).toBe(c.fullBatteryTrainingDays);
+    expect(FULL_CALENDAR_DAY_THRESHOLD).toBe(c.fullBatteryCalendarDays);
+    expect(MINI_TRAINING_DAY_THRESHOLD).toBe(c.miniBatteryTrainingDays);
+  });
+
+  it('the deload table covers every element the program defines a treatment for', () => {
+    // The program states its deload policy once, globally. If a future program
+    // changes a multiplier, this fails rather than letting the engine quietly
+    // keep prescribing the old one.
+    const t = programSeed.deloadTreatment;
+    expect(DELOAD_TABLE.maxIntentThrow.volumeFactor)
+      .toBe(t['maxIntentThrows']?.['volumeMultiplier']);
+    expect(DELOAD_TABLE.maxIntentThrow.loadChanges).toBe(false);
+    expect(DELOAD_TABLE.grind.volumeFactor).toBe(t['grinds']?.['volumeMultiplier']);
+    expect(DELOAD_TABLE.grind.topSetCap * 100).toBe(t['grinds']?.['topSetPctCap']);
+    expect(DELOAD_TABLE.ballistic.setFactor).toBe(t['ballistic']?.['volumeMultiplier']);
+    expect(DELOAD_TABLE.plyo.volumeFactor).toBe(t['plyo']?.['contactsMultiplier']);
+    expect(DELOAD_TABLE.zone2.volumeFactor).toBe(t['zone2']?.['volumeMultiplier']);
+  });
+
+  it('every exercise a compression map names exists in the seed', () => {
+    const ids = new Set(programSeed.exercises.map((e) => e.id));
+    for (const t of programSeed.sessionTemplates) {
+      for (const spec of Object.values(t.compression)) {
+        for (const id of [
+          ...(spec.cut ?? []), ...(spec.keepOnly ?? []),
+          ...Object.keys(spec.modify ?? {}),
+        ]) {
+          expect(ids.has(id), `${t.id} names ${id}`).toBe(true);
+        }
+      }
+    }
   });
 });

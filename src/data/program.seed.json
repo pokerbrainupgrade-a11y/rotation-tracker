@@ -1,82 +1,434 @@
 {
-  "_placeholder": true,
-  "_note": "STRUCTURAL PLACEHOLDER \u2014 NOT A TRAINING PRESCRIPTION. The real program definition has not been supplied yet. IDs here are a permanent contract the moment any session is logged against them, so replace this file BEFORE logging real training. See README 'Replacing the placeholder seed'.",
-  "seedVersion": 2,
+  "seedVersion": 3,
   "lifts": [
     {
-      "id": "lift.back-squat",
-      "name": "Back Squat"
+      "id": "squat",
+      "name": "Front Squat"
     },
     {
-      "id": "lift.trap-bar-deadlift",
+      "id": "trapbar",
       "name": "Trap Bar Deadlift"
     },
     {
-      "id": "lift.bench-press",
-      "name": "Bench Press"
+      "id": "press",
+      "name": "Standing Press"
     },
     {
-      "id": "lift.overhead-press",
-      "name": "Overhead Press"
-    },
-    {
-      "id": "lift.weighted-pullup",
+      "id": "pullup",
       "name": "Weighted Pull-Up"
+    },
+    {
+      "id": "rdl",
+      "name": "RDL"
     }
   ],
   "exercises": [
     {
-      "id": "ex.back-squat",
-      "name": "Back Squat",
-      "liftRef": "lift.back-squat",
+      "id": "ex_sidetoss",
+      "name": "Rotational Side Toss (Scoop)",
+      "liftRef": null,
       "tags": [
-        "tag.bilateral-squat"
+        "sub_td1_power"
       ],
+      "maxIntent": true,
+      "sets": 4,
+      "reps": 3,
+      "perSide": true,
+      "restSec": 90,
+      "restPurpose": "Full PCr resynthesis, CNS reset",
+      "intent": "Ground-up sequencing: rear hip drives, trunk transmits, arms are passive.",
+      "terminationRule": "Terminate set on 5% decay from best rep.",
+      "source": "Daru / Pavel dosing",
+      "regression": "Half-kneeling side toss - removes lower-body variable",
+      "progression": "Step-behind approach, then rotational throw off a single-leg finish",
+      "decayFloorFactor": 0.95,
+      "decayMetric": "distance",
+      "load": {
+        "type": "fixed",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": 6.0,
+        "fixedHigh": 10.0,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "maxIntentThrow",
+      "logVelocity": true,
+      "logDistance": true
+    },
+    {
+      "id": "ex_stepbehind",
+      "name": "Step-Behind Rotational Throw",
+      "liftRef": null,
+      "tags": [
+        "sub_td1_power"
+      ],
+      "maxIntent": true,
+      "sets": 3,
+      "reps": 3,
+      "perSide": true,
+      "restSec": 90,
+      "restPurpose": "Full PCr resynthesis",
+      "intent": "Adds horizontal momentum - closer to golf's transfer demand.",
+      "terminationRule": "Terminate set on 5% decay from best rep.",
+      "source": "Daru",
+      "regression": "Standing, no step",
+      "progression": "Increase approach distance before increasing ball weight",
+      "decayFloorFactor": 0.95,
+      "decayMetric": "distance",
+      "load": {
+        "type": "fixed",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": 8.0,
+        "fixedHigh": 12.0,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "maxIntentThrow",
+      "logVelocity": true,
+      "logDistance": true
+    },
+    {
+      "id": "ex_chopslam",
+      "name": "Overhead-to-Floor Rotational Chop Slam",
+      "liftRef": null,
+      "tags": [
+        "sub_td1_power"
+      ],
+      "maxIntent": true,
+      "sets": 3,
+      "reps": 3,
+      "perSide": true,
+      "restSec": 75,
+      "restPurpose": "PCr resynthesis",
+      "intent": "Rotational deceleration under load - the quality nobody trains and everybody needs.",
+      "terminationRule": "Terminate on velocity decay.",
+      "source": "Daru",
+      "regression": "Vertical slam, no rotation",
+      "progression": "Off-axis catch and immediate re-throw",
+      "decayFloorFactor": 0.95,
+      "decayMetric": "velocity",
+      "load": {
+        "type": "fixed",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": 10.0,
+        "fixedHigh": 14.0,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "maxIntentThrow",
+      "logVelocity": true
+    },
+    {
+      "id": "ex_sidetoss_prime",
+      "name": "Rotational Side Toss - Prime",
+      "liftRef": null,
+      "tags": [
+        "sub_td2_prime"
+      ],
+      "maxIntent": true,
+      "sets": 2,
+      "reps": 3,
+      "perSide": true,
+      "restSec": 90,
+      "restPurpose": "Full recovery - this block may not generate fatigue",
+      "intent": "Frequency preservation, not development. Post-activation prime for the grinds.",
+      "terminationRule": "Terminate on ANY decay. Hard cap 12 total throws.",
+      "source": "Daru / Pavel dosing",
+      "regression": "Half-kneeling",
+      "progression": "None - this block does not progress",
+      "decayFloorFactor": 1.0,
+      "decayMetric": "distance",
+      "load": {
+        "type": "fixed",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": "Same as TD1"
+      },
+      "deloadElement": "maxIntentThrow",
+      "exerciseVolumeCap": 12,
+      "logVelocity": true,
+      "logDistance": true
+    },
+    {
+      "id": "ex_accel",
+      "name": "Acceleration",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 3,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 60,
+      "restPurpose": "Walk-back recovery",
+      "intent": "Horizontal force at max intent - cleanest available transfer to hip drive.",
+      "terminationRule": "",
+      "source": "Exos",
+      "regression": "Submaximal build-ups",
+      "progression": "Increase distance to 20 yd",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "maxIntentThrow",
+      "doseLabel": "15 yd"
+    },
+    {
+      "id": "ex_crossover",
+      "name": "Crossover / Lateral Shuffle to Sprint",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 2,
+      "reps": 1,
+      "perSide": true,
+      "restSec": 60,
+      "restPurpose": "Walk-back recovery",
+      "intent": "Frontal-plane force acceptance.",
+      "terminationRule": "",
+      "source": "Exos",
+      "regression": "Shuffle only, no sprint transition",
+      "progression": "Add reactive start cue",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "maxIntentThrow",
+      "doseLabel": "10 yd/direction"
+    },
+    {
+      "id": "ex_kbswing",
+      "name": "KB Swing (Ballistic Hinge)",
+      "liftRef": null,
+      "tags": [
+        "sub_td1_ballistic"
+      ],
+      "maxIntent": false,
+      "sets": 10,
+      "reps": 5,
+      "perSide": false,
+      "restSec": 75,
+      "restPurpose": "Antiglycolytic - rest until HR returns to ~120 bpm. Rest IS the prescription.",
+      "intent": "Alactic hip power, repeatable, zero lactate accumulation.",
+      "terminationRule": "Terminate when rep 5 loses peak float.",
+      "source": "StrongFirst A+A",
+      "regression": "8 sets x 5",
+      "progression": "Add sets before load. 20 sets before weight moves.",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "fixed",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": 32.0,
+        "fixedHigh": 40.0,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "ballistic",
+      "tempo": "Explosive concentric, passive eccentric"
+    },
+    {
+      "id": "ex_trapbar",
+      "name": "Trap Bar Deadlift",
+      "liftRef": "trapbar",
+      "tags": [],
+      "maxIntent": false,
+      "sets": 4,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 180,
+      "restPurpose": "CNS + PCr",
+      "intent": "Strength-speed. Bar speed is the target, not the load.",
+      "terminationRule": "",
+      "source": "StrongFirst",
+      "regression": "3x3",
+      "progression": "Load moves only when all reps clear 0.85 m/s",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "velocity",
+        "pctLow": 78,
+        "pctHigh": 82,
+        "velocityTarget": 0.8,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "grind",
+      "tempo": "Max concentric intent",
+      "logVelocity": true
+    },
+    {
+      "id": "ex_antirot_iso",
+      "name": "Anti-Rotation Iso, Loaded",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 2,
+      "reps": 1,
+      "perSide": true,
+      "restSec": 45,
+      "restPurpose": "Local recovery",
+      "intent": "Reinforces the transfer medium after it has been loaded rotationally.",
+      "terminationRule": "",
+      "source": "Exos",
+      "regression": "Half-kneeling",
+      "progression": "Standing, single-leg",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": "Heavy enough to threaten position"
+      },
+      "deloadElement": "grind",
+      "doseLabel": "25s/side"
+    },
+    {
+      "id": "ex_frontsquat",
+      "name": "Front Squat",
+      "liftRef": "squat",
+      "tags": [],
       "maxIntent": false,
       "sets": 5,
       "reps": 3,
       "perSide": false,
       "restSec": 180,
-      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
-      "intent": "Drive the floor away; bar speed constant across reps.",
-      "terminationRule": "Stop the set when bar speed visibly drops.",
-      "source": "Block strength template",
-      "regression": "Box squat to depth",
-      "progression": "Pause squat 2s",
-      "decayFloorFactor": 0.95,
-      "decayMetric": "velocity",
+      "restPurpose": "CNS + PCr (paired)",
+      "intent": "Maximal strength through a torso-demanding squat. Front rack taxes the pillar directly.",
+      "terminationRule": "",
+      "source": "StrongFirst",
+      "regression": "Goblet or safety bar",
+      "progression": "Add load when all 5 sets clear 0.35 m/s. Wave 5/3/2 in Block 2 R5-R7.",
+      "decayFloorFactor": null,
+      "decayMetric": null,
       "load": {
-        "type": "velocity",
-        "pctLow": 78,
-        "pctHigh": 82,
+        "type": "pct1rm",
+        "pctLow": 82,
+        "pctHigh": 88,
         "velocityTarget": 0.35,
         "rpeTarget": null,
         "rirTarget": null,
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "ballistic"
+      "deloadElement": "grind",
+      "pairedWith": "ex_pullup",
+      "logVelocity": true
     },
     {
-      "id": "ex.trap-bar-deadlift",
-      "name": "Trap Bar Deadlift",
-      "liftRef": "lift.trap-bar-deadlift",
-      "tags": [
-        "tag.hinge"
-      ],
+      "id": "ex_pullup",
+      "name": "Weighted Pull-Up",
+      "liftRef": "pullup",
+      "tags": [],
       "maxIntent": false,
       "sets": 5,
       "reps": 3,
       "perSide": false,
       "restSec": 180,
-      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
-      "intent": "Push the floor, hips and shoulders rise together.",
-      "terminationRule": "Stop when back position changes, not when reps run out.",
-      "source": "Block strength template",
-      "regression": "Rack pull",
-      "progression": "Deficit pull",
+      "restPurpose": "CNS + PCr (paired)",
+      "intent": "Pulling strength; grip load is intentional.",
+      "terminationRule": "",
+      "source": "StrongFirst",
+      "regression": "Band-assisted or heavy row",
+      "progression": "+2.5 kg when all sets clean",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": 8.0,
+        "rirTarget": 2.0,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "grind",
+      "pairedWith": "ex_frontsquat"
+    },
+    {
+      "id": "ex_press",
+      "name": "Standing Press",
+      "liftRef": "press",
+      "tags": [],
+      "maxIntent": false,
+      "sets": 5,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 150,
+      "restPurpose": "CNS + PCr (paired)",
+      "intent": "Vertical push through a stable pillar.",
+      "terminationRule": "",
+      "source": "StrongFirst",
+      "regression": "Half-kneeling press",
+      "progression": "Single-arm before load",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -89,130 +441,63 @@
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "grind"
+      "deloadElement": "grind",
+      "note": "Single-arm variant adds anti-rotation cost - use it in Blocks 1 and 3.",
+      "pairedWith": "ex_rdl"
     },
     {
-      "id": "ex.bench-press",
-      "name": "Bench Press",
-      "liftRef": "lift.bench-press",
-      "tags": [
-        "tag.horizontal-press"
-      ],
+      "id": "ex_rdl",
+      "name": "RDL",
+      "liftRef": "rdl",
+      "tags": [],
       "maxIntent": false,
-      "sets": 4,
+      "sets": 3,
       "reps": 5,
       "perSide": false,
       "restSec": 150,
-      "restPurpose": "PHOSPHAGEN RECOVERY",
-      "intent": "Controlled descent, aggressive drive off the chest.",
-      "terminationRule": "Stop at the first rep that slows noticeably.",
-      "source": "Block strength template",
-      "regression": "Floor press",
-      "progression": "Larsen press",
+      "restPurpose": "Local recovery (paired)",
+      "intent": "Posterior chain under length. Support work - not a competing max effort.",
+      "terminationRule": "",
+      "source": "StrongFirst",
+      "regression": "Single-leg RDL",
+      "progression": "Load only when position holds at rep 5",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
         "type": "pct1rm",
-        "pctLow": 75,
-        "pctHigh": 82,
+        "pctLow": 73,
+        "pctHigh": 77,
         "velocityTarget": null,
-        "rpeTarget": null,
+        "rpeTarget": 7.0,
         "rirTarget": null,
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "grind"
+      "deloadElement": "grind",
+      "pairedWith": "ex_press"
     },
     {
-      "id": "ex.overhead-press",
-      "name": "Overhead Press",
-      "liftRef": "lift.overhead-press",
-      "tags": [
-        "tag.vertical-press"
-      ],
-      "maxIntent": false,
-      "sets": 3,
-      "reps": 6,
-      "perSide": false,
-      "restSec": 120,
-      "restPurpose": "PHOSPHAGEN RECOVERY",
-      "intent": "Ribs down, press through a locked trunk.",
-      "terminationRule": "Stop when the rib cage flares to complete a rep.",
-      "source": "Accessory",
-      "regression": "Half-kneeling press",
-      "progression": "Strict standing press",
-      "decayFloorFactor": null,
-      "decayMetric": null,
-      "load": {
-        "type": "rpe",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": 8,
-        "rirTarget": 2,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "grind"
-    },
-    {
-      "id": "ex.weighted-pullup",
-      "name": "Weighted Pull-Up",
-      "liftRef": "lift.weighted-pullup",
-      "tags": [
-        "tag.vertical-pull"
-      ],
-      "maxIntent": false,
-      "sets": 4,
-      "reps": 5,
-      "perSide": false,
-      "restSec": 150,
-      "restPurpose": "PHOSPHAGEN RECOVERY",
-      "intent": "Lead with the elbows, finish chest to bar.",
-      "terminationRule": "Stop when the range shortens.",
-      "source": "Block strength template",
-      "regression": "Band-assisted pull-up",
-      "progression": "Weighted, slower eccentric",
-      "decayFloorFactor": null,
-      "decayMetric": null,
-      "load": {
-        "type": "rpe",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": 8,
-        "rirTarget": 2,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "grind"
-    },
-    {
-      "id": "ex.split-squat",
-      "name": "Rear-Foot-Elevated Split Squat",
+      "id": "ex_carry",
+      "name": "Loaded Carry",
       "liftRef": null,
-      "tags": [
-        "tag.unilateral-squat"
-      ],
+      "tags": [],
       "maxIntent": false,
       "sets": 3,
-      "reps": 8,
-      "perSide": true,
+      "reps": 1,
+      "perSide": false,
       "restSec": 90,
-      "restPurpose": "LOCAL RECOVERY",
-      "intent": "Vertical shin, weight through the front mid-foot.",
-      "terminationRule": "Stop when the trailing hip cannot stay extended.",
-      "source": "Accessory",
-      "regression": "Split squat, no elevation",
-      "progression": "Front-foot-elevated",
+      "restPurpose": "Grip and trunk recovery",
+      "intent": "Pillar under load in gait. The most honest test of trunk stiffness in the program.",
+      "terminationRule": "Terminate when ribs flare or lateral lean appears.",
+      "source": "Exos / StrongFirst",
+      "regression": "Farmer's",
+      "progression": "Suitcase, then overhead",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -220,135 +505,101 @@
         "pctLow": null,
         "pctHigh": null,
         "velocityTarget": null,
-        "rpeTarget": 7,
-        "rirTarget": 3,
+        "rpeTarget": null,
+        "rirTarget": null,
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": "Heaviest that holds ribs stacked"
+      },
+      "deloadElement": "grind",
+      "doseLabel": "40 yd"
+    },
+    {
+      "id": "ex_frontsquat_min",
+      "name": "Front Squat - Minimum Dose",
+      "liftRef": "squat",
+      "tags": [],
+      "maxIntent": false,
+      "sets": 2,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 180,
+      "restPurpose": "CNS + PCr",
+      "intent": "Top-end strength maintenance only.",
+      "terminationRule": "",
+      "source": "StrongFirst",
+      "regression": "3 sets at 80%",
+      "progression": "None - maintenance dose",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "pct1rm",
+        "pctLow": 85,
+        "pctHigh": 88,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
       },
       "deloadElement": "grind"
     },
     {
-      "id": "ex.broad-jump",
-      "name": "Broad Jump",
-      "liftRef": null,
-      "tags": [
-        "tag.horizontal-jump"
-      ],
-      "maxIntent": true,
-      "sets": 4,
+      "id": "ex_pullup_min",
+      "name": "Weighted Pull-Up - Minimum Dose",
+      "liftRef": "pullup",
+      "tags": [],
+      "maxIntent": false,
+      "sets": 2,
       "reps": 3,
       "perSide": false,
       "restSec": 180,
-      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
-      "intent": "Maximal horizontal distance. Full reset between reps.",
-      "terminationRule": "Stop the moment distance drops off the best rep.",
-      "source": "Velocity template",
-      "regression": "Standing long jump, submaximal",
-      "progression": "Weighted vest broad jump",
-      "decayFloorFactor": 0.95,
-      "decayMetric": "distance",
+      "restPurpose": "CNS + PCr",
+      "intent": "Top-end strength maintenance only.",
+      "terminationRule": "",
+      "source": "StrongFirst",
+      "regression": "Band-assisted",
+      "progression": "None - maintenance dose",
+      "decayFloorFactor": null,
+      "decayMetric": null,
       "load": {
-        "type": "bodyweight",
+        "type": "rpe",
         "pctLow": null,
         "pctHigh": null,
         "velocityTarget": null,
-        "rpeTarget": null,
+        "rpeTarget": 8.0,
         "rirTarget": null,
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "maxIntentThrow"
+      "deloadElement": "grind"
     },
     {
-      "id": "ex.vertical-jump",
-      "name": "Countermovement Jump",
+      "id": "ex_pogo",
+      "name": "Pogo / Ankle Stiffness",
       "liftRef": null,
       "tags": [
-        "tag.vertical-jump"
-      ],
-      "maxIntent": true,
-      "sets": 4,
-      "reps": 3,
-      "perSide": false,
-      "restSec": 180,
-      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
-      "intent": "Maximal height, minimum ground contact on the countermovement.",
-      "terminationRule": "Stop when peak height falls below the best rep.",
-      "source": "Velocity template",
-      "regression": "Squat jump from pause",
-      "progression": "Depth jump",
-      "decayFloorFactor": 0.95,
-      "decayMetric": "distance",
-      "load": {
-        "type": "bodyweight",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": null,
-        "rirTarget": null,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "maxIntentThrow"
-    },
-    {
-      "id": "ex.med-ball-throw",
-      "name": "Med Ball Rotational Throw",
-      "liftRef": null,
-      "tags": [
-        "tag.throw"
-      ],
-      "maxIntent": true,
-      "sets": 4,
-      "reps": 3,
-      "perSide": true,
-      "restSec": 180,
-      "restPurpose": "FULL PCr RESYNTHESIS \u00b7 CNS RESET",
-      "intent": "Accelerate through the ball; hips lead, arms finish.",
-      "terminationRule": "Stop when the throw stops feeling ballistic.",
-      "source": "Velocity template",
-      "regression": "Lighter ball, same intent",
-      "progression": "Heavier ball, same speed",
-      "decayFloorFactor": 0.95,
-      "decayMetric": "distance",
-      "load": {
-        "type": "fixed",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": null,
-        "rirTarget": null,
-        "fixedLow": 8,
-        "fixedHigh": 12,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "maxIntentThrow"
-    },
-    {
-      "id": "ex.pogo-hops",
-      "name": "Pogo Hops",
-      "liftRef": null,
-      "tags": [
-        "tag.plyo"
+        "sub_td3_plyo"
       ],
       "maxIntent": false,
       "sets": 4,
       "reps": 10,
       "perSide": false,
-      "restSec": 90,
-      "restPurpose": "ELASTIC RECOVERY",
-      "intent": "Minimum ground contact time. Stiff ankles, quiet landings.",
-      "terminationRule": "Stop when contacts get loud or slow.",
-      "source": "Elastic template",
-      "regression": "Two-foot pogo in place",
-      "progression": "Single-leg pogo",
+      "restSec": 60,
+      "restPurpose": "Tendon recovery",
+      "intent": "Tendon stiffness. Elastic return is the cheapest speed in golf and the first thing lost after 35.",
+      "terminationRule": "Terminate the set the moment GCT rises.",
+      "source": "Exos",
+      "regression": "2-leg, lower amplitude",
+      "progression": "Single-leg, then lateral",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -361,28 +612,241 @@
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "plyo"
+      "deloadElement": "plyo",
+      "doseLabel": "10 contacts",
+      "target": "Ground contact time <180 ms",
+      "contactsPerSet": 10
     },
     {
-      "id": "ex.bike-intervals",
-      "name": "Bike Intervals",
+      "id": "ex_dropjump",
+      "name": "Drop Jump",
       "liftRef": null,
       "tags": [
-        "tag.vo2max"
+        "sub_td3_plyo"
+      ],
+      "maxIntent": false,
+      "sets": 4,
+      "reps": 3,
+      "perSide": false,
+      "restSec": 90,
+      "restPurpose": "Full CNS and tendon recovery",
+      "intent": "Reactive strength index development.",
+      "terminationRule": "Terminate on RSI decay.",
+      "source": "Exos",
+      "regression": "CMJ, no drop",
+      "progression": "Raise box only when RSI improves at current height",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "plyo",
+      "target": "Box height that maximizes RSI - not the tallest box",
+      "contactsPerSet": 3,
+      "logRSI": true
+    },
+    {
+      "id": "ex_rotbound",
+      "name": "Rotational Bound / Rotational Hop",
+      "liftRef": null,
+      "tags": [
+        "sub_td3_plyo"
+      ],
+      "maxIntent": false,
+      "sets": 3,
+      "reps": 3,
+      "perSide": true,
+      "restSec": 90,
+      "restPurpose": "Full recovery",
+      "intent": "Elastic quality in the transverse plane - the bridge between plyo and the throws.",
+      "terminationRule": "Terminate on distance decay.",
+      "source": "Daru",
+      "regression": "Static-start rotational jump",
+      "progression": "Continuous, reactive",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "plyo",
+      "contactsPerSet": 3,
+      "logDistance": true
+    },
+    {
+      "id": "ex_rfess",
+      "name": "Rear-Foot Elevated Split Squat",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 3,
+      "reps": 8,
+      "perSide": true,
+      "restSec": 75,
+      "restPurpose": "Local recovery",
+      "intent": "Unilateral structural work. Sub-grinding by design.",
+      "terminationRule": "",
+      "source": "Exos",
+      "regression": "Split squat",
+      "progression": "Load",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": 7.0,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "grind"
+    },
+    {
+      "id": "ex_row",
+      "name": "Single-Arm Row",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 3,
+      "reps": 8,
+      "perSide": true,
+      "restSec": 75,
+      "restPurpose": "Local recovery",
+      "intent": "Anti-rotation under pulling load.",
+      "terminationRule": "",
+      "source": "Exos",
+      "regression": "Chest-supported",
+      "progression": "Standing, contralateral stance",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": 7.0,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "grind"
+    },
+    {
+      "id": "ex_neck",
+      "name": "Neck - 4 Directions, Isometric",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 2,
+      "reps": 1,
+      "perSide": true,
+      "restSec": 30,
+      "restPurpose": "Local recovery",
+      "intent": "MMA durability. Sits here because it is the lowest-CNS day and neck work must not compete with anything.",
+      "terminationRule": "",
+      "source": "Daru",
+      "regression": "Manual resistance",
+      "progression": "Harness, progressive",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": "Sub-maximal"
+      },
+      "deloadElement": "grind",
+      "doseLabel": "20s each direction"
+    },
+    {
+      "id": "ex_grip",
+      "name": "Grip - Thick-Bar or Towel Hold",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 3,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 60,
+      "restPurpose": "Forearm recovery",
+      "intent": "Combat durability; secondary transfer to club control.",
+      "terminationRule": "Terminate on grip failure.",
+      "source": "Daru / StrongFirst",
+      "regression": "Standard bar",
+      "progression": "Time before load",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": "Max hold"
+      },
+      "deloadElement": "grind",
+      "doseLabel": "30s"
+    },
+    {
+      "id": "ex_4x4",
+      "name": "Norwegian 4x4",
+      "liftRef": null,
+      "tags": [
+        "sub_vo2max"
       ],
       "maxIntent": false,
       "sets": 4,
       "reps": 1,
       "perSide": false,
-      "restSec": 240,
-      "restPurpose": "AEROBIC RECOVERY BETWEEN INTERVALS",
-      "intent": "Hold the target power for the full interval.",
-      "terminationRule": "Stop the interval if power drops below target.",
-      "source": "ESD template",
-      "regression": "3 x 4 min",
-      "progression": "5 x 4 min",
+      "restSec": 180,
+      "restPurpose": "Active @ 60-70% HRmax - clears H+, keeps stroke volume elevated",
+      "intent": "VO2max. Central adaptation - stroke volume and cardiac output.",
+      "terminationRule": "If HR fails to reach 90% during interval 1, this is not a VO2max session. Abort to 25 min Zone 2 and LOG AS A MISSED EXPOSURE.",
+      "source": "Norwegian 4x4 (Attia / Patrick / Greenfield)",
+      "regression": "3x4 min",
+      "progression": "Add interval 5, or raise power output at fixed HR",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -395,62 +859,1109 @@
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": 90,
-        "hrPctHigh": 95
+        "hrPctHigh": 95,
+        "note": null
       },
-      "deloadElement": "vo2max"
+      "deloadElement": "vo2max",
+      "doseLabel": "4 min",
+      "modalityNote": "Open. Rower and ski erg carry real posterior chain and trunk cost; bike and treadmill isolate the stimulus. In Block 3 use bike or treadmill so ESD does not compete with velocity work.",
+      "warmup": "10 min progressive to 70% HRmax",
+      "cooldown": "5 min",
+      "recoveryHrLow": 60,
+      "recoveryHrHigh": 70,
+      "logHR": true,
+      "abortable": true
     },
     {
-      "id": "ex.zone2-ride",
-      "name": "Zone 2 Ride",
+      "id": "ex.prep.glute-activation-supine-bridge-pattern",
+      "name": "Glute activation, supine bridge pattern",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x8, 2s iso top"
+    },
+    {
+      "id": "ex.prep.anti-extension-dead-bug-family",
+      "name": "Anti-extension (dead bug family)",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x6/side, 3s exhale"
+    },
+    {
+      "id": "ex.prep.anti-rotation-iso-pallof-family",
+      "name": "Anti-rotation iso (Pallof family)",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x20s/side"
+    },
+    {
+      "id": "ex.prep.t-spine-rotation-hips-locked",
+      "name": "T-spine rotation, hips locked",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x6/side"
+    },
+    {
+      "id": "ex.prep.active-hip-flexor-adductor",
+      "name": "Active hip flexor + adductor",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.90-90-transitions",
+      "name": "90/90 transitions",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.lateral-hip-series",
+      "name": "Lateral hip series",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.ankle-dorsiflexion",
+      "name": "Ankle dorsiflexion",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.banded-hip-separation-drill",
+      "name": "Banded hip separation drill",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.2-build-up-accelerations",
+      "name": "2 build-up accelerations",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.3-sub-max-rotational-throws-70",
+      "name": "3 sub-max rotational throws @ ~70%",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "neural primer"
+    },
+    {
+      "id": "ex.regen.td1",
+      "name": "Regeneration \u2014 Parasympathetic downshift",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "Modality yours. Terminate when nasal-only breathing is comfortable at rest.",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "8 min"
+    },
+    {
+      "id": "ex.prep.loaded-carry-hold",
+      "name": "Loaded carry hold",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x20s"
+    },
+    {
+      "id": "ex.prep.hollow-body-iso",
+      "name": "Hollow-body iso",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x20s"
+    },
+    {
+      "id": "ex.prep.banded-hip-hinge-patterning",
+      "name": "Banded hip hinge patterning",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x8"
+    },
+    {
+      "id": "ex.prep.thoracic-extension-over-roller",
+      "name": "Thoracic extension over roller",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.hip-90-90",
+      "name": "Hip 90/90",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.ankle-knee-tracking-series",
+      "name": "Ankle/knee tracking series",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.2-ramping-sets-of-the-day",
+      "name": "2 ramping sets of the day's primary pattern",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.regen.td2",
+      "name": "Regeneration \u2014 Tissue quality - hips, thoracic spine, lats",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "6 min"
+    },
+    {
+      "id": "ex.prep.quadruped-anti-rotation",
+      "name": "Quadruped anti-rotation",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x8/side"
+    },
+    {
+      "id": "ex.prep.side-plank-with-reach",
+      "name": "Side plank with reach",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "2x20s/side"
+    },
+    {
+      "id": "ex.prep.ankle-stiffness-prep",
+      "name": "Ankle stiffness prep",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.ankle-foot-series",
+      "name": "Ankle/foot series",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.pogo-build-ups",
+      "name": "Pogo build-ups",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.hip-mobility",
+      "name": "Hip mobility",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.regen.td3",
+      "name": "Regeneration \u2014 Parasympathetic downshift + lower-limb tissue quality",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "8 min"
+    },
+    {
+      "id": "ex.regen.td-a",
+      "name": "Regeneration \u2014 Parasympathetic downshift",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "Modality yours. Terminate when nasal-only breathing is comfortable at rest.",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "8 min"
+    },
+    {
+      "id": "ex.prep.thoracic-extension",
+      "name": "Thoracic extension",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.prep.2-ramping-sets",
+      "name": "2 ramping sets",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery"
+    },
+    {
+      "id": "ex.regen.td-b-str",
+      "name": "Regeneration \u2014 Tissue quality",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "6 min"
+    },
+    {
+      "id": "ex.regen.td-b-esd",
+      "name": "Regeneration \u2014 Parasympathetic downshift + lower-limb tissue quality",
+      "liftRef": null,
+      "tags": [],
+      "maxIntent": false,
+      "sets": 1,
+      "reps": 1,
+      "perSide": false,
+      "restSec": 0,
+      "restPurpose": "",
+      "intent": "",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
+      "decayFloorFactor": null,
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null,
+        "note": null
+      },
+      "deloadElement": "recovery",
+      "doseLabel": "8 min"
+    },
+    {
+      "id": "ex.rd.capillarization-zone-2",
+      "name": "Capillarization - Zone 2",
       "liftRef": null,
       "tags": [
-        "tag.zone2"
+        "sub_zone2"
       ],
       "maxIntent": false,
       "sets": 1,
       "reps": 1,
       "perSide": false,
       "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Conversational pace. Nasal breathing throughout.",
-      "terminationRule": "Stop if pace requires mouth breathing to hold.",
-      "source": "ESD template",
-      "regression": "Shorter duration",
-      "progression": "Longer duration",
-      "decayFloorFactor": null,
-      "decayMetric": null,
-      "load": {
-        "type": "hr",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": null,
-        "rirTarget": null,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": 60,
-        "hrPctHigh": 70
-      },
-      "deloadElement": "zone2"
-    },
-    {
-      "id": "ex.mobility-flow",
-      "name": "Mobility Flow",
-      "liftRef": null,
-      "tags": [
-        "tag.recovery"
-      ],
-      "maxIntent": false,
-      "sets": 1,
-      "reps": 1,
-      "perSide": false,
-      "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Move through range slowly; no forcing end positions.",
-      "terminationRule": "Stop at the first position that needs forcing.",
-      "source": "Regeneration",
-      "regression": "Reduced range",
-      "progression": "Longer holds",
+      "restPurpose": "",
+      "intent": "Counts toward the 28-day Zone 2 floor.",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -463,47 +1974,15 @@
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "recovery"
+      "deloadElement": "zone2",
+      "doseLabel": "45-60 min, strictly <= LT1"
     },
     {
-      "id": "ex.easy-walk",
-      "name": "Easy Walk",
-      "liftRef": null,
-      "tags": [
-        "tag.recovery"
-      ],
-      "maxIntent": false,
-      "sets": 1,
-      "reps": 1,
-      "perSide": false,
-      "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Easy, unhurried. This is recovery, not training.",
-      "terminationRule": "No termination rule.",
-      "source": "Regeneration",
-      "regression": "Shorter walk",
-      "progression": "Longer walk",
-      "decayFloorFactor": null,
-      "decayMetric": null,
-      "load": {
-        "type": "bodyweight",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": null,
-        "rirTarget": null,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "recovery"
-    },
-    {
-      "id": "ex.breathing",
-      "name": "90/90 Breathing",
+      "id": "ex.rd.positional-restoration",
+      "name": "Positional restoration",
       "liftRef": null,
       "tags": [],
       "maxIntent": false,
@@ -511,12 +1990,12 @@
       "reps": 1,
       "perSide": false,
       "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Quality over quantity.",
-      "terminationRule": "Stop if position degrades.",
-      "source": "Preparation",
-      "regression": "Reduced range",
-      "progression": "Full range",
+      "restPurpose": "",
+      "intent": "Hips, thoracic spine, ankles. Position under low load, not stretching for its own sake.",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -529,13 +2008,15 @@
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "recovery"
+      "deloadElement": "recovery",
+      "doseLabel": "30 min"
     },
     {
-      "id": "ex.glute-bridge",
-      "name": "Glute Bridge",
+      "id": "ex.rd.parasympathetic-downshift",
+      "name": "Parasympathetic downshift",
       "liftRef": null,
       "tags": [],
       "maxIntent": false,
@@ -543,12 +2024,12 @@
       "reps": 1,
       "perSide": false,
       "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Quality over quantity.",
-      "terminationRule": "Stop if position degrades.",
-      "source": "Preparation",
-      "regression": "Reduced range",
-      "progression": "Full range",
+      "restPurpose": "",
+      "intent": "Lowest-arousal option available.",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -561,13 +2042,15 @@
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "recovery"
+      "deloadElement": "recovery",
+      "doseLabel": "30 min"
     },
     {
-      "id": "ex.side-plank",
-      "name": "Side Plank",
+      "id": "ex.rd.tissue-quality",
+      "name": "Tissue quality",
       "liftRef": null,
       "tags": [],
       "maxIntent": false,
@@ -575,12 +2058,12 @@
       "reps": 1,
       "perSide": false,
       "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Quality over quantity.",
-      "terminationRule": "Stop if position degrades.",
-      "source": "Preparation",
-      "regression": "Reduced range",
-      "progression": "Full range",
+      "restPurpose": "",
+      "intent": "Soft tissue, then reintegrate the pattern under light load.",
+      "terminationRule": "",
+      "source": "",
+      "regression": "",
+      "progression": "",
       "decayFloorFactor": null,
       "decayMetric": null,
       "load": {
@@ -593,646 +2076,782 @@
         "fixedLow": null,
         "fixedHigh": null,
         "hrPctLow": null,
-        "hrPctHigh": null
+        "hrPctHigh": null,
+        "note": null
       },
-      "deloadElement": "recovery"
-    },
-    {
-      "id": "ex.leg-swings",
-      "name": "Leg Swings",
-      "liftRef": null,
-      "tags": [],
-      "maxIntent": false,
-      "sets": 1,
-      "reps": 1,
-      "perSide": false,
-      "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Quality over quantity.",
-      "terminationRule": "Stop if position degrades.",
-      "source": "Preparation",
-      "regression": "Reduced range",
-      "progression": "Full range",
-      "decayFloorFactor": null,
-      "decayMetric": null,
-      "load": {
-        "type": "bodyweight",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": null,
-        "rirTarget": null,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "recovery"
-    },
-    {
-      "id": "ex.inchworm",
-      "name": "Inchworm",
-      "liftRef": null,
-      "tags": [],
-      "maxIntent": false,
-      "sets": 1,
-      "reps": 1,
-      "perSide": false,
-      "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Quality over quantity.",
-      "terminationRule": "Stop if position degrades.",
-      "source": "Preparation",
-      "regression": "Reduced range",
-      "progression": "Full range",
-      "decayFloorFactor": null,
-      "decayMetric": null,
-      "load": {
-        "type": "bodyweight",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": null,
-        "rirTarget": null,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "recovery"
-    },
-    {
-      "id": "ex.lateral-lunge",
-      "name": "Lateral Lunge",
-      "liftRef": null,
-      "tags": [],
-      "maxIntent": false,
-      "sets": 1,
-      "reps": 1,
-      "perSide": false,
-      "restSec": 0,
-      "restPurpose": "CONTINUOUS \u2014 NO REST PRESCRIBED",
-      "intent": "Quality over quantity.",
-      "terminationRule": "Stop if position degrades.",
-      "source": "Preparation",
-      "regression": "Reduced range",
-      "progression": "Full range",
-      "decayFloorFactor": null,
-      "decayMetric": null,
-      "load": {
-        "type": "bodyweight",
-        "pctLow": null,
-        "pctHigh": null,
-        "velocityTarget": null,
-        "rpeTarget": null,
-        "rirTarget": null,
-        "fixedLow": null,
-        "fixedHigh": null,
-        "hrPctLow": null,
-        "hrPctHigh": null
-      },
-      "deloadElement": "recovery"
+      "deloadElement": "recovery",
+      "doseLabel": "30 min"
     }
   ],
   "sessionTemplates": [
     {
-      "id": "tmpl.td1-velocity",
-      "name": "TD1 \u2014 Velocity / Power",
+      "id": "TD1",
+      "name": "Rotational Velocity & Alactic Power",
       "position": "TD1",
       "sections": [
         {
-          "id": "sec.td1-velocity.pillar",
+          "id": "sec.TD1.pillar-prep",
           "label": "Pillar Prep",
           "role": "pillar-prep",
           "exerciseIds": [
-            "ex.breathing",
-            "ex.glute-bridge",
-            "ex.side-plank"
+            "ex.prep.glute-activation-supine-bridge-pattern",
+            "ex.prep.anti-extension-dead-bug-family",
+            "ex.prep.anti-rotation-iso-pallof-family",
+            "ex.prep.t-spine-rotation-hips-locked"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.td1-velocity.movement",
+          "id": "sec.TD1.movement-prep",
           "label": "Movement Prep",
           "role": "movement-prep",
           "exerciseIds": [
-            "ex.leg-swings",
-            "ex.inchworm",
-            "ex.lateral-lunge"
+            "ex.prep.active-hip-flexor-adductor",
+            "ex.prep.90-90-transitions",
+            "ex.prep.lateral-hip-series",
+            "ex.prep.ankle-dorsiflexion",
+            "ex.prep.banded-hip-separation-drill",
+            "ex.prep.2-build-up-accelerations",
+            "ex.prep.3-sub-max-rotational-throws-70"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.td1.jumps",
-          "label": "Jumps",
+          "id": "sec.TD1.power",
+          "label": "Power",
           "role": "power",
           "exerciseIds": [
-            "ex.broad-jump",
-            "ex.vertical-jump"
+            "ex_sidetoss",
+            "ex_stepbehind",
+            "ex_chopslam"
           ],
-          "primeExerciseId": "ex.broad-jump"
+          "primeExerciseId": "ex_sidetoss"
         },
         {
-          "id": "sec.td1.throws",
-          "label": "Throws",
-          "role": "power",
+          "id": "sec.TD1.movement-skills",
+          "label": "Movement Skills",
+          "role": "movement-skills",
           "exerciseIds": [
-            "ex.med-ball-throw"
+            "ex_accel",
+            "ex_crossover"
           ],
-          "primeExerciseId": "ex.med-ball-throw"
+          "primeExerciseId": null
         },
         {
-          "id": "sec.td1.speed-strength",
-          "label": "Speed-Strength",
+          "id": "sec.TD1.strength",
+          "label": "Strength",
           "role": "strength",
           "exerciseIds": [
-            "ex.back-squat"
+            "ex_kbswing",
+            "ex_trapbar",
+            "ex_antirot_iso"
           ],
-          "primeExerciseId": "ex.back-squat"
+          "primeExerciseId": "ex_kbswing"
+        },
+        {
+          "id": "sec.TD1.recovery",
+          "label": "Regeneration",
+          "role": "recovery",
+          "exerciseIds": [
+            "ex.regen.td1"
+          ],
+          "primeExerciseId": null
         }
       ],
       "ledger": {
-        "velocityFull": true,
-        "velocityPrime": true
+        "velocityFull": true
       },
       "compression": {
         "75": {
           "cut": [
-            "ex.vertical-jump"
+            "ex_accel",
+            "ex_crossover",
+            "ex_antirot_iso"
           ],
-          "note": "Secondary jump variant dropped; throws and primary jump intact."
+          "modify": {
+            "ex_kbswing": "8x5",
+            "ex_trapbar": "3x3"
+          }
         },
         "50": {
           "cut": [
-            "ex.vertical-jump",
-            "ex.back-squat"
+            "ex_accel",
+            "ex_crossover",
+            "ex_antirot_iso",
+            "ex_trapbar",
+            "ex_chopslam"
           ],
-          "note": "Speed-strength dropped. Power block only."
+          "modify": {
+            "ex_sidetoss": "4x3/side",
+            "ex_stepbehind": "2x3/side",
+            "ex_kbswing": "6x5"
+          }
         },
         "25": {
           "keepOnly": [
-            "ex.med-ball-throw"
+            "ex_sidetoss"
           ],
-          "note": "Max-intent throw block only. This is what makes it a TD1."
+          "modify": {
+            "ex_sidetoss": "4x3/side"
+          },
+          "note": "Pillar Prep 3 min, then side toss 4x3/side, full rest, decay-terminated."
         }
       },
-      "compressionRule": "TD1 compresses inward toward the max-intent throw block. That block is what the session is FOR \u2014 everything else is supporting work, and a TD1 without it does not count as a TD1.",
+      "compressionRule": "The max-intent throw block is the last thing cut. If it does not run, this was not TD1 - log as a general training day and keep TD1 in the queue.",
       "volumeCap": {
         "label": "THROWS",
         "limit": 36,
         "countOf": "maxIntent",
         "section": "power"
-      }
+      },
+      "neural": 9,
+      "metabolic": 3,
+      "density": "3:1",
+      "mustFollow": "RD",
+      "esdNote": "None. Any ESD here contaminates the alactic profile of the session and blunts the following day."
     },
     {
-      "id": "tmpl.td2-strength",
-      "name": "TD2 \u2014 Max Strength",
+      "id": "TD2",
+      "name": "Max Strength",
       "position": "TD2",
       "sections": [
         {
-          "id": "sec.td2-strength.pillar",
+          "id": "sec.TD2.pillar-prep",
           "label": "Pillar Prep",
           "role": "pillar-prep",
           "exerciseIds": [
-            "ex.breathing",
-            "ex.glute-bridge",
-            "ex.side-plank"
+            "ex.prep.loaded-carry-hold",
+            "ex.prep.hollow-body-iso",
+            "ex.prep.banded-hip-hinge-patterning"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.td2-strength.movement",
+          "id": "sec.TD2.movement-prep",
           "label": "Movement Prep",
           "role": "movement-prep",
           "exerciseIds": [
-            "ex.leg-swings",
-            "ex.inchworm",
-            "ex.lateral-lunge"
+            "ex.prep.thoracic-extension-over-roller",
+            "ex.prep.hip-90-90",
+            "ex.prep.ankle-knee-tracking-series",
+            "ex.prep.2-ramping-sets-of-the-day"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.td2.primary",
-          "label": "Primary",
-          "role": "strength",
-          "exerciseIds": [
-            "ex.trap-bar-deadlift"
-          ],
-          "primeExerciseId": "ex.trap-bar-deadlift"
-        },
-        {
-          "id": "sec.td2.secondary",
-          "label": "Secondary",
-          "role": "strength",
-          "exerciseIds": [
-            "ex.bench-press",
-            "ex.weighted-pullup"
-          ],
-          "primeExerciseId": "ex.bench-press"
-        },
-        {
-          "id": "sec.td2.accessory",
-          "label": "Accessory",
-          "role": "accessory",
-          "exerciseIds": [
-            "ex.split-squat",
-            "ex.overhead-press"
-          ],
-          "primeExerciseId": null
-        }
-      ],
-      "ledger": {},
-      "compression": {
-        "75": {
-          "cut": [
-            "ex.overhead-press"
-          ],
-          "note": "Accessory press dropped."
-        },
-        "50": {
-          "cut": [
-            "ex.split-squat",
-            "ex.overhead-press",
-            "ex.weighted-pullup"
-          ],
-          "note": "Accessories dropped. Primary and one secondary."
-        },
-        "25": {
-          "keepOnly": [
-            "ex.trap-bar-deadlift"
-          ],
-          "modify": {
-            "ex.trap-bar-deadlift": "3 \u00d7 3"
-          },
-          "note": "Primary only, reduced volume."
-        }
-      },
-      "compressionRule": "TD2 compresses by shedding accessories first, then secondaries. The primary lift is the last thing to go.",
-      "volumeCap": {
-        "label": "PRIME SETS",
-        "limit": 12,
-        "countOf": "prime",
-        "section": "strength"
-      }
-    },
-    {
-      "id": "tmpl.td3-elastic",
-      "name": "TD3 \u2014 Elastic / VO2max",
-      "position": "TD3",
-      "sections": [
-        {
-          "id": "sec.td3-elastic.pillar",
-          "label": "Pillar Prep",
-          "role": "pillar-prep",
-          "exerciseIds": [
-            "ex.breathing",
-            "ex.glute-bridge",
-            "ex.side-plank"
-          ],
-          "primeExerciseId": null
-        },
-        {
-          "id": "sec.td3-elastic.movement",
-          "label": "Movement Prep",
-          "role": "movement-prep",
-          "exerciseIds": [
-            "ex.leg-swings",
-            "ex.inchworm",
-            "ex.lateral-lunge"
-          ],
-          "primeExerciseId": null
-        },
-        {
-          "id": "sec.td3.plyo",
-          "label": "Plyometrics",
-          "role": "plyo",
-          "exerciseIds": [
-            "ex.pogo-hops"
-          ],
-          "primeExerciseId": "ex.pogo-hops"
-        },
-        {
-          "id": "sec.td3.esd",
-          "label": "ESD",
-          "role": "esd",
-          "exerciseIds": [
-            "ex.bike-intervals"
-          ],
-          "primeExerciseId": "ex.bike-intervals"
-        }
-      ],
-      "ledger": {
-        "vo2max": true
-      },
-      "compression": {
-        "75": {
-          "modify": {
-            "ex.pogo-hops": "3 \u00d7 10"
-          },
-          "note": "Plyo volume reduced."
-        },
-        "50": {
-          "cut": [
-            "ex.pogo-hops"
-          ],
-          "note": "Plyo dropped. Conditioning only."
-        },
-        "25": {
-          "keepOnly": [
-            "ex.bike-intervals"
-          ],
-          "note": "The 4x4 only."
-        }
-      },
-      "compressionRule": "TD3 compresses toward the 4x4. The aerobic exposure is the ledger-bearing element; plyometrics are secondary.",
-      "volumeCap": {
-        "label": "CONTACTS",
-        "limit": 90,
-        "countOf": "contacts",
-        "section": "plyo"
-      }
-    },
-    {
-      "id": "tmpl.td-a",
-      "name": "TD-A \u2014 Combined",
-      "position": "TD-A",
-      "sections": [
-        {
-          "id": "sec.td-a.pillar",
-          "label": "Pillar Prep",
-          "role": "pillar-prep",
-          "exerciseIds": [
-            "ex.breathing",
-            "ex.glute-bridge",
-            "ex.side-plank"
-          ],
-          "primeExerciseId": null
-        },
-        {
-          "id": "sec.td-a.movement",
-          "label": "Movement Prep",
-          "role": "movement-prep",
-          "exerciseIds": [
-            "ex.leg-swings",
-            "ex.inchworm",
-            "ex.lateral-lunge"
-          ],
-          "primeExerciseId": null
-        },
-        {
-          "id": "sec.tda.jumps",
-          "label": "Jumps",
+          "id": "sec.TD2.power",
+          "label": "Power",
           "role": "power",
           "exerciseIds": [
-            "ex.vertical-jump"
+            "ex_sidetoss_prime"
           ],
-          "primeExerciseId": "ex.vertical-jump"
+          "primeExerciseId": "ex_sidetoss_prime"
         },
         {
-          "id": "sec.tda.strength",
+          "id": "sec.TD2.strength",
           "label": "Strength",
           "role": "strength",
           "exerciseIds": [
-            "ex.back-squat"
+            "ex_frontsquat",
+            "ex_pullup",
+            "ex_press",
+            "ex_rdl",
+            "ex_carry"
           ],
-          "primeExerciseId": "ex.back-squat"
+          "primeExerciseId": "ex_frontsquat"
+        },
+        {
+          "id": "sec.TD2.recovery",
+          "label": "Regeneration",
+          "role": "recovery",
+          "exerciseIds": [
+            "ex.regen.td2"
+          ],
+          "primeExerciseId": null
         }
       ],
       "ledger": {
-        "velocityFull": true,
         "velocityPrime": true
       },
       "compression": {
         "75": {
-          "note": "No cut at 75%."
+          "cut": [
+            "ex_rdl"
+          ],
+          "modify": {
+            "ex_press": "3x3"
+          }
         },
         "50": {
           "cut": [
-            "ex.back-squat"
+            "ex_sidetoss_prime",
+            "ex_press",
+            "ex_rdl"
           ],
-          "note": "Strength dropped."
+          "modify": {
+            "ex_pullup": "3x3",
+            "ex_carry": "2x40yd"
+          }
         },
         "25": {
           "keepOnly": [
-            "ex.vertical-jump"
+            "ex_frontsquat"
           ],
-          "note": "Jump block only."
+          "modify": {
+            "ex_frontsquat": "3x3 at prescribed load"
+          }
         }
       },
-      "compressionRule": "TD-A compresses toward its jump block, for the same reason TD1 does.",
-      "volumeCap": {
-        "label": "JUMPS",
-        "limit": 36,
-        "countOf": "maxIntent",
-        "section": "power"
-      }
+      "compressionRule": "Load is preserved, volume is cut. Never reduce load to preserve set count - that converts a strength session into hypertrophy with a strength label.",
+      "volumeCap": null,
+      "neural": 7,
+      "metabolic": 4,
+      "density": "3:1",
+      "loadCeiling": "88% 1RM / RPE 8 / >=0.35 m/s. No singles. No AMRAP. No failure.",
+      "esdNote": "Optional Zone 2 flush, 10-12 min, <=70% HRmax. Not a prescription. Does not count toward the Zone 2 floor."
     },
     {
-      "id": "tmpl.td-b-str",
-      "name": "TD-B \u2014 Strength Emphasis",
-      "position": "TD-B-STR",
+      "id": "TD3",
+      "name": "Elastic/Reactive + VO2max",
+      "position": "TD3",
       "sections": [
         {
-          "id": "sec.td-b-str.pillar",
+          "id": "sec.TD3.pillar-prep",
           "label": "Pillar Prep",
           "role": "pillar-prep",
           "exerciseIds": [
-            "ex.breathing",
-            "ex.glute-bridge",
-            "ex.side-plank"
+            "ex.prep.quadruped-anti-rotation",
+            "ex.prep.side-plank-with-reach",
+            "ex.prep.ankle-stiffness-prep"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.td-b-str.movement",
+          "id": "sec.TD3.movement-prep",
           "label": "Movement Prep",
           "role": "movement-prep",
           "exerciseIds": [
-            "ex.leg-swings",
-            "ex.inchworm",
-            "ex.lateral-lunge"
+            "ex.prep.ankle-foot-series",
+            "ex.prep.pogo-build-ups",
+            "ex.prep.hip-mobility"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.tdbstr.primary",
-          "label": "Primary",
+          "id": "sec.TD3.power",
+          "label": "Power",
+          "role": "power",
+          "exerciseIds": [
+            "ex_pogo",
+            "ex_dropjump",
+            "ex_rotbound"
+          ],
+          "primeExerciseId": "ex_pogo"
+        },
+        {
+          "id": "sec.TD3.strength",
+          "label": "Strength",
           "role": "strength",
           "exerciseIds": [
-            "ex.trap-bar-deadlift"
+            "ex_rfess",
+            "ex_row",
+            "ex_neck",
+            "ex_grip"
           ],
-          "primeExerciseId": "ex.trap-bar-deadlift"
+          "primeExerciseId": "ex_rfess"
         },
         {
-          "id": "sec.tdbstr.secondary",
-          "label": "Secondary",
-          "role": "strength",
-          "exerciseIds": [
-            "ex.bench-press"
-          ],
-          "primeExerciseId": "ex.bench-press"
-        }
-      ],
-      "ledger": {},
-      "compression": {
-        "50": {
-          "cut": [
-            "ex.bench-press"
-          ],
-          "note": "Secondary dropped."
-        },
-        "25": {
-          "keepOnly": [
-            "ex.trap-bar-deadlift"
-          ],
-          "note": "Primary only."
-        }
-      },
-      "compressionRule": "TD-B-STR compresses to its primary lift.",
-      "volumeCap": null
-    },
-    {
-      "id": "tmpl.td-b-esd",
-      "name": "TD-B \u2014 ESD Emphasis",
-      "position": "TD-B-ESD",
-      "sections": [
-        {
-          "id": "sec.td-b-esd.pillar",
-          "label": "Pillar Prep",
-          "role": "pillar-prep",
-          "exerciseIds": [
-            "ex.breathing",
-            "ex.glute-bridge",
-            "ex.side-plank"
-          ],
-          "primeExerciseId": null
-        },
-        {
-          "id": "sec.td-b-esd.movement",
-          "label": "Movement Prep",
-          "role": "movement-prep",
-          "exerciseIds": [
-            "ex.leg-swings",
-            "ex.inchworm",
-            "ex.lateral-lunge"
-          ],
-          "primeExerciseId": null
-        },
-        {
-          "id": "sec.tdbesd.esd",
+          "id": "sec.TD3.esd",
           "label": "ESD",
           "role": "esd",
           "exerciseIds": [
-            "ex.bike-intervals",
-            "ex.zone2-ride"
+            "ex_4x4"
           ],
-          "primeExerciseId": "ex.bike-intervals"
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.TD3.recovery",
+          "label": "Regeneration",
+          "role": "recovery",
+          "exerciseIds": [
+            "ex.regen.td3"
+          ],
+          "primeExerciseId": null
         }
       ],
       "ledger": {
         "vo2max": true
       },
       "compression": {
+        "75": {
+          "cut": [
+            "ex_rfess",
+            "ex_row",
+            "ex_rotbound"
+          ]
+        },
         "50": {
           "cut": [
-            "ex.zone2-ride"
+            "ex_rfess",
+            "ex_row",
+            "ex_neck",
+            "ex_grip",
+            "ex_dropjump",
+            "ex_rotbound"
           ],
-          "note": "Zone 2 dropped."
+          "modify": {
+            "ex_pogo": "2x10 contacts"
+          }
         },
         "25": {
           "keepOnly": [
-            "ex.bike-intervals"
+            "ex_4x4"
           ],
-          "note": "The 4x4 only."
+          "note": "Pillar Prep 3 min, then 4x4, full protocol. Nothing else."
         }
       },
-      "compressionRule": "TD-B-ESD compresses to the 4x4.",
-      "volumeCap": null
+      "compressionRule": "The 4x4 is the last thing cut. A 3x4 is acceptable compression; a skipped 4x4 is a ledger miss.",
+      "volumeCap": {
+        "label": "CONTACTS",
+        "limit": 90,
+        "countOf": "contacts",
+        "section": "power"
+      },
+      "neural": 4,
+      "metabolic": 9,
+      "density": "3:1",
+      "plyoNote": "Not max-intent by classification - submaximal amplitude, quality-terminated, <90 total contacts. Does not violate the one-max-intent-per-stretch rule."
     },
     {
-      "id": "tmpl.rd",
-      "name": "RD \u2014 Recovery",
-      "position": "RD",
+      "id": "TD-A",
+      "name": "Rotational Velocity & Alactic Power",
+      "position": "TD-A",
       "sections": [
         {
-          "id": "sec.rd.pillar",
+          "id": "sec.TD-A.pillar-prep",
           "label": "Pillar Prep",
           "role": "pillar-prep",
           "exerciseIds": [
-            "ex.breathing",
-            "ex.glute-bridge",
-            "ex.side-plank"
+            "ex.prep.glute-activation-supine-bridge-pattern",
+            "ex.prep.anti-extension-dead-bug-family",
+            "ex.prep.anti-rotation-iso-pallof-family",
+            "ex.prep.t-spine-rotation-hips-locked"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.rd.movement",
+          "id": "sec.TD-A.movement-prep",
           "label": "Movement Prep",
           "role": "movement-prep",
           "exerciseIds": [
-            "ex.leg-swings",
-            "ex.inchworm",
-            "ex.lateral-lunge"
+            "ex.prep.active-hip-flexor-adductor",
+            "ex.prep.90-90-transitions",
+            "ex.prep.lateral-hip-series",
+            "ex.prep.ankle-dorsiflexion",
+            "ex.prep.banded-hip-separation-drill",
+            "ex.prep.2-build-up-accelerations",
+            "ex.prep.3-sub-max-rotational-throws-70"
           ],
           "primeExerciseId": null
         },
         {
-          "id": "sec.rd.recovery",
-          "label": "Recovery",
+          "id": "sec.TD-A.power",
+          "label": "Power",
+          "role": "power",
+          "exerciseIds": [
+            "ex_sidetoss",
+            "ex_stepbehind",
+            "ex_chopslam"
+          ],
+          "primeExerciseId": "ex_sidetoss"
+        },
+        {
+          "id": "sec.TD-A.movement-skills",
+          "label": "Movement Skills",
+          "role": "movement-skills",
+          "exerciseIds": [
+            "ex_accel",
+            "ex_crossover"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.TD-A.strength",
+          "label": "Strength",
+          "role": "strength",
+          "exerciseIds": [
+            "ex_kbswing",
+            "ex_trapbar",
+            "ex_antirot_iso"
+          ],
+          "primeExerciseId": "ex_kbswing"
+        },
+        {
+          "id": "sec.TD-A.recovery",
+          "label": "Regeneration",
           "role": "recovery",
           "exerciseIds": [
-            "ex.mobility-flow",
-            "ex.easy-walk"
+            "ex.regen.td-a"
+          ],
+          "primeExerciseId": null
+        }
+      ],
+      "ledger": {
+        "velocityFull": true
+      },
+      "compression": {
+        "75": {
+          "cut": [
+            "ex_accel",
+            "ex_crossover",
+            "ex_antirot_iso"
+          ],
+          "modify": {
+            "ex_kbswing": "8x5",
+            "ex_trapbar": "3x3"
+          }
+        },
+        "50": {
+          "cut": [
+            "ex_accel",
+            "ex_crossover",
+            "ex_antirot_iso",
+            "ex_trapbar",
+            "ex_chopslam"
+          ],
+          "modify": {
+            "ex_sidetoss": "4x3/side",
+            "ex_stepbehind": "2x3/side",
+            "ex_kbswing": "6x5"
+          }
+        },
+        "25": {
+          "keepOnly": [
+            "ex_sidetoss"
+          ],
+          "modify": {
+            "ex_sidetoss": "4x3/side"
+          },
+          "note": "Pillar Prep 3 min, then side toss 4x3/side, full rest, decay-terminated."
+        }
+      },
+      "compressionRule": "The max-intent throw block is the last thing cut. If it does not run, this was not TD1 - log as a general training day and keep TD1 in the queue.",
+      "volumeCap": {
+        "label": "THROWS",
+        "limit": 36,
+        "countOf": "maxIntent",
+        "section": "power"
+      },
+      "neural": 9,
+      "metabolic": 3,
+      "density": "2:1",
+      "mustFollow": "RD",
+      "aliasOf": "TD1"
+    },
+    {
+      "id": "TD-B-STR",
+      "name": "Minimum-Dose Max Strength",
+      "position": "TD-B-STR",
+      "sections": [
+        {
+          "id": "sec.TD-B-STR.pillar-prep",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.prep.loaded-carry-hold",
+            "ex.prep.hollow-body-iso"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.TD-B-STR.movement-prep",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.prep.thoracic-extension",
+            "ex.prep.hip-90-90",
+            "ex.prep.2-ramping-sets"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.TD-B-STR.power",
+          "label": "Power",
+          "role": "power",
+          "exerciseIds": [
+            "ex_sidetoss_prime"
+          ],
+          "primeExerciseId": "ex_sidetoss_prime"
+        },
+        {
+          "id": "sec.TD-B-STR.strength",
+          "label": "Strength",
+          "role": "strength",
+          "exerciseIds": [
+            "ex_frontsquat_min",
+            "ex_pullup_min",
+            "ex_carry"
+          ],
+          "primeExerciseId": "ex_frontsquat_min"
+        },
+        {
+          "id": "sec.TD-B-STR.recovery",
+          "label": "Regeneration",
+          "role": "recovery",
+          "exerciseIds": [
+            "ex.regen.td-b-str"
+          ],
+          "primeExerciseId": null
+        }
+      ],
+      "ledger": {
+        "velocityPrime": true
+      },
+      "compression": {
+        "75": {
+          "cut": [
+            "ex_carry"
+          ]
+        },
+        "50": {
+          "cut": [
+            "ex_sidetoss_prime",
+            "ex_carry"
+          ]
+        },
+        "25": {
+          "keepOnly": [
+            "ex_frontsquat_min"
+          ]
+        }
+      },
+      "compressionRule": "Load is preserved, volume is cut.",
+      "volumeCap": null,
+      "neural": 7,
+      "metabolic": 4,
+      "density": "2:1",
+      "loadCeiling": "88% 1RM / RPE 8 / >=0.35 m/s. No singles. No AMRAP. No failure.",
+      "note": "Top-end only. 2 heavy sets. No accessory volume."
+    },
+    {
+      "id": "TD-B-ESD",
+      "name": "Elastic/Reactive + VO2max",
+      "position": "TD-B-ESD",
+      "sections": [
+        {
+          "id": "sec.TD-B-ESD.pillar-prep",
+          "label": "Pillar Prep",
+          "role": "pillar-prep",
+          "exerciseIds": [
+            "ex.prep.quadruped-anti-rotation",
+            "ex.prep.side-plank-with-reach",
+            "ex.prep.ankle-stiffness-prep"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.TD-B-ESD.movement-prep",
+          "label": "Movement Prep",
+          "role": "movement-prep",
+          "exerciseIds": [
+            "ex.prep.ankle-foot-series",
+            "ex.prep.pogo-build-ups",
+            "ex.prep.hip-mobility"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.TD-B-ESD.power",
+          "label": "Power",
+          "role": "power",
+          "exerciseIds": [
+            "ex_pogo",
+            "ex_dropjump",
+            "ex_rotbound"
+          ],
+          "primeExerciseId": "ex_pogo"
+        },
+        {
+          "id": "sec.TD-B-ESD.strength",
+          "label": "Strength",
+          "role": "strength",
+          "exerciseIds": [
+            "ex_rfess",
+            "ex_row",
+            "ex_neck",
+            "ex_grip"
+          ],
+          "primeExerciseId": "ex_rfess"
+        },
+        {
+          "id": "sec.TD-B-ESD.esd",
+          "label": "ESD",
+          "role": "esd",
+          "exerciseIds": [
+            "ex_4x4"
+          ],
+          "primeExerciseId": null
+        },
+        {
+          "id": "sec.TD-B-ESD.recovery",
+          "label": "Regeneration",
+          "role": "recovery",
+          "exerciseIds": [
+            "ex.regen.td-b-esd"
+          ],
+          "primeExerciseId": null
+        }
+      ],
+      "ledger": {
+        "vo2max": true
+      },
+      "compression": {
+        "75": {
+          "cut": [
+            "ex_rfess",
+            "ex_row",
+            "ex_rotbound"
+          ]
+        },
+        "50": {
+          "cut": [
+            "ex_rfess",
+            "ex_row",
+            "ex_neck",
+            "ex_grip",
+            "ex_dropjump",
+            "ex_rotbound"
+          ],
+          "modify": {
+            "ex_pogo": "2x10 contacts"
+          }
+        },
+        "25": {
+          "keepOnly": [
+            "ex_4x4"
+          ],
+          "note": "Pillar Prep 3 min, then 4x4, full protocol. Nothing else."
+        }
+      },
+      "compressionRule": "The 4x4 is the last thing cut. A 3x4 is acceptable compression; a skipped 4x4 is a ledger miss.",
+      "volumeCap": {
+        "label": "CONTACTS",
+        "limit": 90,
+        "countOf": "contacts",
+        "section": "power"
+      },
+      "neural": 4,
+      "metabolic": 9,
+      "density": "2:1",
+      "aliasOf": "TD3"
+    },
+    {
+      "id": "RD",
+      "name": "Recovery Day",
+      "position": "RD",
+      "sections": [
+        {
+          "id": "sec.RD.recovery",
+          "label": "Recovery Target",
+          "role": "recovery",
+          "exerciseIds": [
+            "ex.rd.capillarization-zone-2",
+            "ex.rd.positional-restoration",
+            "ex.rd.parasympathetic-downshift",
+            "ex.rd.tissue-quality"
           ],
           "primeExerciseId": null
         }
       ],
       "ledger": {},
       "compression": {},
-      "compressionRule": "Recovery Days are not compressed \u2014 density is unchanged by design.",
-      "volumeCap": null
+      "compressionRule": "",
+      "volumeCap": null,
+      "neural": 1,
+      "metabolic": 2,
+      "isRecovery": true,
+      "hardConstraint": "The RD immediately preceding TD1 caps Zone 2 at 45 min and stays below LT1. TD1's entire value depends on it.",
+      "targetCycle": [
+        {
+          "target": "Capillarization - Zone 2",
+          "ceiling": "45-60 min, strictly <= LT1",
+          "countsZone2": true,
+          "note": "Counts toward the 28-day Zone 2 floor."
+        },
+        {
+          "target": "Positional restoration",
+          "ceiling": "30 min",
+          "countsZone2": false,
+          "note": "Hips, thoracic spine, ankles. Position under low load, not stretching for its own sake."
+        },
+        {
+          "target": "Parasympathetic downshift",
+          "ceiling": "30 min",
+          "countsZone2": false,
+          "note": "Lowest-arousal option available."
+        },
+        {
+          "target": "Tissue quality",
+          "ceiling": "30 min",
+          "countsZone2": false,
+          "note": "Soft tissue, then reintegrate the pattern under light load."
+        }
+      ]
     }
   ],
   "blocks": [
     {
-      "id": "block.accumulation",
-      "name": "Accumulation",
-      "weeks": 4,
-      "floors": {
-        "velocityFull": {
-          "floor": 4,
-          "ceiling": null
-        },
-        "velocityPrime": {
-          "floor": 6,
-          "ceiling": null
-        },
-        "vo2max": {
-          "floor": 4,
-          "ceiling": 6
-        },
-        "zone2Min": {
-          "floor": 180,
-          "ceiling": null
-        },
-        "trainingDays": {
-          "floor": 16,
-          "ceiling": 22
-        }
-      },
-      "deloadRotation": 4,
+      "id": "b0",
+      "name": "Baseline & Calibration",
+      "weeks": 1,
+      "rotations": 2,
+      "density": "3:1",
+      "deloadRotation": null,
       "multipliers": {
         "volume": 1.0,
         "intensity": 1.0
-      }
-    },
-    {
-      "id": "block.intensification",
-      "name": "Intensification",
-      "weeks": 3,
+      },
       "floors": {
         "velocityFull": {
-          "floor": 3,
+          "floor": 0,
+          "ceiling": null
+        },
+        "velocityPrime": {
+          "floor": 0,
+          "ceiling": null
+        },
+        "vo2max": {
+          "floor": 0,
+          "ceiling": null
+        },
+        "zone2Min": {
+          "floor": 60,
+          "ceiling": null
+        },
+        "trainingDays": {
+          "floor": 10,
+          "ceiling": null
+        }
+      },
+      "primary": "Full test battery, movement screen, load calibration",
+      "secondary": null,
+      "maintains": [],
+      "exitGate": "Battery complete, maxes on file"
+    },
+    {
+      "id": "b1",
+      "name": "Pillar Integrity & Aerobic Base",
+      "weeks": 3,
+      "rotations": 6,
+      "density": "3:1",
+      "deloadRotation": 6,
+      "multipliers": {
+        "volume": 1.0,
+        "intensity": 1.0
+      },
+      "floors": {
+        "velocityFull": {
+          "floor": 5,
           "ceiling": null
         },
         "velocityPrime": {
@@ -1240,31 +2859,82 @@
           "ceiling": null
         },
         "vo2max": {
-          "floor": 3,
-          "ceiling": 6
+          "floor": 6,
+          "ceiling": null
         },
         "zone2Min": {
           "floor": 150,
           "ceiling": null
         },
         "trainingDays": {
-          "floor": 14,
-          "ceiling": 22
+          "floor": 15,
+          "ceiling": null
         }
       },
-      "deloadRotation": 3,
+      "primary": "Pillar strength-endurance, positional integrity, capillarization",
+      "secondary": "Aerobic base \u2014 Zone 2 volume, mitochondrial/capillary",
+      "maintains": [
+        "Half-dose med ball velocity (TD1 only)",
+        "One heavy grind per rotation"
+      ],
+      "exitGate": "Pillar screen clean under load; Zone 2 output at fixed HR improved >=3%"
+    },
+    {
+      "id": "b2",
+      "name": "Max Strength",
+      "weeks": 5,
+      "rotations": 8,
+      "density": "3:1",
+      "deloadRotation": 8,
       "multipliers": {
         "volume": 1.0,
         "intensity": 1.0
-      }
-    },
-    {
-      "id": "block.realization",
-      "name": "Realization",
-      "weeks": 2,
+      },
       "floors": {
         "velocityFull": {
-          "floor": 2,
+          "floor": 5,
+          "ceiling": null
+        },
+        "velocityPrime": {
+          "floor": 5,
+          "ceiling": null
+        },
+        "vo2max": {
+          "floor": 4,
+          "ceiling": null
+        },
+        "zone2Min": {
+          "floor": 120,
+          "ceiling": null
+        },
+        "trainingDays": {
+          "floor": 15,
+          "ceiling": null
+        }
+      },
+      "primary": "Maximal strength: hinge, squat, vertical press, vertical pull",
+      "secondary": "Alactic ballistic power (KB, A+A dosing)",
+      "maintains": [
+        "Full velocity dose on TD1",
+        "Half dose on TD2",
+        "1 VO2max per rotation"
+      ],
+      "exitGate": "Primary lifts +3-5% e1RM with no velocity regression"
+    },
+    {
+      "id": "b3",
+      "name": "Rotational Velocity & Elastic Power",
+      "weeks": 3,
+      "rotations": 8,
+      "density": "2:1",
+      "deloadRotation": 8,
+      "multipliers": {
+        "volume": 1.0,
+        "intensity": 1.0
+      },
+      "floors": {
+        "velocityFull": {
+          "floor": 8,
           "ceiling": null
         },
         "velocityPrime": {
@@ -1272,204 +2942,170 @@
           "ceiling": null
         },
         "vo2max": {
-          "floor": 2,
-          "ceiling": 6
+          "floor": 4,
+          "ceiling": null
         },
         "zone2Min": {
           "floor": 120,
           "ceiling": null
         },
         "trainingDays": {
-          "floor": 12,
-          "ceiling": 22
+          "floor": 18,
+          "ceiling": null
         }
       },
-      "deloadRotation": 2,
+      "primary": "Max-intent rotational velocity, throw distance/velocity both sides",
+      "secondary": "Elastic/reactive \u2014 RSI, ground contact time",
+      "maintains": [
+        "Strength: 2 heavy sets per rotation, top-end only",
+        "VO2max 1 per supercycle"
+      ],
+      "exitGate": "Standing MB throw +5% either side; RSI +0.10"
+    },
+    {
+      "id": "b4",
+      "name": "Expression",
+      "weeks": 2,
+      "rotations": 4,
+      "density": "2:1",
+      "deloadRotation": 4,
       "multipliers": {
         "volume": 1.0,
         "intensity": 1.0
-      }
+      },
+      "floors": {
+        "velocityFull": {
+          "floor": 8,
+          "ceiling": null
+        },
+        "velocityPrime": {
+          "floor": 4,
+          "ceiling": null
+        },
+        "vo2max": {
+          "floor": 6,
+          "ceiling": null
+        },
+        "zone2Min": {
+          "floor": 120,
+          "ceiling": null
+        },
+        "trainingDays": {
+          "floor": 18,
+          "ceiling": null
+        }
+      },
+      "primary": "Peak velocity expression + VO2max top-end",
+      "secondary": "Alactic repeatability \u2014 output stability across repeated max efforts",
+      "maintains": [
+        "Strength minimum dose: 1 heavy double, 2x per supercycle"
+      ],
+      "exitGate": "Club head speed +3%; VO2max estimate +5%"
     }
   ],
   "substitutionTags": [
     {
-      "id": "tag.bilateral-squat",
-      "label": "Bilateral Squat",
+      "id": "sub_td1_power",
+      "label": "Max-Intent Rotational Velocity",
       "appliesTo": [
-        "ex.back-squat",
-        "ex.split-squat"
+        "ex_sidetoss",
+        "ex_stepbehind",
+        "ex_chopslam"
       ],
-      "targetQuality": "Movement quality.",
-      "dosingSignature": "As prescribed.",
-      "validSubstitution": "An equivalent pattern at the same intent.",
-      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
-      "failureMode": null,
-      "ledgerKey": null
-    },
-    {
-      "id": "tag.unilateral-squat",
-      "label": "Unilateral Squat",
-      "appliesTo": [
-        "ex.split-squat"
-      ],
-      "targetQuality": "Movement quality.",
-      "dosingSignature": "As prescribed.",
-      "validSubstitution": "An equivalent pattern at the same intent.",
-      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
-      "failureMode": null,
-      "ledgerKey": null
-    },
-    {
-      "id": "tag.hinge",
-      "label": "Hinge",
-      "appliesTo": [
-        "ex.trap-bar-deadlift"
-      ],
-      "targetQuality": "Movement quality.",
-      "dosingSignature": "As prescribed.",
-      "validSubstitution": "An equivalent pattern at the same intent.",
-      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
-      "failureMode": null,
-      "ledgerKey": null
-    },
-    {
-      "id": "tag.horizontal-press",
-      "label": "Horizontal Press",
-      "appliesTo": [
-        "ex.bench-press"
-      ],
-      "targetQuality": "Movement quality.",
-      "dosingSignature": "As prescribed.",
-      "validSubstitution": "An equivalent pattern at the same intent.",
-      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
-      "failureMode": null,
-      "ledgerKey": null
-    },
-    {
-      "id": "tag.vertical-press",
-      "label": "Vertical Press",
-      "appliesTo": [
-        "ex.overhead-press"
-      ],
-      "targetQuality": "Movement quality.",
-      "dosingSignature": "As prescribed.",
-      "validSubstitution": "An equivalent pattern at the same intent.",
-      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
-      "failureMode": null,
-      "ledgerKey": null
-    },
-    {
-      "id": "tag.vertical-pull",
-      "label": "Vertical Pull",
-      "appliesTo": [
-        "ex.weighted-pullup"
-      ],
-      "targetQuality": "Movement quality.",
-      "dosingSignature": "As prescribed.",
-      "validSubstitution": "An equivalent pattern at the same intent.",
-      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
-      "failureMode": null,
-      "ledgerKey": null
-    },
-    {
-      "id": "tag.horizontal-jump",
-      "label": "Horizontal Jump",
-      "appliesTo": [
-        "ex.broad-jump"
-      ],
-      "targetQuality": "Horizontal power expressed at maximal intent.",
-      "dosingSignature": ">=3 maximal jumps, full reset between reps.",
-      "validSubstitution": "Any maximal horizontal jump variant \u2014 standing long jump, bounds for distance.",
-      "invalidSubstitution": "Repeated jumps for time, or any variant done under fatigue.",
-      "failureMode": "Distance falling across reps means the quality is gone; more reps add fatigue, not power.",
+      "targetQuality": "Max-intent rotational velocity. Alactic. Peak power through hip-trunk separation.",
+      "dosingSignature": "3-rep sets, 90s rest, terminate on 5% velocity decay, <=36 total max-intent efforts, zero lactate accumulation, full recovery between every set.",
+      "validSubstitution": "Any max-intent rotational effort meeting the same dosing signature. Range or bag/pad work in an antiglycolytic cadence qualifies - 3 max-intent swings or strikes, 90s complete rest, terminate on speed decay, <=36 total efforts. Overspeed golf training qualifies. Sled or throw-based rotational work qualifies.",
+      "invalidSubstitution": "Continuous range sessions. Any striking work with incomplete rest, regardless of perceived intensity. Volume swing work. Technical practice at sub-max intent. A 45-minute range session is not this block - it is 200 sub-max reps with no decay termination, which develops skill and blunts velocity.",
+      "failureMode": "Substituting glycolytic or high-volume work here silently deletes the primary emphasis while feeling like more work.",
       "ledgerKey": "velocityFull"
     },
     {
-      "id": "tag.vertical-jump",
-      "label": "Vertical Jump",
+      "id": "sub_td1_ballistic",
+      "label": "Alactic Ballistic Hip Power",
       "appliesTo": [
-        "ex.vertical-jump"
+        "ex_kbswing"
       ],
-      "targetQuality": "Vertical power expressed at maximal intent.",
-      "dosingSignature": ">=3 maximal jumps, full reset between reps.",
-      "validSubstitution": "Any maximal vertical jump variant \u2014 CMJ, squat jump, box jump for height.",
-      "invalidSubstitution": "Jump circuits, or anything continuous.",
+      "targetQuality": "Alactic hip power, repeatable. Anti-glycolytic by design.",
+      "dosingSignature": "10x5, 60-90s rest, HR returns to ~120 bpm between sets, no burn, no breathlessness.",
+      "validSubstitution": "Any ballistic hip-dominant pattern at the same work:rest and HR-recovery signature. Repeated max-intent takedown entries with full recovery. Repeated jump or throw sets.",
+      "invalidSubstitution": "Anything producing sustained elevated HR or local burn. Kettlebell complexes, EMOM circuits, and 'conditioning with kettlebells' are the exact opposite of this block - same tool, inverted energy system. Rounds of anything.",
       "failureMode": null,
-      "ledgerKey": "velocityFull"
+      "ledgerKey": null
     },
     {
-      "id": "tag.throw",
-      "label": "Throw",
+      "id": "sub_td2_prime",
+      "label": "Velocity Prime (Non-Fatiguing)",
       "appliesTo": [
-        "ex.med-ball-throw"
+        "ex_sidetoss_prime"
       ],
-      "targetQuality": "Rotational power expressed at maximal intent.",
-      "dosingSignature": ">=3 maximal throws per side, full reset between reps, no fatigue accumulation.",
-      "validSubstitution": "Any implement thrown at maximal intent with full reset \u2014 rotational cable, shot toss, sledge.",
-      "invalidSubstitution": "Anything performed for reps under fatigue, or at submaximal intent.",
-      "failureMode": "A throw done \"for conditioning\" is not a throw. Intent is the dose.",
+      "targetQuality": "Rotational velocity frequency preservation. Non-fatiguing.",
+      "dosingSignature": "12 total throws, max intent, 90s rest, terminate on any decay.",
+      "validSubstitution": "12 max-intent golf swings or rotational strikes with 90s rest between sets of 3.",
+      "invalidSubstitution": "Anything above 12 efforts. Volume defeats the block's purpose - it exists to preserve frequency without adding fatigue to a strength day.",
+      "failureMode": null,
       "ledgerKey": "velocityPrime"
     },
     {
-      "id": "tag.plyo",
-      "label": "Plyometric",
+      "id": "sub_td3_plyo",
+      "label": "Elastic / Reactive",
       "appliesTo": [
-        "ex.pogo-hops"
+        "ex_pogo",
+        "ex_dropjump",
+        "ex_rotbound"
       ],
-      "targetQuality": "Elastic stiffness with minimal ground contact time.",
-      "dosingSignature": "Contacts kept under the prescribed cap, ground contact time short and quiet.",
-      "validSubstitution": "Any low-amplitude, high-stiffness hop variant.",
-      "invalidSubstitution": "Any variant with long ground contact, or contacts past the cap.",
-      "failureMode": "Loud or slow contacts mean the elastic quality is gone.",
+      "targetQuality": "Elastic/reactive - tendon stiffness, RSI, short ground contact.",
+      "dosingSignature": "<90 total contacts, GCT-terminated, submaximal amplitude, full rest.",
+      "validSubstitution": "Any reactive/elastic modality with contact-time quality control - jump rope at speed with GCT discipline, reactive footwork, low-amplitude bounding.",
+      "invalidSubstitution": "Fatigue-based jumping. High-volume rope as conditioning. Any plyometric work performed after ESD. Amplitude-maximizing jump work.",
+      "failureMode": null,
       "ledgerKey": null
     },
     {
-      "id": "tag.vo2max",
+      "id": "sub_vo2max",
       "label": "VO2max",
       "appliesTo": [
-        "ex.bike-intervals"
+        "ex_4x4"
       ],
-      "targetQuality": "Aerobic power at or above 90% HRmax.",
-      "dosingSignature": "4 x 4 min at >=90% HRmax, with interval 1 reaching the threshold.",
-      "validSubstitution": "Any modality holding >=90% HRmax for 4 x 4 min \u2014 bike, row, ski, incline run.",
-      "invalidSubstitution": "Anything that never reaches 90% HRmax, or any interval structure shorter than 4 min.",
-      "failureMode": "A 4x4 that never reaches 90% HRmax in interval 1 is not a VO2max session. Log it as missed.",
+      "targetQuality": "VO2max. Central - stroke volume and cardiac output.",
+      "dosingSignature": "4x4 min @ 90-95% HRmax, 3 min active recovery @ 60-70%. 16 minutes total time in zone. Time-in-zone is the entire prescription.",
+      "validSubstitution": "Any modality meeting the same HR and duration profile. 4-minute grappling rounds alternated with 4-minute rest qualify - but only if HR is measured and actually reaches 90-95% for the majority of each round. Assault bike, ski erg, rower, treadmill, hill repeats, uphill carries all qualify at the correct HR.",
+      "invalidSubstitution": "Any glycolytic work that feels hard but does not hold 90-95% HRmax for 4 continuous minutes. Specifically: 30s-2min interval formats, circuit training, 'hard rounds' without HR data, most sparring. These are lactate tolerance work, not VO2max work. Same recovery cost, different adaptation.",
+      "failureMode": "Assuming a hard session was a 4x4. Wear the strap or log it as a miss.",
       "ledgerKey": "vo2max"
     },
     {
-      "id": "tag.zone2",
-      "label": "Zone 2",
+      "id": "sub_zone2",
+      "label": "Zone 2 Aerobic Base",
       "appliesTo": [
-        "ex.zone2-ride"
+        "ex.rd.capillarization-zone-2"
       ],
-      "targetQuality": "Aerobic base at conversational intensity.",
-      "dosingSignature": "Continuous work at nasal-breathing pace.",
-      "validSubstitution": "Any continuous modality held at conversational pace.",
-      "invalidSubstitution": "Anything requiring mouth breathing to sustain.",
+      "targetQuality": "Aerobic base - mitochondrial density, capillarization, fat oxidation.",
+      "dosingSignature": "45-60 min continuous at or just below LT1. Conversational. Nasal breathing sustainable.",
+      "validSubstitution": "Any continuous modality at the correct intensity. Walking a course while carrying qualifies - 18 holes walking is 3-4 hours of Zone 1-2. Light technical drilling at controlled HR qualifies.",
+      "invalidSubstitution": "Anything with HR excursions above LT1. Riding a cart. Intermittent effort of any kind - intervals do not aggregate into Zone 2.",
       "failureMode": null,
-      "ledgerKey": null
-    },
-    {
-      "id": "tag.recovery",
-      "label": "Recovery",
-      "appliesTo": [
-        "ex.mobility-flow",
-        "ex.easy-walk"
-      ],
-      "targetQuality": "Movement quality.",
-      "dosingSignature": "As prescribed.",
-      "validSubstitution": "An equivalent pattern at the same intent.",
-      "invalidSubstitution": "A different pattern, or the same pattern at lower intent.",
-      "failureMode": null,
-      "ledgerKey": null
+      "ledgerKey": "zone2Min"
     }
   ],
   "testDefs": [
     {
-      "id": "test.mb-throw-standing",
-      "name": "Standing MB Throw",
-      "unit": "m",
+      "id": "t_screen",
+      "name": "Exos Movement Screen + Pillar Checks",
+      "unit": "pass/fail",
       "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "passfail",
+      "gating": true,
+      "note": "Gates all progression. A failed pillar position stops the block."
+    },
+    {
+      "id": "t_mb_standing",
+      "name": "Standing MB Rotational Throw",
+      "unit": "ft",
+      "battery": "both",
       "bilateral": true,
       "higherIsBetter": true,
       "group": null,
@@ -1477,30 +3113,32 @@
       "kind": "numeric"
     },
     {
-      "id": "test.mb-throw-seated",
-      "name": "Seated MB Throw",
-      "unit": "m",
+      "id": "t_mb_seated",
+      "name": "Seated MB Rotational Throw",
+      "unit": "ft",
       "battery": "full",
       "bilateral": true,
       "higherIsBetter": true,
       "group": null,
       "powerMetric": true,
-      "kind": "numeric"
+      "kind": "numeric",
+      "note": "Delta vs standing tells you where the leak is."
     },
     {
-      "id": "test.cmj",
-      "name": "Countermovement Jump",
-      "unit": "cm",
+      "id": "t_cmj",
+      "name": "CMJ - Jump Height",
+      "unit": "in",
       "battery": "both",
       "bilateral": false,
       "higherIsBetter": true,
       "group": "cmj",
       "powerMetric": true,
-      "kind": "numeric"
+      "kind": "numeric",
+      "note": "Also the daily readiness proxy."
     },
     {
-      "id": "test.cmj-mrsi",
-      "name": "CMJ mRSI",
+      "id": "t_cmj_mrsi",
+      "name": "CMJ - mRSI",
       "unit": "ratio",
       "battery": "full",
       "bilateral": false,
@@ -1510,21 +3148,22 @@
       "kind": "numeric"
     },
     {
-      "id": "test.cmj-asym",
-      "name": "CMJ Asymmetry",
+      "id": "t_cmj_asym",
+      "name": "CMJ - Force Asymmetry",
       "unit": "%",
       "battery": "full",
       "bilateral": false,
       "higherIsBetter": false,
       "group": "cmj",
       "powerMetric": false,
-      "kind": "numeric"
+      "kind": "numeric",
+      "note": "Lower is better."
     },
     {
-      "id": "test.broad-jump",
+      "id": "t_broad",
       "name": "Broad Jump",
-      "unit": "cm",
-      "battery": "both",
+      "unit": "in",
+      "battery": "full",
       "bilateral": false,
       "higherIsBetter": true,
       "group": null,
@@ -1532,42 +3171,81 @@
       "kind": "numeric"
     },
     {
-      "id": "test.drop-jump-rsi",
-      "name": "Drop Jump RSI",
+      "id": "t_dropjump_rsi",
+      "name": "Drop Jump - RSI",
       "unit": "ratio",
-      "battery": "full",
+      "battery": "both",
       "bilateral": false,
       "higherIsBetter": true,
       "group": "dropjump",
       "powerMetric": true,
-      "kind": "numeric"
+      "kind": "numeric",
+      "note": "Box height held constant across tests."
     },
     {
-      "id": "test.club-head-speed",
-      "name": "Club Head Speed",
-      "unit": "mph",
-      "battery": "full",
-      "bilateral": false,
-      "higherIsBetter": true,
-      "group": null,
-      "powerMetric": true,
-      "kind": "numeric"
-    },
-    {
-      "id": "test.drop-jump-gct",
-      "name": "Drop Jump GCT",
+      "id": "t_dropjump_gct",
+      "name": "Drop Jump - Ground Contact Time",
       "unit": "ms",
       "battery": "full",
       "bilateral": false,
       "higherIsBetter": false,
       "group": "dropjump",
       "powerMetric": false,
-      "kind": "numeric"
+      "kind": "numeric",
+      "note": "Lower is better."
     },
     {
-      "id": "test.single-leg-hop",
-      "name": "Single-Leg Hop",
-      "unit": "cm",
+      "id": "t_squat",
+      "name": "Front Squat e1RM",
+      "unit": "lb",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric",
+      "liftRef": "squat"
+    },
+    {
+      "id": "t_trapbar",
+      "name": "Trap Bar e1RM",
+      "unit": "lb",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric",
+      "liftRef": "trapbar"
+    },
+    {
+      "id": "t_press",
+      "name": "Press e1RM",
+      "unit": "lb",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric",
+      "liftRef": "press"
+    },
+    {
+      "id": "t_pullup",
+      "name": "Pull-Up e1RM",
+      "unit": "lb",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric",
+      "liftRef": "pullup"
+    },
+    {
+      "id": "t_grip",
+      "name": "Grip - Thick-Bar Hold",
+      "unit": "s",
       "battery": "full",
       "bilateral": true,
       "higherIsBetter": true,
@@ -1576,9 +3254,9 @@
       "kind": "numeric"
     },
     {
-      "id": "test.imtp",
-      "name": "Isometric Mid-Thigh Pull",
-      "unit": "N",
+      "id": "t_neck",
+      "name": "Neck Isometric, 4 Directions",
+      "unit": "lb",
       "battery": "full",
       "bilateral": false,
       "higherIsBetter": true,
@@ -1587,19 +3265,8 @@
       "kind": "numeric"
     },
     {
-      "id": "test.grip",
-      "name": "Grip Strength",
-      "unit": "kg",
-      "battery": "full",
-      "bilateral": true,
-      "higherIsBetter": true,
-      "group": null,
-      "powerMetric": false,
-      "kind": "numeric"
-    },
-    {
-      "id": "test.vo2max-est",
-      "name": "Estimated VO2max",
+      "id": "t_vo2",
+      "name": "VO2max Estimate",
       "unit": "ml/kg/min",
       "battery": "full",
       "bilateral": false,
@@ -1609,15 +3276,86 @@
       "kind": "numeric"
     },
     {
-      "id": "test.movement-screen",
-      "name": "Movement Screen",
-      "unit": "pass/fail",
+      "id": "t_z2",
+      "name": "Zone 2 Output at Fixed HR",
+      "unit": "W",
       "battery": "full",
       "bilateral": false,
       "higherIsBetter": true,
       "group": null,
       "powerMetric": false,
-      "kind": "passfail"
+      "kind": "numeric",
+      "note": "Most sensitive marker of aerobic drift in this battery."
+    },
+    {
+      "id": "t_hrr",
+      "name": "HR Recovery, 60s Post-Interval",
+      "unit": "bpm drop",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric",
+      "note": "Larger drop is better."
+    },
+    {
+      "id": "t_chs",
+      "name": "Club Head Speed",
+      "unit": "mph",
+      "battery": "both",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": true,
+      "kind": "numeric",
+      "note": "Headline metric for the golf emphasis."
+    },
+    {
+      "id": "t_ballspeed",
+      "name": "Ball Speed",
+      "unit": "mph",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric"
+    },
+    {
+      "id": "t_smash",
+      "name": "Smash Factor",
+      "unit": "ratio",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric",
+      "note": "Skill metric. Expect slow movement. Do not attribute to this program."
+    },
+    {
+      "id": "t_handspeed",
+      "name": "Hand Speed",
+      "unit": "mph",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": true,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric"
+    },
+    {
+      "id": "t_decay",
+      "name": "Output Decay R1 to R3",
+      "unit": "%",
+      "battery": "full",
+      "bilateral": false,
+      "higherIsBetter": false,
+      "group": null,
+      "powerMetric": false,
+      "kind": "numeric",
+      "note": "Decay percentage matters more than absolute output."
     },
     {
       "id": "test.battery-full-complete",
@@ -1641,5 +3379,44 @@
       "powerMetric": false,
       "kind": "passfail"
     }
-  ]
+  ],
+  "testCadence": {
+    "fullBatteryTrainingDays": 24,
+    "fullBatteryCalendarDays": 45,
+    "miniBatteryTrainingDays": 9,
+    "note": "Whichever threshold hits first triggers. Both counters shown - rotation counts drift against calendar time."
+  },
+  "progressionGate": {
+    "powerRegressionThreshold": 2,
+    "note": "A block does not advance if the movement screen fails or if two or more power metrics have regressed. Display only - the app does not block advancement."
+  },
+  "deloadTreatment": {
+    "maxIntentThrows": {
+      "volumeMultiplier": 0.5,
+      "loadMultiplier": 1.0,
+      "note": "Intent unchanged. Reducing intent trains slow."
+    },
+    "grinds": {
+      "volumeMultiplier": 0.6,
+      "topSetPctCap": 80
+    },
+    "ballistic": {
+      "volumeMultiplier": 0.5,
+      "loadMultiplier": 1.0
+    },
+    "plyo": {
+      "contactsMultiplier": 0.5,
+      "note": "GCT standard unchanged."
+    },
+    "vo2max": {
+      "sets": 3,
+      "note": "One session, 3x4 instead of 4x4."
+    },
+    "zone2": {
+      "volumeMultiplier": 1.0
+    },
+    "recoveryDays": {
+      "densityChange": false
+    }
+  }
 }

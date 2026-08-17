@@ -75,13 +75,13 @@ test('13 — a bilateral exercise writes separate L and R records', async ({ pag
   await boot(page, 'session-ready');
   await startSession(page);
 
-  // ex.med-ball-throw is the perSide exercise in the seeded TD1.
-  const card = page.locator('[data-exercise-id="ex.med-ball-throw"]');
+  // ex_sidetoss is the perSide exercise in the seeded TD1.
+  const card = page.locator('[data-exercise-id="ex_sidetoss"]');
   await expect(card).toBeVisible();
   await card.locator('[data-testid="set-row"]').first().getByTestId('set-complete').click();
 
   await expect(async () => {
-    const logs = (await setLogs(page)).filter((l) => l['exerciseId'] === 'ex.med-ball-throw');
+    const logs = (await setLogs(page)).filter((l) => l['exerciseId'] === 'ex_sidetoss');
     expect(logs).toHaveLength(2);
     expect(logs.map((l) => l['side']).sort()).toEqual(['L', 'R']);
   }).toPass();
@@ -92,7 +92,7 @@ test('13b — a bilateral row renders both sides, never one shared field', async
   await startSession(page);
 
   const row = page
-    .locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="set-row"]')
+    .locator('[data-exercise-id="ex_sidetoss"] [data-testid="set-row"]')
     .first();
   await expect(row.locator('[data-side="L"]')).toHaveCount(1);
   await expect(row.locator('[data-side="R"]')).toHaveCount(1);
@@ -206,7 +206,7 @@ test('7b — a rest timer with time left is restored on resume', async ({ page }
     .click();
   await expect(page.getByTestId('rest-bar')).toBeVisible();
   const before = toSeconds(await page.getByTestId('rest-remaining').textContent());
-  expect(before).toBeGreaterThan(170); // a fresh 3:00 rest
+  expect(before).toBeGreaterThan(80); // a fresh 1:30 rest
 
   // Let real time pass so a restarted-from-scratch timer is distinguishable
   // from one resumed against the persisted start epoch.

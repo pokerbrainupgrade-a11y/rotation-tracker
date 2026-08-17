@@ -38,8 +38,8 @@ test('9 — bilateral logging writes two records with correct sides', async ({ p
   await testsTab(page);
 
   // Grip Strength is bilateral in the shipped definitions.
-  await page.locator('[data-test-id="test.grip"] .testrow__head').click();
-  await page.locator('[data-test-id="test.grip"] [data-testid="log-result"]').click();
+  await page.locator('[data-test-id="t_grip"] .testrow__head').click();
+  await page.locator('[data-test-id="t_grip"] [data-testid="log-result"]').click();
   await expect(page.getByTestId('log-result-sheet')).toBeVisible();
 
   await bump(page, 'Left value', 4);   // 2.0
@@ -51,13 +51,13 @@ test('9 — bilateral logging writes two records with correct sides', async ({ p
   await page.getByTestId('log-save').click();
   await expect(page.getByTestId('log-result-sheet')).toHaveCount(0);
 
-  const rows = (await readStore(page, 'tests')).filter((r) => r['testId'] === 'test.grip');
+  const rows = (await readStore(page, 'tests')).filter((r) => r['testId'] === 't_grip');
   expect(rows).toHaveLength(2);
   expect(rows.map((r) => r['side']).sort()).toEqual(['L', 'R']);
-  expect(rows.every((r) => r['unit'] === 'kg')).toBe(true);
+  expect(rows.every((r) => r['unit'] === 's')).toBe(true);
 
   // And the row now carries its own ratio line.
-  await expect(page.locator('[data-test-id="test.grip"] [data-testid="test-ratio"]')).toBeVisible();
+  await expect(page.locator('[data-test-id="t_grip"] [data-testid="test-ratio"]')).toBeVisible();
 });
 
 /* ---------- TEST 10 ---------- */
@@ -67,7 +67,7 @@ test('10 — the movement screen is pass/fail, needs a note on fail, has no char
 }) => {
   await testsTab(page);
 
-  const row = page.locator('[data-test-id="test.movement-screen"]');
+  const row = page.locator('[data-test-id="t_screen"]');
   await row.locator('.testrow__head').click();
 
   // No chart for a pass/fail test.
@@ -91,7 +91,7 @@ test('10 — the movement screen is pass/fail, needs a note on fail, has no char
 
   await page.getByTestId('log-save').click();
   const rows = (await readStore(page, 'tests')).filter(
-    (r) => r['testId'] === 'test.movement-screen',
+    (r) => r['testId'] === 't_screen',
   );
   expect(rows).toHaveLength(1);
   expect(rows[0]?.['value']).toBe(0);
@@ -99,7 +99,7 @@ test('10 — the movement screen is pass/fail, needs a note on fail, has no char
 
   // No delta on a pass/fail row.
   await expect(
-    page.locator('[data-test-id="test.movement-screen"] [data-testid="test-delta"]'),
+    page.locator('[data-test-id="t_screen"] [data-testid="test-delta"]'),
   ).toHaveCount(0);
 });
 
@@ -165,8 +165,8 @@ test('12b — logging one test individually does NOT reset the counters', async 
   await page.getByRole('button', { name: 'Tests' }).click();
   await page.waitForSelector('[data-testid="tests"]');
 
-  await page.locator('[data-test-id="test.imtp"] .testrow__head').click();
-  await page.locator('[data-test-id="test.imtp"] [data-testid="log-result"]').click();
+  await page.locator('[data-test-id="t_neck"] .testrow__head').click();
+  await page.locator('[data-test-id="t_neck"] [data-testid="log-result"]').click();
   await bump(page, 'Value', 4);
   await page.getByTestId('log-save').click();
   await expect(page.getByTestId('log-result-sheet')).toHaveCount(0);
@@ -191,8 +191,8 @@ test('13 — a progression-gate FAIL blocks nothing', async ({ page }) => {
   await testsTab(page);
 
   // Fail the movement screen.
-  await page.locator('[data-test-id="test.movement-screen"] .testrow__head').click();
-  await page.locator('[data-test-id="test.movement-screen"] [data-testid="log-result"]').click();
+  await page.locator('[data-test-id="t_screen"] .testrow__head').click();
+  await page.locator('[data-test-id="t_screen"] [data-testid="log-result"]').click();
   await page.getByTestId('screen-fail').click();
   await page.getByTestId('log-note').fill('failed');
   await page.getByTestId('log-save').click();
@@ -213,7 +213,7 @@ test('13 — a progression-gate FAIL blocks nothing', async ({ page }) => {
 
   const blockField = page.locator('.field__input').first();
   await expect(blockField).toBeEditable();
-  await blockField.fill('block.realization');
+  await blockField.fill('b4');
 
   await page.getByTestId('schedule-confirm').click();
   if (await page.getByTestId('schedule-anyway').count()) {
@@ -223,7 +223,7 @@ test('13 — a progression-gate FAIL blocks nothing', async ({ page }) => {
 
   // The session saved with the advanced block, gate failure notwithstanding.
   const sessions = await readStore(page, 'scheduled');
-  expect(sessions.some((s) => s['blockId'] === 'block.realization')).toBe(true);
+  expect(sessions.some((s) => s['blockId'] === 'b4')).toBe(true);
   expect(dialogs).toEqual([]);
 });
 
@@ -235,15 +235,15 @@ test('14 — battery CSV export produces one row per result with side and unit',
   await testsTab(page);
 
   // Log a bilateral test (two records) and a unilateral one.
-  await page.locator('[data-test-id="test.grip"] .testrow__head').click();
-  await page.locator('[data-test-id="test.grip"] [data-testid="log-result"]').click();
+  await page.locator('[data-test-id="t_grip"] .testrow__head').click();
+  await page.locator('[data-test-id="t_grip"] [data-testid="log-result"]').click();
   await bump(page, 'Left value', 4);
   await bump(page, 'Right value', 4);
   await page.getByTestId('log-save').click();
   await expect(page.getByTestId('log-result-sheet')).toHaveCount(0);
 
-  await page.locator('[data-test-id="test.imtp"] .testrow__head').click();
-  await page.locator('[data-test-id="test.imtp"] [data-testid="log-result"]').click();
+  await page.locator('[data-test-id="t_neck"] .testrow__head').click();
+  await page.locator('[data-test-id="t_neck"] [data-testid="log-result"]').click();
   await bump(page, 'Value', 4);
   await page.getByTestId('log-save').click();
   await expect(page.getByTestId('log-result-sheet')).toHaveCount(0);
@@ -269,8 +269,8 @@ test('14 — battery CSV export produces one row per result with side and unit',
   // Sides and units are present and real.
   expect(csv).toContain(',L,');
   expect(csv).toContain(',R,');
-  expect(csv).toContain('kg');
-  expect(csv).toContain('Grip Strength');
+  expect(csv).toContain(',s,');
+  expect(csv).toContain('Grip - Thick-Bar Hold');
 });
 
 /* ---------- charts ---------- */
@@ -278,7 +278,7 @@ test('14 — battery CSV export produces one row per result with side and unit',
 test('charts — degrade correctly on sparse data', async ({ page }) => {
   await testsTab(page);
 
-  const row = page.locator('[data-test-id="test.imtp"]');
+  const row = page.locator('[data-test-id="t_neck"]');
   await row.locator('.testrow__head').click();
 
   // 0 results: no chart element at all.
@@ -305,16 +305,16 @@ test('charts — degrade correctly on sparse data', async ({ page }) => {
 test('charts — the sparkline is inline SVG, not a library canvas', async ({ page }) => {
   await testsTab(page);
 
-  await page.locator('[data-test-id="test.imtp"] .testrow__head').click();
+  await page.locator('[data-test-id="t_neck"] .testrow__head').click();
   for (const [i, d] of ['2026-01-01', '2026-02-01'].entries()) {
-    await page.locator('[data-test-id="test.imtp"] [data-testid="log-result"]').click();
+    await page.locator('[data-test-id="t_neck"] [data-testid="log-result"]').click();
     await page.locator('.field__input[type="date"]').fill(d);
     await bump(page, 'Value', 4 + i * 2);
     await page.getByTestId('log-save').click();
     await expect(page.getByTestId('log-result-sheet')).toHaveCount(0);
   }
 
-  const spark = page.locator('[data-test-id="test.imtp"] [data-testid="sparkline"]').first();
+  const spark = page.locator('[data-test-id="t_neck"] [data-testid="sparkline"]').first();
   await expect(spark).toHaveCount(1);
   expect(await spark.evaluate((el) => el.tagName.toLowerCase())).toBe('svg');
   await expect(page.locator('canvas')).toHaveCount(0);

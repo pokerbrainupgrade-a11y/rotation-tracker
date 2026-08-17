@@ -23,13 +23,21 @@ export interface BarGeometry {
 const clamp = (n: number): number => Math.min(100, Math.max(0, n));
 
 /**
- * `barMax = ceiling ?? max(floor * 2, count)`.
+ * `barMax = ceiling ?? max(floor * 2, count, missed)`.
  *
  * Fixed per row so the bar does not rescale as counts change — a scale that
  * moves under you makes two glances incomparable, which defeats the point.
+ *
+ * `missed` is in the denominator because a block may legitimately set a floor
+ * of 0 — the Baseline block sets every velocity and VO2max floor to 0 while
+ * you calibrate. Without it, `max` collapses to 0, the geometry short-circuits,
+ * and a logged miss renders as nothing at all: the one outcome this instrument
+ * exists to make visible.
  */
-export function barMax(row: Pick<LedgerRow, 'ceiling' | 'floor' | 'count'>): number {
-  return row.ceiling ?? Math.max(row.floor * 2, row.count);
+export function barMax(
+  row: Pick<LedgerRow, 'ceiling' | 'floor' | 'count' | 'missed'>,
+): number {
+  return row.ceiling ?? Math.max(row.floor * 2, row.count, row.missed);
 }
 
 export function barGeometry(

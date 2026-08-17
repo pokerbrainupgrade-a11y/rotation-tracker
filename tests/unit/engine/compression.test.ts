@@ -12,13 +12,13 @@ import type { SessionTemplate } from '../../../src/types';
 const clone = <T,>(v: T): T => JSON.parse(JSON.stringify(v)) as T;
 
 const td1 = (): SessionTemplate => {
-  const t = programSeed.sessionTemplates.find((x) => x.id === 'tmpl.td1-velocity');
+  const t = programSeed.sessionTemplates.find((x) => x.id === 'TD1');
   if (!t) throw new Error('seed is missing tmpl.td1-velocity');
   return clone(t);
 };
 
 const td3 = (): SessionTemplate => {
-  const t = programSeed.sessionTemplates.find((x) => x.id === 'tmpl.td3-elastic');
+  const t = programSeed.sessionTemplates.find((x) => x.id === 'TD3');
   if (!t) throw new Error('seed is missing tmpl.td3-elastic');
   return clone(t);
 };
@@ -35,43 +35,47 @@ describe('6 — compression resolves cut, modify and keepOnly', () => {
 
   it('applies a cut list', () => {
     const r = resolveCompression(td1(), 75);
-    expect(isCut(r, 'ex.vertical-jump')).toBe(true);
-    expect(isCut(r, 'ex.med-ball-throw')).toBe(false);
-    expect(r.note).toBeTruthy();
+    // TD1 at 75% sheds the movement-skill work and the loaded iso; the
+    // max-intent throw block is untouched, which is the whole rule.
+    expect(isCut(r, 'ex_accel')).toBe(true);
+    expect(isCut(r, 'ex_crossover')).toBe(true);
+    expect(isCut(r, 'ex_sidetoss')).toBe(false);
+    expect(r.modified['ex_kbswing']).toBe('8x5');
   });
 
   it('applies keepOnly by cutting everything not listed', () => {
     const r = resolveCompression(td1(), 25);
     const all = templateExerciseIds(td1());
     for (const id of all) {
-      expect(isCut(r, id)).toBe(id !== 'ex.med-ball-throw');
+      expect(isCut(r, id)).toBe(id !== 'ex_sidetoss');
     }
   });
 
   it('keepOnly retains the max-intent throw block on TD1', () => {
     const r = resolveCompression(td1(), 25);
-    expect(isCut(r, 'ex.med-ball-throw')).toBe(false);
+    expect(isCut(r, 'ex_sidetoss')).toBe(false);
   });
 
   it('keepOnly retains only the 4x4 on TD3', () => {
     const r = resolveCompression(td3(), 25);
-    expect(isCut(r, 'ex.bike-intervals')).toBe(false);
-    expect(isCut(r, 'ex.pogo-hops')).toBe(true);
+    expect(isCut(r, 'ex_4x4')).toBe(false);
+    expect(isCut(r, 'ex_pogo')).toBe(true);
   });
 
   it('applies modify to the dose string and leaves others alone', () => {
-    const r = resolveCompression(td3(), 75);
-    expect(doseFor(r, 'ex.pogo-hops', '4 × 10')).toBe('3 × 10');
-    expect(doseFor(r, 'ex.bike-intervals', '4 × 4')).toBe('4 × 4');
+    const r = resolveCompression(td3(), 50);
+    expect(doseFor(r, 'ex_pogo', '4 × 10')).toBe('2x10 contacts');
+    expect(doseFor(r, 'ex_4x4', '4 × 4')).toBe('4 × 4');
   });
 
   it('keepOnly takes precedence over a cut list on the same level', () => {
     const t = td1();
-    t.compression['50'] = { cut: ['ex.broad-jump'], keepOnly: ['ex.back-squat'] };
+    t.compression['50'] = { cut: ['ex_sidetoss'], keepOnly: ['ex_stepbehind'] };
     const r = resolveCompression(t, 50);
-    expect(isCut(r, 'ex.back-squat')).toBe(false);
-    expect(isCut(r, 'ex.broad-jump')).toBe(true);
-    expect(isCut(r, 'ex.med-ball-throw')).toBe(true);
+    expect(isCut(r, 'ex_stepbehind')).toBe(false);
+    // Listed in `cut`, but keepOnly decides — and it would have been cut anyway.
+    expect(isCut(r, 'ex_sidetoss')).toBe(true);
+    expect(isCut(r, 'ex_chopslam')).toBe(true);
   });
 
   it('a level the template does not define compresses nothing', () => {
@@ -82,7 +86,7 @@ describe('6 — compression resolves cut, modify and keepOnly', () => {
 
   it('reports the levels a template actually defines', () => {
     expect(availableLevels(td1())).toEqual([25, 50, 75]);
-    const rd = programSeed.sessionTemplates.find((x) => x.id === 'tmpl.rd');
+    const rd = programSeed.sessionTemplates.find((x) => x.id === 'RD');
     // Recovery Days are not compressed by design.
     expect(availableLevels(clone(rd as SessionTemplate))).toEqual([]);
   });
@@ -100,32 +104,32 @@ describe('6 — compression resolves cut, modify and keepOnly', () => {
 describe('7 — mutating the seed changes resolved output', () => {
   it('changing a cut list changes what is cut', () => {
     const before = resolveCompression(td1(), 75);
-    expect(isCut(before, 'ex.back-squat')).toBe(false);
+    expect(isCut(before, 'ex_frontsquat')).toBe(false);
 
     const mutated = td1();
-    mutated.compression['75'] = { cut: ['ex.back-squat'] };
+    mutated.compression['75'] = { cut: ['ex_frontsquat'] };
     const after = resolveCompression(mutated, 75);
 
-    expect(isCut(after, 'ex.back-squat')).toBe(true);
-    expect(isCut(after, 'ex.vertical-jump')).toBe(false); // no longer cut
+    expect(isCut(after, 'ex_frontsquat')).toBe(true);
+    expect(isCut(after, 'ex_accel')).toBe(false); // no longer cut
   });
 
   it('changing keepOnly changes which exercise survives 25%', () => {
     const stock = resolveCompression(td1(), 25);
-    expect(isCut(stock, 'ex.broad-jump')).toBe(true);
+    expect(isCut(stock, 'ex_stepbehind')).toBe(true);
 
     const mutated = td1();
-    mutated.compression['25'] = { keepOnly: ['ex.broad-jump'] };
+    mutated.compression['25'] = { keepOnly: ['ex_stepbehind'] };
     const after = resolveCompression(mutated, 25);
 
-    expect(isCut(after, 'ex.broad-jump')).toBe(false);
-    expect(isCut(after, 'ex.med-ball-throw')).toBe(true);
+    expect(isCut(after, 'ex_stepbehind')).toBe(false);
+    expect(isCut(after, 'ex_sidetoss')).toBe(true);
   });
 
   it('changing modify changes the dose string', () => {
     const mutated = td3();
-    mutated.compression['75'] = { modify: { 'ex.pogo-hops': '1 × 5' } };
-    expect(doseFor(resolveCompression(mutated, 75), 'ex.pogo-hops', '4 × 10')).toBe('1 × 5');
+    mutated.compression['75'] = { modify: { 'ex_pogo': '1 × 5' } };
+    expect(doseFor(resolveCompression(mutated, 75), 'ex_pogo', '4 × 10')).toBe('1 × 5');
   });
 
   it('changing the note changes what is displayed', () => {
@@ -136,7 +140,7 @@ describe('7 — mutating the seed changes resolved output', () => {
 
   it('adding a level makes it available', () => {
     const rd = clone(
-      programSeed.sessionTemplates.find((x) => x.id === 'tmpl.rd') as SessionTemplate,
+      programSeed.sessionTemplates.find((x) => x.id === 'RD') as SessionTemplate,
     );
     expect(availableLevels(rd)).toEqual([]);
     rd.compression['50'] = { cut: ['ex.easy-walk'] };
@@ -161,10 +165,16 @@ describe('7 — mutating the seed changes resolved output', () => {
 /* ---------- shipped seed sanity ---------- */
 
 describe('the shipped compression maps', () => {
-  it('every template carries a compressionRule', () => {
+  it('every compressible template carries a compressionRule', () => {
     for (const t of programSeed.sessionTemplates) {
       expect(typeof t.compressionRule).toBe('string');
-      expect(t.compressionRule.length).toBeGreaterThan(0);
+      // Recovery Days define no compression levels and need no rule. Anything
+      // that CAN be compressed must say what it protects when it is — that
+      // sentence is the whole point of the compression sheet.
+      if (availableLevels(t).length > 0) {
+        expect(t.compressionRule.length, `${t.id} has levels but no rule`)
+          .toBeGreaterThan(0);
+      }
     }
   });
 

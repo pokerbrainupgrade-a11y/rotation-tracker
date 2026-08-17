@@ -16,7 +16,7 @@ import {
 import { evaluateConstraints } from '../../../src/engine/constraints';
 import { closeDb } from '../../../src/data/db';
 import { applySeed, ensureSeeded, programSeed } from '../../../src/data/seed';
-import { SCHEMA_VERSION, type ScheduledSession, type TestDef, type TestResult } from '../../../src/types';
+import { SEED_VERSION, SCHEMA_VERSION, type ScheduledSession, type TestDef, type TestResult } from '../../../src/types';
 import { seededDb, throughJson } from '../helpers';
 import { session, testResult } from '../factories';
 
@@ -40,8 +40,8 @@ describe('1 — a SEED_VERSION bump reseeds test definitions and keeps results',
 
     // Log results against the shipped definitions.
     const logged: TestResult[] = [
-      res({ id: 'keep-1', testId: 'test.cmj', value: 41.5, localDate: '2026-06-01' }),
-      res({ id: 'keep-2', testId: 'test.cmj', value: 43.0, localDate: '2026-07-01' }),
+      res({ id: 'keep-1', testId: 't_cmj', value: 41.5, localDate: '2026-06-01' }),
+      res({ id: 'keep-2', testId: 't_cmj', value: 43.0, localDate: '2026-07-01' }),
       res({ id: 'keep-3', testId: 'test.grip', value: 52, side: 'L', localDate: '2026-07-01' }),
     ];
     for (const r of logged) await db.put('tests', r);
@@ -52,15 +52,15 @@ describe('1 — a SEED_VERSION bump reseeds test definitions and keeps results',
 
     // Bump the seed and change a definition.
     const v3 = throughJson(programSeed);
-    v3.seedVersion = 3;
-    const cmj = v3.testDefs.find((t) => t.id === 'test.cmj');
+    v3.seedVersion = SEED_VERSION + 1;
+    const cmj = v3.testDefs.find((t) => t.id === 't_cmj');
     expect(cmj).toBeDefined();
     if (cmj) cmj.name = 'CMJ (renamed)';
 
-    expect(await ensureSeeded(v3, 3)).toBe(true);
+    expect(await ensureSeeded(v3, SEED_VERSION + 1)).toBe(true);
 
     // Definitions replaced...
-    expect((await db.get('testDefs', 'test.cmj'))?.name).toBe('CMJ (renamed)');
+    expect((await db.get('testDefs', 't_cmj'))?.name).toBe('CMJ (renamed)');
     // ...results untouched, byte for byte.
     expect(await db.getAll('tests')).toEqual(before);
     // ...and no schema migration happened.
@@ -71,7 +71,7 @@ describe('1 — a SEED_VERSION bump reseeds test definitions and keeps results',
   it('leaves every other user store alone too', async () => {
     const db = await seededDb();
     await db.put('scheduled', session({ id: 's-1' }));
-    await db.put('tests', res({ id: 'r-1', testId: 'test.cmj' }));
+    await db.put('tests', res({ id: 'r-1', testId: 't_cmj' }));
 
     const before = {
       scheduled: await db.getAll('scheduled'),
@@ -80,12 +80,12 @@ describe('1 — a SEED_VERSION bump reseeds test definitions and keeps results',
     };
 
     const v3 = throughJson(programSeed);
-    v3.seedVersion = 3;
-    await ensureSeeded(v3, 3);
+    v3.seedVersion = SEED_VERSION + 1;
+    await ensureSeeded(v3, SEED_VERSION + 1);
 
     expect(await db.getAll('scheduled')).toEqual(before.scheduled);
     expect(await db.getAll('tests')).toEqual(before.tests);
-    expect(await db.get('profile', 'me')).toEqual({ ...before.profile, seedVersion: 3 });
+    expect(await db.get('profile', 'me')).toEqual({ ...before.profile, seedVersion: SEED_VERSION + 1 });
   });
 
   it('the shipped seed carries the new fields on every definition', async () => {
@@ -142,7 +142,7 @@ describe('2 — delta direction follows higherIsBetter', () => {
   });
 
   it('the shipped GCT definition is lower-is-better', () => {
-    const gct = programSeed.testDefs.find((t) => t.id === 'test.drop-jump-gct');
+    const gct = programSeed.testDefs.find((t) => t.id === 't_dropjump_gct');
     expect(gct?.higherIsBetter).toBe(false);
   });
 });
@@ -292,7 +292,7 @@ describe('6 — only a completed battery resets the counters', () => {
       [
         res({ testId: FULL_MARKER_ID, localDate: '2026-07-01', value: 1 }),
         // Individual logs, including ones marked battery: 'full'.
-        res({ testId: 'test.cmj', localDate: '2026-07-20', value: 41, battery: 'full' }),
+        res({ testId: 't_cmj', localDate: '2026-07-20', value: 41, battery: 'full' }),
         res({ testId: 'test.grip', localDate: '2026-07-25', value: 50, battery: 'full' }),
       ],
       trainingDays(dates), now,
@@ -438,14 +438,14 @@ describe('8 — the regression flag needs two consecutive measurements', () => {
   });
 
   it('respects higherIsBetter — rising GCT is the regression', () => {
-    const gct = def({ id: 'test.drop-jump-gct', name: 'Drop Jump GCT', higherIsBetter: false });
+    const gct = def({ id: 't_dropjump_gct', name: 'Drop Jump GCT', higherIsBetter: false });
     const rising = [190, 200, 210].map((v, i) =>
-      res({ testId: 'test.drop-jump-gct', value: v, localDate: `2026-0${i + 1}-01` }),
+      res({ testId: 't_dropjump_gct', value: v, localDate: `2026-0${i + 1}-01` }),
     );
     expect(regressionFlags([gct], rising)).toHaveLength(1);
 
     const falling = [210, 200, 190].map((v, i) =>
-      res({ testId: 'test.drop-jump-gct', value: v, localDate: `2026-0${i + 1}-01` }),
+      res({ testId: 't_dropjump_gct', value: v, localDate: `2026-0${i + 1}-01` }),
     );
     expect(regressionFlags([gct], falling)).toHaveLength(0);
   });

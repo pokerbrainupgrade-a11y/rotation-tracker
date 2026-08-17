@@ -17,9 +17,9 @@ export function session(over: Partial<ScheduledSession> = {}): ScheduledSession 
     id: 'sess-1',
     localDate: '2026-03-10',
     ts: 1_772_000_000_000,
-    templateId: 'tmpl.td2-strength',
+    templateId: 'TD2',
     position: 'TD2',
-    blockId: 'block.accumulation',
+    blockId: 'b1',
     rotationNumber: 1,
     status: 'done',
     compressionLevel: 100,
@@ -40,7 +40,7 @@ export function setLog(over: Partial<SetLog> = {}): SetLog {
   return {
     id: 'set-1',
     scheduledId: 'sess-1',
-    exerciseId: 'ex.trap-bar-deadlift',
+    exerciseId: 'ex_trapbar',
     setIndex: 0,
     side: null,
     load: 315,
@@ -75,7 +75,7 @@ export function esdLog(over: Partial<EsdLog> = {}): EsdLog {
 
 export function maxRecord(over: Partial<MaxRecord> = {}): MaxRecord {
   return {
-    liftId: 'lift.trap-bar-deadlift',
+    liftId: 'trapbar',
     e1rm: 405,
     unit: 'lb',
     testedOn: '2026-03-01',
@@ -88,7 +88,7 @@ export function testResult(over: Partial<TestResult> = {}): TestResult {
   return {
     id: 'test-1',
     localDate: '2026-03-02',
-    testId: 'test.cmj',
+    testId: 't_cmj',
     side: null,
     value: 41.5,
     unit: 'cm',

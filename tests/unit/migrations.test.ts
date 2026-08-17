@@ -60,7 +60,7 @@ describe('acceptance 4 — migration integrity', () => {
     expect(await reopened.count('scheduled')).toBe(1);
     expect(await reopened.count('setLogs')).toBe(1);
     expect((await reopened.get('scheduled', 'sess-1'))?.templateId).toBe(
-      'tmpl.td2-strength',
+      'TD2',
     );
   });
 });

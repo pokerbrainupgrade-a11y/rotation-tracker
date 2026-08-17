@@ -18,7 +18,10 @@ export interface BootResult {
 }
 
 /**
- * The seed ships with `_placeholder: true` until the real program lands.
+ * A seed marked `_placeholder: true` is structural filler, not a prescription.
+ * The real program shipped at SEED_VERSION 3 and carries no such flag, so this
+ * now reads false — it stays as a standing guard against a future placeholder
+ * reaching a device.
  * Exercise ids become a permanent foreign key the moment a set is logged
  * against them, so this is worth saying out loud on every launch rather than
  * discovering it after a month of training history is pinned to throwaway ids.

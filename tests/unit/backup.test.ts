@@ -26,15 +26,15 @@ async function populate(): Promise<void> {
   await db.put('scheduled', session({ id: 'sess-2', localDate: '2026-11-01' }));
   await db.put('setLogs', setLog({ id: 'set-1', scheduledId: 'sess-1' }));
   await db.put('setLogs', setLog({
-    id: 'set-2', scheduledId: 'sess-2', exerciseId: 'ex.back-squat',
+    id: 'set-2', scheduledId: 'sess-2', exerciseId: 'ex_frontsquat',
     setIndex: 1, side: 'L', load: 225, reps: 5, rpe: 7.5, note: 'felt "sharp", 2nd',
   }));
   await db.put('esdLogs', esdLog({ id: 'esd-1', scheduledId: 'sess-2' }));
   await db.put('maxes', maxRecord());
-  await db.put('maxes', maxRecord({ liftId: 'lift.back-squat', e1rm: 355 }));
+  await db.put('maxes', maxRecord({ liftId: 'squat', e1rm: 355 }));
   await db.put('tests', testResult());
   await db.put('tests', testResult({
-    id: 'test-2', testId: 'test.single-leg-hop', side: 'R', value: 168, unit: 'cm',
+    id: 'test-2', testId: 't_broad', side: 'R', value: 168, unit: 'cm',
   }));
 }
 
@@ -174,7 +174,7 @@ describe('acceptance 6 — import migrates an older schema', () => {
     for (const s of restored) {
       expect(s.seedVersionAtLog).toBe(0); // backfilled default
       expect(s.metDosingSignature).toBeNull();
-      expect(s.templateId).toBe('tmpl.td2-strength'); // original data intact
+      expect(s.templateId).toBe('TD2'); // original data intact
     }
     expect(await db.count('setLogs')).toBe(current.counts['setLogs']);
   });
@@ -316,7 +316,7 @@ describe('prepareImport (confirm dialog)', () => {
 
     const db = await freshDb();
     await applySeed(db);
-    await ensureProfile('block.accumulation');
+    await ensureProfile('b1');
 
     const plan = await prepareImport(backup);
     expect(plan.destroys['setLogs']).toBe(0);
@@ -334,7 +334,7 @@ describe('CSV export', () => {
 
     expect(lines[0]).toMatch(/^localDate,position,/);
     expect(lines).toHaveLength(3); // header + 2 sets
-    expect(csv).toContain('ex.trap-bar-deadlift');
+    expect(csv).toContain('ex_trapbar');
     expect(csv).toContain('Trap Bar Deadlift');
   });
 
@@ -350,6 +350,6 @@ describe('CSV export', () => {
     const lines = csv.split('\r\n');
     expect(lines[0]).toBe('localDate,testId,testName,battery,side,value,unit,note,ts');
     expect(lines).toHaveLength(3);
-    expect(csv).toContain('test.single-leg-hop');
+    expect(csv).toContain('t_broad');
   });
 });

@@ -103,19 +103,19 @@ test('14 — full journey, offline', async ({ page, context }) => {
 
   // Bilateral throws.
   await page
-    .locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="set-row"]')
+    .locator('[data-exercise-id="ex_sidetoss"] [data-testid="set-row"]')
     .first()
     .getByTestId('set-complete')
     .click();
   if (await page.getByTestId('rest-skip').count()) await page.getByTestId('rest-skip').click();
 
   const throwLogs = (await readStore(page, 'setLogs'))
-    .filter((l) => l['exerciseId'] === 'ex.med-ball-throw');
+    .filter((l) => l['exerciseId'] === 'ex_sidetoss');
   expect(throwLogs).toHaveLength(2);
   expect(throwLogs.map((l) => l['side']).sort()).toEqual(['L', 'R']);
 
   // Substitute the ballistic block, meeting the signature.
-  await page.locator('[data-exercise-id="ex.med-ball-throw"] [data-testid="sub-open"]').click();
+  await page.locator('[data-exercise-id="ex_sidetoss"] [data-testid="sub-open"]').click();
   await page.getByTestId('log-as-substitute').click();
   await page.getByTestId('met-yes').click();
   await page.getByTestId('substitution-confirm').click();
@@ -150,7 +150,7 @@ test('14 — full journey, offline', async ({ page, context }) => {
   await page.getByTestId('start-session').last().click();
   await page.waitForSelector('[data-testid="session"]');
 
-  await page.locator('[data-exercise-id="ex.bike-intervals"] [data-testid="esd-abort"]').click();
+  await page.locator('[data-exercise-id="ex_4x4"] [data-testid="esd-abort"]').click();
   await expect(page.getByTestId('esd-abort-sheet')).toBeVisible();
   await page.getByTestId('esd-confirm').click();
   await expect(page.getByTestId('esd-abort-sheet')).toHaveCount(0);

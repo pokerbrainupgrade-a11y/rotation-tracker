@@ -54,14 +54,16 @@ describe('1 — bar geometry for a known input set', () => {
 /* ---------- TEST 2: barMax rule ---------- */
 
 describe('2 — barMax when ceiling is null', () => {
-  it('uses max(floor * 2, count)', () => {
-    expect(barMax({ ceiling: null, floor: 5, count: 3 })).toBe(10);
-    expect(barMax({ ceiling: null, floor: 5, count: 14 })).toBe(14);
-    expect(barMax({ ceiling: null, floor: 0, count: 0 })).toBe(0);
+  it('uses max(floor * 2, count, missed)', () => {
+    expect(barMax({ ceiling: null, floor: 5, count: 3, missed: 0 })).toBe(10);
+    expect(barMax({ ceiling: null, floor: 5, count: 14, missed: 0 })).toBe(14);
+    expect(barMax({ ceiling: null, floor: 0, count: 0, missed: 0 })).toBe(0);
+    // A zero-floor block still has to scale to its misses.
+    expect(barMax({ ceiling: null, floor: 0, count: 0, missed: 2 })).toBe(2);
   });
 
   it('prefers the ceiling when one is set', () => {
-    expect(barMax({ ceiling: 6, floor: 5, count: 20 })).toBe(6);
+    expect(barMax({ ceiling: 6, floor: 5, count: 20, missed: 0 })).toBe(6);
   });
 
   it('a full bar at floor sits the tick at the halfway mark', () => {
@@ -141,5 +143,22 @@ describe('4 — below floor flips count, fill and sub-label to --alert', () => {
   it('secondary rows are the 60% variants', () => {
     expect(rowColor('velocityPrime')).toBe('var(--velocity-60)');
     expect(rowColor('zone2Min')).toBe('var(--aerobic-60)');
+  });
+});
+
+describe('a block with no floor still shows misses', () => {
+  it('renders a hatch when floor and count are both zero', () => {
+    // The Baseline block sets every velocity and VO2max floor to 0. A missed
+    // exposure logged during it must still be visible.
+    const g = barGeometry({ count: 0, missed: 1, floor: 0, ceiling: null, belowFloor: false });
+    expect(g.barMax).toBe(1);
+    expect(g.hatchPct).toBe(100);
+    expect(g.fillPct).toBe(0);
+  });
+
+  it('is still empty when there is genuinely nothing to show', () => {
+    const g = barGeometry({ count: 0, missed: 0, floor: 0, ceiling: null, belowFloor: false });
+    expect(g.hatchPct).toBe(0);
+    expect(g.barMax).toBe(0);
   });
 });

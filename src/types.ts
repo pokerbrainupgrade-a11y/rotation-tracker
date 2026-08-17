@@ -1,5 +1,5 @@
 export const SCHEMA_VERSION = 3;
-export const SEED_VERSION = 2;
+export const SEED_VERSION = 3;
 
 export type Units = 'lb' | 'kg';
 export type Side = 'L' | 'R' | null;
@@ -180,6 +180,12 @@ export interface LoadSpec {
   /** hr: percentage band of HRmax, resolved to bpm at render time. */
   hrPctLow: number | null;
   hrPctHigh: number | null;
+  /**
+   * Qualitative load wording carried verbatim from the program when it states
+   * no number — "Heavy enough to threaten position", "Max hold". Rendered
+   * instead of a resolved load, never alongside an invented one.
+   */
+  note?: string | null;
 }
 
 export interface Exercise {
@@ -230,6 +236,36 @@ export interface Exercise {
   /** Which deload treatment row applies to it. */
   deloadElement: DeloadElement;
 
+  /* ---- carried verbatim from the program document ---- */
+
+  /**
+   * The literal prescribed dose when it is not a rep count — "15 yd", "4 min",
+   * "30s". Rendered in place of the rep number, which would otherwise read as
+   * a misleading "1".
+   */
+  doseLabel?: string;
+  tempo?: string;
+  /** A quality target rather than a load, e.g. "Ground contact time <180 ms". */
+  target?: string;
+  note?: string;
+  modalityNote?: string;
+  /** Exercise this one is deliberately paired with in the session. */
+  pairedWith?: string;
+  /** Ground contacts per set, for the plyo volume counter. */
+  contactsPerSet?: number;
+  warmup?: string;
+  cooldown?: string;
+  recoveryHrLow?: number;
+  recoveryHrHigh?: number;
+  /** A hard cap on total efforts for this exercise alone. */
+  exerciseVolumeCap?: number;
+  logVelocity?: boolean;
+  logDistance?: boolean;
+  logRSI?: boolean;
+  logHR?: boolean;
+  /** ESD only: the session offers an explicit abort that logs a missed exposure. */
+  abortable?: boolean;
+
   deprecated?: boolean;
 }
 
@@ -274,7 +310,34 @@ export interface SessionTemplate {
   compressionRule: string;
   /** Live volume counters for this session type. */
   volumeCap: VolumeCap | null;
+
+  /* ---- carried verbatim from the program document ---- */
+
+  /** Neural and metabolic cost, 1-10. Drives the constraint warnings' rationale. */
+  neural?: number;
+  metabolic?: number;
+  density?: string;
+  /** The position this session must follow to be worth running. */
+  mustFollow?: string;
+  loadCeiling?: string;
+  esdNote?: string;
+  plyoNote?: string;
+  note?: string;
+  /** This template is the same session as another at a different density. */
+  aliasOf?: string;
+  isRecovery?: boolean;
+  /** Recovery day rotating targets. */
+  targetCycle?: RecoveryTarget[];
+  hardConstraint?: string;
   deprecated?: boolean;
+}
+
+/** One rotating recovery-day target. */
+export interface RecoveryTarget {
+  target: string;
+  ceiling: string;
+  countsZone2: boolean;
+  note: string | null;
 }
 
 export interface LedgerBounds {
@@ -297,8 +360,20 @@ export interface Block {
   id: string;
   name: string;
   weeks: number;
-  /** Rotation number that is this block's programmed deload position. */
-  deloadRotation: number;
+  /**
+   * Rotation number that is this block's programmed deload position.
+   * null when the block has none — a calibration block never deloads.
+   */
+  deloadRotation: number | null;
+  /** Rotations in the block, and the training:recovery density they run at. */
+  rotations?: number;
+  density?: string;
+  primary?: string;
+  secondary?: string | null;
+  /** Qualities held at a maintenance dose while the primary is developed. */
+  maintains?: string[];
+  /** What has to be true to leave the block. Display only — never a gate. */
+  exitGate?: string;
   multipliers: BlockMultipliers;
   /** Floors/ceilings are per-block program data — never hardcoded in the engine. */
   floors: Record<LedgerKey, LedgerBounds>;
@@ -368,6 +443,11 @@ export interface TestDef {
   powerMetric: boolean;
   /** Pass/fail tests have no chart, no delta, and require a note on fail. */
   kind: 'numeric' | 'passfail';
+  /** The barbell lift this test estimates, when it is an e1RM test. */
+  liftRef?: string;
+  /** This test gates block progression. Display only. */
+  gating?: boolean;
+  note?: string | null;
   deprecated?: boolean;
 }
 
@@ -380,6 +460,26 @@ export interface ProgramSeed {
   blocks: Block[];
   substitutionTags: SubstitutionTag[];
   testDefs: TestDef[];
+  /**
+   * Cadence and gate thresholds are program data, not engine constants. The
+   * engine's defaults must equal these; a unit test asserts it, so a future
+   * program that changes them cannot silently disagree with the code.
+   */
+  testCadence: TestCadence;
+  progressionGate: ProgressionGateSpec;
+  deloadTreatment: Record<string, Record<string, number | boolean | string>>;
+}
+
+export interface TestCadence {
+  fullBatteryTrainingDays: number;
+  fullBatteryCalendarDays: number;
+  miniBatteryTrainingDays: number;
+  note?: string;
+}
+
+export interface ProgressionGateSpec {
+  powerRegressionThreshold: number;
+  note?: string;
 }
 
 /** The output of blocks.resolveDose(). */

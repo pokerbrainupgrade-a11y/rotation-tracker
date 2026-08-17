@@ -152,7 +152,7 @@ Run this after any deploy that you care about.
 | | Current |
 | --- | --- |
 | `SCHEMA_VERSION` | **3** |
-| `SEED_VERSION` | **2** |
+| `SEED_VERSION` | **3** |
 
 `SCHEMA_VERSION` governs the IndexedDB structure and requires a migration to
 change. `SEED_VERSION` governs program content and requires none — bumping it
@@ -173,6 +173,7 @@ independently on purpose.
 | --- | --- |
 | 1 | Initial program definition. |
 | 2 | Added `higherIsBetter`, `group`, `powerMetric` and `kind` to test definitions, and added the power-metric and movement-screen tests. No migration; no data touched. |
+| 3 | **Replaced the placeholder with the real program.** Every lift, exercise, template, block, tag and test id changed. No migration; no training data touched — but any history logged against the placeholder's ids is orphaned by it. |
 
 **If the app is older than your data** you will see a blocking screen saying so.
 Do not try to get past it — export from that screen, then update the app. An
@@ -211,31 +212,48 @@ npm run test:e2e:prod  # playwright, production build (offline + service worker)
 
 ---
 
-## ⚠️ The program seed is a placeholder
+## 10. The program
 
-`src/data/program.seed.json` is **structural placeholder content, not a real
-training prescription.** It ships with `_placeholder: true` and the app logs a
-warning on every launch.
+`src/data/program.seed.json` is the real program: five blocks, seven session
+templates, twenty-four prescribed exercises plus generated prep and recovery
+rows, six substitution tags and twenty-three tests.
 
-It currently drives: exercise names, sets and reps, rest intervals and their
-stated purpose, coaching intent text, termination rules, decay-floor factors,
-compression cut maps, substitution guidance rendered verbatim as protocol,
-%1RM bands that compute actual barbell loads, HR percentage bands, volume caps,
-battery cadence thresholds, and which tests count as power metrics for the
-progression gate.
+It is **generated**, not hand-edited. `src/data/program.source.json` is the
+program as written — sections as named groups, prose prep lists, doses as
+strings like `"3/side"`, and one global deload table. The seed is that document
+normalised into the shape the app reads: sections as an ordered list with roles
+and foreign keys, every prep line as its own exercise, and loads as a numeric
+`LoadSpec`.
 
-**Exercise, lift, template, block, tag and test IDs become a permanent foreign
-key the moment a set is logged against them.** Replace this file before logging
-real training.
+**To change the program, edit `program.source.json`, regenerate, and bump
+`SEED_VERSION`.** Editing the seed directly works but will be overwritten the
+next time the source is regenerated.
 
-To replace it:
-
-1. Edit `src/data/program.seed.json`.
-2. Bump `SEED_VERSION` in `src/types.ts`.
-3. `npm run test:unit` — the seed validator catches dangling references and
-   fails loudly rather than producing wrong prescriptions.
+1. Edit `src/data/program.source.json`.
+2. Regenerate `src/data/program.seed.json` from it.
+3. Bump `SEED_VERSION` in `src/types.ts`. **A content change without a version
+   bump does nothing on an installed app** — `ensureSeeded()` only reseeds when
+   the stored version is behind, so the phone keeps the old program silently.
+4. `npm run test:unit`. The validator fails loudly on a dangling reference, and
+   a separate test asserts the engine's cadence, gate and deload constants still
+   equal the program's.
 
 Reseeding replaces the program only. Training history is untouched.
+
+### Known caveats in the current content
+
+- **The KB swing load is written in kg (`32-40 kg`)** while the rest of the
+  program is in pounds. It is stored as the bare numbers `32–40`, so it renders
+  in whatever unit the profile is set to. Read it as kilograms regardless.
+- **Doses that are not rep counts** — `15 yd`, `4 min`, `30s`, `10 contacts` —
+  are stored as one effort with the literal prescription in `doseLabel`. The set
+  row shows the real dose, not a misleading "1".
+- **Block multipliers are a pass-through (1.0).** The program defines its deload
+  policy once, globally, rather than per block, so there is nothing per-block to
+  apply. The resolution order is still enforced and tested.
+- **`TD-A` and `TD-B-ESD` are aliases** of `TD1` and `TD3` at 2:1 density. Their
+  sections are copied from the parent at generation time, so the two cannot
+  drift apart.
 
 ---
 
@@ -249,3 +267,4 @@ Reseeding replaces the program only. Training history is untouched.
 | "APP VERSION IS OLDER THAN YOUR DATA" | §8 |
 | Update available | §6 |
 | Verifying a deploy | §7 |
+| Changing the program | §10 |

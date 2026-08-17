@@ -161,7 +161,7 @@ test('12 — a skipped lift renders SET MAX, and tapping it routes to that lift'
   await page.waitForSelector('[data-testid="session"]');
 
   const setMax = page
-    .locator('[data-exercise-id="ex.trap-bar-deadlift"] [data-testid="set-max"]')
+    .locator('[data-exercise-id="ex_frontsquat"] [data-testid="set-max"]')
     .first();
   await expect(setMax).toBeVisible();
   await expect(setMax).toHaveText('SET MAX');
@@ -170,7 +170,7 @@ test('12 — a skipped lift renders SET MAX, and tapping it routes to that lift'
   await page.waitForSelector('[data-testid="maxes"]');
   // Routed to the right lift's row, already open for editing.
   await expect(
-    page.locator('[data-testid="max-row"][data-lift-id="lift.trap-bar-deadlift"]'),
+    page.locator('[data-testid="max-row"][data-lift-id="squat"]'),
   ).toHaveAttribute('data-open', 'true');
 });
 
@@ -180,19 +180,19 @@ test('13 — updating an e1RM recomputes dependent targets immediately', async (
   await page.goto('?scenario=session-ready');
   await page.waitForSelector('[data-testid="dashboard"]');
 
-  // No maxes seeded, so the squat starts at SET MAX.
+  // No maxes seeded, so the trap bar starts at SET MAX.
   await page.getByRole('button', { name: 'Calendar' }).click();
   await page.locator('.segmented__btn[data-view="day"]').click();
   await page.getByTestId('start-session').click();
   await page.waitForSelector('[data-testid="session"]');
 
-  const squat = page.locator('[data-exercise-id="ex.back-squat"]');
-  await expect(squat.getByTestId('set-max')).toBeVisible();
+  const trapBar = page.locator('[data-exercise-id="ex_trapbar"]');
+  await expect(trapBar.getByTestId('set-max')).toBeVisible();
 
   // Set a max via the Maxes screen.
-  await squat.getByTestId('set-max').click();
+  await trapBar.getByTestId('set-max').click();
   await page.waitForSelector('[data-testid="maxes"]');
-  const row = page.locator('[data-testid="max-row"][data-lift-id="lift.back-squat"]');
+  const row = page.locator('[data-testid="max-row"][data-lift-id="trapbar"]');
   const plus = row.locator('.nstep__btn').last();
   for (let i = 0; i < 40; i++) await plus.click(); // 40 × 5 lb = 200
 
@@ -205,12 +205,13 @@ test('13 — updating an e1RM recomputes dependent targets immediately', async (
   await page.getByTestId('start-session').click();
   await page.waitForSelector('[data-testid="session"]');
 
-  const squatAgain = page.locator('[data-exercise-id="ex.back-squat"]');
-  await expect(squatAgain.getByTestId('set-max')).toHaveCount(0);
-  await expect(squatAgain.getByTestId('load-primary')).toBeVisible();
-  // Back squat is a velocity lift: primary is the m/s floor, weight secondary.
-  await expect(squatAgain.getByTestId('load-secondary')).toContainText('LB');
-  await expect(squatAgain.getByTestId('plate-line')).toContainText('BAR 45');
+  const trapBarAgain = page.locator('[data-exercise-id="ex_trapbar"]');
+  await expect(trapBarAgain.getByTestId('set-max')).toHaveCount(0);
+  await expect(trapBarAgain.getByTestId('load-primary')).toBeVisible();
+  // The trap bar is prescribed by velocity: primary is the m/s floor, and the
+  // weight that should produce it is secondary.
+  await expect(trapBarAgain.getByTestId('load-secondary')).toContainText('LB');
+  await expect(trapBarAgain.getByTestId('plate-line')).toContainText('BAR 45');
 });
 
 /* ---------- TEST 14 ---------- */
@@ -225,7 +226,7 @@ test('14 — the deload toggle changes displayed doses per the protocol table', 
   await page.getByTestId('start-session').click();
   await page.waitForSelector('[data-testid="session"]');
 
-  const throwDose = page.locator('[data-exercise-id="ex.med-ball-throw"] .exercise__dose');
+  const throwDose = page.locator('[data-exercise-id="ex_sidetoss"] .exercise__dose');
   const before = await throwDose.textContent();
   expect(before).toBe('4 × 3 / side');
 
@@ -235,10 +236,10 @@ test('14 — the deload toggle changes displayed doses per the protocol table', 
   // Max-intent throw: volume −50%, sets and intent unchanged.
   await expect(throwDose).toHaveText('4 × 2 / side');
 
-  // Ballistic (back squat): sets halved, reps unchanged.
+  // Ballistic (KB swing): sets halved, reps unchanged.
   await expect(
-    page.locator('[data-exercise-id="ex.back-squat"] .exercise__dose'),
-  ).toHaveText('3 × 3');
+    page.locator('[data-exercise-id="ex_kbswing"] .exercise__dose'),
+  ).toHaveText('5 × 5');
 
   // Reversible.
   await page.getByTestId('deload-toggle').click();
@@ -276,7 +277,7 @@ test('15 — the deload-position chip renders on the right rotation and applies 
   await expect(page.getByTestId('deload-badge')).toHaveCount(0);
   await expect(page.getByTestId('deload-toggle')).toHaveAttribute('aria-pressed', 'false');
   await expect(
-    page.locator('[data-exercise-id="ex.med-ball-throw"] .exercise__dose'),
+    page.locator('[data-exercise-id="ex_sidetoss"] .exercise__dose'),
   ).toHaveText('4 × 3 / side');
 
   const sessions = await readStore(page, 'scheduled');
@@ -287,7 +288,7 @@ test('15 — the deload-position chip renders on the right rotation and applies 
 });
 
 test('15b — a non-deload rotation shows no chip at all', async ({ page }) => {
-  // session-ready sits at rotation 2; the block's deload position is 4.
+  // session-ready sits at rotation 2, which is never the block's deload position.
   await page.goto('?scenario=session-ready');
   await page.waitForSelector('[data-testid="dashboard"]');
   await expect(page.getByTestId('deload-position')).toHaveCount(0);
