@@ -16,6 +16,12 @@ const RX = {
   restPurpose: 'TEST', intent: 'test intent', terminationRule: 'test rule',
   source: 'test', regression: 'easier', progression: 'harder',
   decayFloorFactor: null, decayMetric: null,
+  load: {
+    type: 'bodyweight' as const, pctLow: null, pctHigh: null, velocityTarget: null,
+    rpeTarget: null, rirTarget: null, fixedLow: null, fixedHigh: null,
+    hrPctLow: null, hrPctHigh: null,
+  },
+  deloadElement: 'recovery' as const,
 } as const;
 
 export const exercises: Exercise[] = [
@@ -107,6 +113,8 @@ export function block(over: Partial<Block> = {}): Block {
     id: 'block.a',
     name: 'Block A',
     weeks: 4,
+    deloadRotation: 4,
+    multipliers: { volume: 1, intensity: 1 },
     floors: {
       velocityFull: { floor: 4, ceiling: null },
       velocityPrime: { floor: 6, ceiling: null },

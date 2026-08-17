@@ -64,6 +64,12 @@ export function Dashboard({ data, today, onOpenSettings, onStart }: DashboardPro
       {/* 1 — header strip */}
       <header class="dash-header">
         <span class="dash-header__block">{data.blockLine}</span>
+        {data.deloadPosition && (
+          // Display only — states where you are in the block. Applies nothing.
+          <span class="dash-header__position" data-testid="deload-position">
+            DELOAD POSITION
+          </span>
+        )}
         <span class="dash-header__date">{data.todayLabel}</span>
         <button
           type="button"

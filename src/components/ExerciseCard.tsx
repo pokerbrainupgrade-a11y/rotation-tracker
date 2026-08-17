@@ -9,7 +9,8 @@ import {
   ratioLabel,
   ratioStatus,
 } from '../engine/instrumentation';
-import type { Exercise, SetLog, Units } from '../types';
+import { plateDeltaLine, plateLine, resolveLoad } from '../engine/loadResolve';
+import type { Exercise, MaxRecord, Profile, SetLog, Units } from '../types';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -25,6 +26,9 @@ interface ExerciseCardProps {
   drafts: Record<number, Record<string, SetDraft>>;
   /** Most recent completed set for this exercise, from an earlier session. */
   lastPerformance: { load: number | null; reps: number | null } | null;
+  profile: Pick<Profile, 'units' | 'hrMax' | 'barWeight' | 'plateInventory'>;
+  maxes: MaxRecord[];
+  onSetMax: (liftId: string) => void;
   onDraft: (setIndex: number, sideKey: string, patch: Partial<SetDraft>) => void;
   onComplete: (setIndex: number) => void;
   onReopen: (setIndex: number) => void;
@@ -35,7 +39,7 @@ interface ExerciseCardProps {
 
 export function ExerciseCard({
   exercise, units, sessionColor, logs, ratioHistory, dose, cut,
-  substitutable, abortable, drafts, lastPerformance,
+  substitutable, abortable, drafts, lastPerformance, profile, maxes, onSetMax,
   onDraft, onComplete, onReopen, onSubstitute, onAbort, onAdoptLast,
 }: ExerciseCardProps) {
   const [info, setInfo] = useState(false);
@@ -77,12 +81,51 @@ export function ExerciseCard({
 
       <p class="exercise__dose num">{dose}</p>
 
-      <p class="exercise__load num">
-        {/* Resolved weight needs the load calculator (Phase 6). An em-dash is
-            honest; a plausible number would not be. */}
-        <span style={{ color: sessionColor }}>—</span>
-        {exercise.restSec > 0 && <> · REST {exercise.restSec}s</>}
-      </p>
+      {(() => {
+        const load = resolveLoad(exercise, profile, maxes);
+        return (
+          <>
+            <p class="exercise__load num" data-testid="load-line">
+              {load.needsMax ? (
+                // Never 0, never a fabricated number: an untested lift gets a
+                // link to the place that fixes it.
+                <button
+                  type="button"
+                  class="exercise__setmax"
+                  data-testid="set-max"
+                  style={{ color: sessionColor }}
+                  onClick={() => load.missingLiftId && onSetMax(load.missingLiftId)}
+                >
+                  SET MAX
+                </button>
+              ) : (
+                <span style={{ color: sessionColor }} data-testid="load-primary">
+                  {load.primary ?? '—'}
+                </span>
+              )}
+              {load.secondary && (
+                <span class="exercise__loadsub" data-testid="load-secondary">
+                  {' '}{load.secondary}
+                </span>
+              )}
+              {exercise.restSec > 0 && <> · REST {exercise.restSec}s</>}
+            </p>
+            {load.plates && load.target !== null && (
+              <>
+                <p class="exercise__plates num" data-testid="plate-line">
+                  {plateLine(load.plates, profile.barWeight)}
+                  <span class="exercise__perside"> per side</span>
+                </p>
+                {plateDeltaLine(load.plates, load.target, profile.units) && (
+                  <p class="exercise__delta num" data-testid="plate-delta">
+                    {plateDeltaLine(load.plates, load.target, profile.units)}
+                  </p>
+                )}
+              </>
+            )}
+          </>
+        );
+      })()}
 
       {exercise.perSide && ratio.ratio !== null && (
         <p

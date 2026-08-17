@@ -144,6 +144,44 @@ export type LedgerKey =
 /** The three qualities earned by inspecting what was actually logged. */
 export type CountableQuality = 'velocityFull' | 'velocityPrime' | 'vo2max';
 
+/** How a target load is expressed for an exercise. */
+export type LoadType =
+  | 'pct1rm'
+  | 'velocity'
+  | 'rpe'
+  | 'fixed'
+  | 'hr'
+  | 'bodyweight';
+
+/** Which deload treatment row applies. Drives blocks.resolveDose(). */
+export type DeloadElement =
+  | 'maxIntentThrow'
+  | 'grind'
+  | 'ballistic'
+  | 'plyo'
+  | 'vo2max'
+  | 'zone2'
+  | 'recovery';
+
+/** Per-exercise load configuration, read by the resolver. */
+export interface LoadSpec {
+  type: LoadType;
+  /** pct1rm / velocity: percentage band of e1RM. */
+  pctLow: number | null;
+  pctHigh: number | null;
+  /** velocity: the m/s floor the bar must hold. */
+  velocityTarget: number | null;
+  /** rpe: target RPE and optional reps-in-reserve. */
+  rpeTarget: number | null;
+  rirTarget: number | null;
+  /** fixed: a literal load band, already in the profile's units. */
+  fixedLow: number | null;
+  fixedHigh: number | null;
+  /** hr: percentage band of HRmax, resolved to bpm at render time. */
+  hrPctLow: number | null;
+  hrPctHigh: number | null;
+}
+
 export interface Exercise {
   id: string;
   name: string;
@@ -186,6 +224,11 @@ export interface Exercise {
   decayFloorFactor: number | null;
   /** Which logged field the decay floor reads. null when there is no rule. */
   decayMetric: 'velocity' | 'distance' | null;
+
+  /** How this exercise's target load is expressed. */
+  load: LoadSpec;
+  /** Which deload treatment row applies to it. */
+  deloadElement: DeloadElement;
 
   deprecated?: boolean;
 }
@@ -239,10 +282,24 @@ export interface LedgerBounds {
   ceiling: number | null;
 }
 
+/**
+ * Block-level volume/intensity multipliers, applied FIRST in the resolution
+ * order. Shipped at 1.0 — a pass-through — because the real per-block values
+ * have never been supplied. Wiring them now means the order is enforced and
+ * testable without inventing training numbers.
+ */
+export interface BlockMultipliers {
+  volume: number;
+  intensity: number;
+}
+
 export interface Block {
   id: string;
   name: string;
   weeks: number;
+  /** Rotation number that is this block's programmed deload position. */
+  deloadRotation: number;
+  multipliers: BlockMultipliers;
   /** Floors/ceilings are per-block program data — never hardcoded in the engine. */
   floors: Record<LedgerKey, LedgerBounds>;
   deprecated?: boolean;
@@ -307,6 +364,24 @@ export interface ProgramSeed {
   blocks: Block[];
   substitutionTags: SubstitutionTag[];
   testDefs: TestDef[];
+}
+
+/** The output of blocks.resolveDose(). */
+export interface ResolvedDose {
+  sets: number;
+  reps: number;
+  /** Plyo only; null elsewhere. */
+  contacts: number | null;
+  /** Fraction of the prescribed top-set intensity, 1 = uncapped. */
+  topSetCap: number;
+  /** Human-readable dose string, e.g. "4 × 3 / side". */
+  label: string;
+  /** True when the deload treatment changed anything. */
+  deloaded: boolean;
+  /** True when compression cut this exercise entirely. */
+  cut: boolean;
+  /** What was applied, in order, for display and debugging. */
+  applied: string[];
 }
 
 /* ---------- BACKUP ENVELOPE ---------- */

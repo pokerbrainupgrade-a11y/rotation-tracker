@@ -13,6 +13,7 @@ import { EsdSheet, type EsdResult } from './session/EsdSheet';
 import { CompressionSheet } from './session/CompressionSheet';
 import { SummarySheet, type LedgerDelta } from './session/SummarySheet';
 import { doseFor, isCut, resolveCompression } from '../engine/compression';
+import { isDeloadPosition, resolveDose } from '../engine/blocks';
 import { sessionTotals, volumeView } from '../engine/instrumentation';
 import { contralateralRatio } from '../engine/instrumentation';
 import { sessionColor } from '../lib/sessionColor';
@@ -24,6 +25,8 @@ import {
   listExercises,
   listSessionTemplates,
   listSubstitutionTags,
+  listBlocks,
+  listMaxes,
   listScheduled,
   listSetLogs,
   putEsdLog,
@@ -31,19 +34,20 @@ import {
   getProfile,
 } from '../data/repo';
 import type {
-  CompressionLevel, EsdLog, Exercise, LedgerKey, Profile, ScheduledSession,
-  SessionTemplate, SetLog, SubstitutionTag,
+  Block, CompressionLevel, EsdLog, Exercise, LedgerKey, MaxRecord, Profile,
+  ScheduledSession, SessionTemplate, SetLog, SubstitutionTag,
 } from '../types';
 
 interface SessionProps {
   sessionId: string;
   onExit: () => void;
+  onSetMax: (liftId: string) => void;
 }
 
 let seq = 0;
 const newId = (): string => `set-${Date.now().toString(36)}-${++seq}`;
 
-export function Session({ sessionId, onExit }: SessionProps) {
+export function Session({ sessionId, onExit, onSetMax }: SessionProps) {
   const [session, setSession] = useState<ScheduledSession | null>(null);
   const [template, setTemplate] = useState<SessionTemplate | null>(null);
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -64,6 +68,8 @@ export function Session({ sessionId, onExit }: SessionProps) {
   } | null>(null);
   const [ratioHistory, setRatioHistory] = useState<Record<string, Array<number | null>>>({});
   const [lastPerf, setLastPerf] = useState<Record<string, { load: number | null; reps: number | null }>>({});
+  const [maxes, setMaxes] = useState<MaxRecord[]>([]);
+  const [block, setBlock] = useState<Block | null>(null);
 
   const save = useSessionAutosave(sessionId);
 
@@ -71,13 +77,15 @@ export function Session({ sessionId, onExit }: SessionProps) {
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      const [s, templates, ex, p, existing, subTags] = await Promise.all([
+      const [s, templates, ex, p, existing, subTags, allMaxes, blocks] = await Promise.all([
         getScheduled(sessionId),
         listSessionTemplates(),
         listExercises(),
         getProfile(),
         getSetLogsByScheduled(sessionId),
         listSubstitutionTags(),
+        listMaxes(),
+        listBlocks(),
       ]);
       if (cancelled || !s) {
         setLoading(false);
@@ -89,6 +97,8 @@ export function Session({ sessionId, onExit }: SessionProps) {
       setProfile(p ?? null);
       setLogs(existing);
       setTags(subTags);
+      setMaxes(allMaxes);
+      setBlock(blocks.find((b) => b.id === s.blockId) ?? blocks[0] ?? null);
       setLoading(false);
 
       // Prior-session ratio history and last performance, for the two-tier
@@ -301,6 +311,13 @@ export function Session({ sessionId, onExit }: SessionProps) {
     [save],
   );
 
+  /* ---- deload: MANUAL ONLY. Nothing here reads a date or a rotation. ---- */
+  const toggleDeload = useCallback(async () => {
+    if (!session) return;
+    const next = await save.patchSession({ deload: !session.deload });
+    if (next) setSession(next);
+  }, [session, save]);
+
   /* ---- training mode ---- */
   const toggleTrainingMode = useCallback(async () => {
     if (!profile) return;
@@ -446,6 +463,25 @@ export function Session({ sessionId, onExit }: SessionProps) {
         <button
           type="button"
           class="session__ctl"
+          aria-pressed={session.deload ? 'true' : 'false'}
+          data-testid="deload-toggle"
+          onClick={() => void toggleDeload()}
+        >
+          DELOAD
+        </button>
+        {session.deload && (
+          <span class="session__badge" data-testid="deload-badge">DELOAD</span>
+        )}
+        {block && isDeloadPosition(block, session.rotationNumber) && (
+          // States a fact about where you are in the block. Applies nothing,
+          // prompts nothing — the toggle above stays yours to press.
+          <span class="session__position" data-testid="deload-position">
+            DELOAD POSITION
+          </span>
+        )}
+        <button
+          type="button"
+          class="session__ctl"
           aria-pressed={profile?.trainingMode ? 'true' : 'false'}
           data-testid="training-mode"
           onClick={() => void toggleTrainingMode()}
@@ -522,15 +558,26 @@ export function Session({ sessionId, onExit }: SessionProps) {
                           sessionColor={color}
                           logs={logs.filter((l) => l.exerciseId === id)}
                           ratioHistory={ratioHistory[id] ?? []}
-                          dose={doseFor(
-                            compression,
-                            id,
-                            `${ex.sets} × ${ex.reps}${ex.perSide ? ' / side' : ''}`,
-                          )}
+                          dose={
+                            block
+                              ? resolveDose(ex, block, session.deload, compression).label
+                              : doseFor(
+                                  compression, id,
+                                  `${ex.sets} × ${ex.reps}${ex.perSide ? ' / side' : ''}`,
+                                )
+                          }
                           cut={isCut(compression, id)}
                           substitutable={key === 'power' || key === 'esd'}
                           abortable={key === 'esd'}
                           lastPerformance={lastPerf[id] ?? null}
+                          profile={{
+                            units: profile?.units ?? 'lb',
+                            hrMax: profile?.hrMax ?? null,
+                            barWeight: profile?.barWeight ?? 45,
+                            plateInventory: profile?.plateInventory ?? [],
+                          }}
+                          maxes={maxes}
+                          onSetMax={onSetMax}
                           drafts={Object.fromEntries(
                             Array.from({ length: ex.sets }, (_, i) => [i, draftFor(id, i)]),
                           )}

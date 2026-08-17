@@ -578,3 +578,212 @@
 .session[data-training-mode] .nstep__input { font-size: 22px; }
 .session[data-training-mode] .setrow__label { font-size: 13px; color: var(--text); }
 .session[data-training-mode] .decay { font-size: 13px; color: var(--text); }
+
+/* ---- Phase 6: setup ---- */
+
+.setup { padding: calc(var(--safe-t) + 24px) 20px calc(var(--safe-b) + 40px); }
+
+.setup__dots { display: flex; gap: 6px; margin-bottom: 28px; }
+
+.setup__dot {
+  width: 8px; height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+}
+
+.setup__dot[data-active] { background: var(--text-dim); }
+
+.setup__title { margin: 0 0 8px; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+.setup__note { margin: 0 0 20px; font-size: 13px; line-height: 1.45; color: var(--text-dim); }
+
+.setup__error {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--alert);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.setup__choice { display: flex; gap: 10px; margin-bottom: 20px; }
+
+.setup__opt {
+  flex: 1;
+  min-height: var(--tap-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-button);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.setup__opt[aria-pressed='true'] { border-color: var(--text); background: var(--border); }
+
+.setup__plates { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+
+.setup__plate {
+  min-height: var(--tap-min);
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+.setup__reset { width: 100%; }
+
+.setup__lift {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.setup__lift[data-skipped] { opacity: 0.5; }
+.setup__liftname { display: block; margin-bottom: 10px; font-size: 15px; }
+.setup__method { display: flex; gap: 8px; margin: 10px 0; }
+
+.setup__methodbtn {
+  flex: 1;
+  min-height: var(--tap-min);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.setup__methodbtn[aria-pressed='true'] { color: var(--text); border-color: var(--text-dim); }
+
+.setup__skip {
+  min-height: var(--tap-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.setup__nav { display: flex; gap: 10px; margin-top: 28px; }
+.setup__next { flex: 1; }
+
+/* ---- Phase 6: maxes ---- */
+
+.maxes { padding: calc(var(--safe-t) + 10px) 14px calc(var(--safe-b) + 86px); }
+.maxes__header { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+.maxes__title { margin: 0; font-size: 20px; font-weight: 700; }
+
+.maxrow { border-bottom: 1px solid var(--border); padding: 6px 0 12px; }
+
+.maxrow__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--tap-min);
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.maxrow__name { font-size: 15px; }
+
+.maxrow__value {
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.maxrow__untested { font-size: 13px; color: var(--text-dim); letter-spacing: 0.06em; }
+
+.maxrow__meta { display: flex; align-items: center; gap: 10px; }
+
+.maxrow__method {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.maxrow__age {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.maxrow__edit { margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
+
+.settings__row { width: 100%; margin-bottom: 12px; }
+
+/* ---- Phase 6: load + plate lines ---- */
+
+.exercise__loadsub { color: var(--text-dim); }
+
+.exercise__setmax {
+  min-height: var(--tap-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.exercise__plates {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.exercise__perside { color: var(--text-faint); font-size: 11px; letter-spacing: 0.06em; }
+
+/* Delta is --strength: a drift to notice, not an action to take. */
+.exercise__delta {
+  margin: 2px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--strength);
+  font-variant-numeric: tabular-nums;
+}
+
+.session__position {
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--strength);
+  color: var(--strength);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.dash-header__position {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--strength);
+  color: var(--strength);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}

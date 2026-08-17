@@ -108,6 +108,12 @@ describe('acceptance 3 — seed update isolation', () => {
       restPurpose: 'LOCAL RECOVERY', intent: 'test', terminationRule: 'test',
       source: 'test', regression: 'easier', progression: 'harder',
       decayFloorFactor: null, decayMetric: null,
+      load: {
+        type: 'bodyweight', pctLow: null, pctHigh: null, velocityTarget: null,
+        rpeTarget: null, rirTarget: null, fixedLow: null, fixedHigh: null,
+        hrPctLow: null, hrPctHigh: null,
+      },
+      deloadElement: 'recovery',
     });
 
     const didSeed = await ensureSeeded(v2, 2);

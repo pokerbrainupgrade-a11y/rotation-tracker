@@ -44,7 +44,20 @@
       "regression": "Box squat to depth",
       "progression": "Pause squat 2s",
       "decayFloorFactor": 0.95,
-      "decayMetric": "velocity"
+      "decayMetric": "velocity",
+      "load": {
+        "type": "velocity",
+        "pctLow": 78,
+        "pctHigh": 82,
+        "velocityTarget": 0.35,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "ballistic"
     },
     {
       "id": "ex.trap-bar-deadlift",
@@ -65,7 +78,20 @@
       "regression": "Rack pull",
       "progression": "Deficit pull",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "pct1rm",
+        "pctLow": 82,
+        "pctHigh": 88,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "grind"
     },
     {
       "id": "ex.bench-press",
@@ -86,7 +112,20 @@
       "regression": "Floor press",
       "progression": "Larsen press",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "pct1rm",
+        "pctLow": 75,
+        "pctHigh": 82,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "grind"
     },
     {
       "id": "ex.overhead-press",
@@ -107,7 +146,20 @@
       "regression": "Half-kneeling press",
       "progression": "Strict standing press",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": 8,
+        "rirTarget": 2,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "grind"
     },
     {
       "id": "ex.weighted-pullup",
@@ -128,7 +180,20 @@
       "regression": "Band-assisted pull-up",
       "progression": "Weighted, slower eccentric",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": 8,
+        "rirTarget": 2,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "grind"
     },
     {
       "id": "ex.split-squat",
@@ -149,7 +214,20 @@
       "regression": "Split squat, no elevation",
       "progression": "Front-foot-elevated",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "rpe",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": 7,
+        "rirTarget": 3,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "grind"
     },
     {
       "id": "ex.broad-jump",
@@ -170,7 +248,20 @@
       "regression": "Standing long jump, submaximal",
       "progression": "Weighted vest broad jump",
       "decayFloorFactor": 0.95,
-      "decayMetric": "distance"
+      "decayMetric": "distance",
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "maxIntentThrow"
     },
     {
       "id": "ex.vertical-jump",
@@ -191,7 +282,20 @@
       "regression": "Squat jump from pause",
       "progression": "Depth jump",
       "decayFloorFactor": 0.95,
-      "decayMetric": "distance"
+      "decayMetric": "distance",
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "maxIntentThrow"
     },
     {
       "id": "ex.med-ball-throw",
@@ -212,7 +316,20 @@
       "regression": "Lighter ball, same intent",
       "progression": "Heavier ball, same speed",
       "decayFloorFactor": 0.95,
-      "decayMetric": "distance"
+      "decayMetric": "distance",
+      "load": {
+        "type": "fixed",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": 8,
+        "fixedHigh": 12,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "maxIntentThrow"
     },
     {
       "id": "ex.pogo-hops",
@@ -233,7 +350,20 @@
       "regression": "Two-foot pogo in place",
       "progression": "Single-leg pogo",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "plyo"
     },
     {
       "id": "ex.bike-intervals",
@@ -254,7 +384,20 @@
       "regression": "3 x 4 min",
       "progression": "5 x 4 min",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "hr",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": 90,
+        "hrPctHigh": 95
+      },
+      "deloadElement": "vo2max"
     },
     {
       "id": "ex.zone2-ride",
@@ -275,7 +418,20 @@
       "regression": "Shorter duration",
       "progression": "Longer duration",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "hr",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": 60,
+        "hrPctHigh": 70
+      },
+      "deloadElement": "zone2"
     },
     {
       "id": "ex.mobility-flow",
@@ -296,7 +452,20 @@
       "regression": "Reduced range",
       "progression": "Longer holds",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     },
     {
       "id": "ex.easy-walk",
@@ -317,7 +486,20 @@
       "regression": "Shorter walk",
       "progression": "Longer walk",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     },
     {
       "id": "ex.breathing",
@@ -336,7 +518,20 @@
       "regression": "Reduced range",
       "progression": "Full range",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     },
     {
       "id": "ex.glute-bridge",
@@ -355,7 +550,20 @@
       "regression": "Reduced range",
       "progression": "Full range",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     },
     {
       "id": "ex.side-plank",
@@ -374,7 +582,20 @@
       "regression": "Reduced range",
       "progression": "Full range",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     },
     {
       "id": "ex.leg-swings",
@@ -393,7 +614,20 @@
       "regression": "Reduced range",
       "progression": "Full range",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     },
     {
       "id": "ex.inchworm",
@@ -412,7 +646,20 @@
       "regression": "Reduced range",
       "progression": "Full range",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     },
     {
       "id": "ex.lateral-lunge",
@@ -431,7 +678,20 @@
       "regression": "Reduced range",
       "progression": "Full range",
       "decayFloorFactor": null,
-      "decayMetric": null
+      "decayMetric": null,
+      "load": {
+        "type": "bodyweight",
+        "pctLow": null,
+        "pctHigh": null,
+        "velocityTarget": null,
+        "rpeTarget": null,
+        "rirTarget": null,
+        "fixedLow": null,
+        "fixedHigh": null,
+        "hrPctLow": null,
+        "hrPctHigh": null
+      },
+      "deloadElement": "recovery"
     }
   ],
   "sessionTemplates": [
@@ -959,6 +1219,11 @@
           "floor": 16,
           "ceiling": 22
         }
+      },
+      "deloadRotation": 4,
+      "multipliers": {
+        "volume": 1.0,
+        "intensity": 1.0
       }
     },
     {
@@ -986,6 +1251,11 @@
           "floor": 14,
           "ceiling": 22
         }
+      },
+      "deloadRotation": 3,
+      "multipliers": {
+        "volume": 1.0,
+        "intensity": 1.0
       }
     },
     {
@@ -1013,6 +1283,11 @@
           "floor": 12,
           "ceiling": 22
         }
+      },
+      "deloadRotation": 2,
+      "multipliers": {
+        "volume": 1.0,
+        "intensity": 1.0
       }
     }
   ],

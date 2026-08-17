@@ -6,6 +6,8 @@ import { Placeholder } from './screens/Placeholder';
 import { Dashboard } from './screens/Dashboard';
 import { Calendar } from './screens/Calendar';
 import { Session } from './screens/Session';
+import { Setup } from './screens/Setup';
+import { Maxes } from './screens/Maxes';
 import { ResumeSheet } from './screens/session/ResumeSheet';
 import {
   deleteSetLog, findUnfinishedSessions, getSetLogsByScheduled, putScheduled,
@@ -15,8 +17,6 @@ import { SCREEN_COPY } from './screens';
 import { useDashboard } from './hooks/useDashboard';
 import { toLocalDate } from './data/dates';
 import { hashFor, initialRoute, parseHash, type Route } from './lib/route';
-import { ensureProfile } from './data/repo';
-import { programSeed } from './data/seed';
 import type { TabId } from './types';
 
 export function App() {
@@ -26,6 +26,7 @@ export function App() {
   const [runningId, setRunningId] = useState<string | null>(null);
   const [resume, setResume] = useState<{ session: ScheduledSession; setCount: number } | null>(null);
   const [resumeChecked, setResumeChecked] = useState(false);
+  const [focusLift, setFocusLift] = useState<string | null>(null);
 
   // Dashboard is the landing route on every launch, so the hash is normalised
   // once on mount rather than restored from wherever the app was last closed.
@@ -112,14 +113,6 @@ export function App() {
     reload();
   }, [resume, reload]);
 
-  const createProfile = useCallback(() => {
-    void (async () => {
-      const first = programSeed.blocks[0];
-      if (first) await ensureProfile(first.id);
-      reload();
-    })();
-  }, [reload]);
-
   // --- four explicit app states, no flash of empty content ---
 
   if (state === 'opening') {
@@ -144,26 +137,12 @@ export function App() {
   }
 
   if (state === 'no-profile') {
-    return (
-      <>
-        <main class="screen" data-testid="setup">
-          <h1 class="screen__title">Setup</h1>
-          <p class="screen__note">
-            First launch. The guided setup lands in Phase 6 — for now this
-            creates a default profile so the rest of the app has something to
-            read.
-          </p>
-          <button type="button" class="btn btn--primary" onClick={createProfile}>
-            CREATE PROFILE
-          </button>
-        </main>
-        <TabBar active="dashboard" onSelect={() => undefined} />
-      </>
-    );
+    return <Setup onComplete={reload} />;
   }
 
   const activeTab: TabId =
-    route === 'settings' || route === 'setup' || route === 'session'
+    route === 'settings' || route === 'setup' || route === 'session' ||
+    route === 'maxes'
       ? 'dashboard'
       : route;
 
@@ -174,6 +153,11 @@ export function App() {
         onExit={() => {
           setRunningId(null);
           reload();
+        }}
+        onSetMax={(liftId) => {
+          setFocusLift(liftId);
+          setRunningId(null);
+          go('maxes');
         }}
       />
     );
@@ -206,14 +190,36 @@ export function App() {
 
       {route === 'calendar' && <Calendar onStart={(id) => setRunningId(id)} />}
 
-      {route === 'settings' && (
-        <Placeholder
-          title="Settings"
-          note="Units, maxes, storage and backup land in Phase 6."
+      {route === 'maxes' && (
+        <Maxes
+          focusLiftId={focusLift}
+          onBack={() => {
+            setFocusLift(null);
+            go('settings');
+          }}
         />
       )}
 
-      {route !== 'dashboard' && route !== 'settings' && route !== 'calendar' && (
+      {route === 'settings' && (
+        <main class="screen" data-testid="settings">
+          <h1 class="screen__title">Settings</h1>
+          <button
+            type="button"
+            class="btn btn--secondary settings__row"
+            data-testid="open-maxes"
+            onClick={() => go('maxes')}
+          >
+            MAXES
+          </button>
+          <p class="screen__note">
+            Units, storage and backup controls land alongside the testing
+            battery.
+          </p>
+        </main>
+      )}
+
+      {route !== 'dashboard' && route !== 'settings' && route !== 'calendar' &&
+        route !== 'maxes' && (
         <Placeholder title={SCREEN_COPY[activeTab].title} note={SCREEN_COPY[activeTab].note} />
       )}
 

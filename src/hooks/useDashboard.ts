@@ -13,6 +13,7 @@ import {
 import { computeLedger, type LedgerRow } from '../engine/ledger';
 import { evaluateConstraints, type Warning } from '../engine/constraints';
 import { nextPosition, type Density } from '../engine/rotation';
+import { isDeloadPosition } from '../engine/blocks';
 import { exportStatus, type ExportStatusInfo } from '../lib/exportStatus';
 import type {
   Block,
@@ -39,6 +40,8 @@ export interface DashboardData {
   todayLabel: string;
   blockLine: string;
   windowLabel: string;
+  /** Display only: this rotation is the block's programmed deload position. */
+  deloadPosition: boolean;
 }
 
 export interface DashboardState {
@@ -139,6 +142,7 @@ export function useDashboard(now: Date = new Date()): DashboardState {
         todayLabel: formatToday(now),
         blockLine: `${block.name.toUpperCase()} · R${profile.rotationNumber}`,
         windowLabel: `${shortDate(now, -27)} – ${shortDate(now, 0)}`,
+        deloadPosition: isDeloadPosition(block, profile.rotationNumber),
       });
       setState('ready');
     })();

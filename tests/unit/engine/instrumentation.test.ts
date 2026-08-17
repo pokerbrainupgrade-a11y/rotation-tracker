@@ -17,6 +17,12 @@ const RX = {
   sets: 4, reps: 3, perSide: false, restSec: 180,
   restPurpose: 'TEST', intent: 'i', terminationRule: 't',
   source: 's', regression: 'r', progression: 'p',
+  load: {
+    type: 'bodyweight' as const, pctLow: null, pctHigh: null, velocityTarget: null,
+    rpeTarget: null, rirTarget: null, fixedLow: null, fixedHigh: null,
+    hrPctLow: null, hrPctHigh: null,
+  },
+  deloadElement: 'recovery' as const,
 } as const;
 
 const throwEx: Exercise = {

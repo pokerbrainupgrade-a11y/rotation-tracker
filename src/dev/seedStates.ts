@@ -41,6 +41,9 @@ export type ScenarioName =
   | 'session-td3'
   | 'session-at-cap'
   | 'session-history'
+  | 'setup'
+  | 'setup-fail'
+  | 'deload-position'
   | 'db-error'
   | 'no-profile';
 
@@ -86,7 +89,7 @@ function session(
     templateId: template?.id ?? 'tmpl.td2-strength',
     position,
     blockId: programSeed.blocks[0]?.id ?? 'block.accumulation',
-    rotationNumber: 4,
+    rotationNumber: 2,
     status: 'done',
     compressionLevel: 100,
     deload: false,
@@ -251,6 +254,13 @@ function build(name: ScenarioName, today: string): Built {
     }
 
     // A TD1 planned for today, never started. The runner's clean entry point.
+    // Rotation 4 is block.accumulation's programmed deload position.
+    case 'deload-position':
+      return {
+        scheduled: [session('TD1', 0, today, { id: 'run-1', status: 'planned', rotationNumber: 4 })],
+        setLogs: [], esdLogs: [],
+      };
+
     case 'session-ready':
       return {
         scheduled: [session('TD1', 0, today, { id: 'run-1', status: 'planned' })],
@@ -338,6 +348,15 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
   ]);
   await tx.done;
 
+  if (name === 'setup' || name === 'setup-fail') {
+    const ptx = db.transaction('profile', 'readwrite');
+    await ptx.store.clear();
+    await ptx.done;
+    (globalThis as { __failProfileWrite?: boolean }).__failProfileWrite =
+      name === 'setup-fail';
+    return true;
+  }
+
   if (name === 'no-profile') {
     const ptx = db.transaction('profile', 'readwrite');
     await ptx.store.clear();
@@ -354,7 +373,13 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
       : name === 'export-overdue'
         ? new Date(now.getTime() - 22 * 86_400_000).toISOString()
         : now.toISOString();
-  await db.put('profile', { ...profile, lastExport, rotationNumber: 4 });
+  // Rotation 2 by default so the deload-position chip is NOT showing; the
+  // deload-position scenario is the only one that lands on it.
+  await db.put('profile', {
+    ...profile,
+    lastExport,
+    rotationNumber: name === 'deload-position' ? 4 : 2,
+  });
 
   const built = build(name, today);
 
@@ -378,7 +403,8 @@ export async function applyScenario(name: ScenarioName, now: Date = new Date()):
     name !== 'session-stale' &&
     name !== 'session-td3' &&
     name !== 'session-at-cap' &&
-    name !== 'session-history'
+    name !== 'session-history' &&
+    name !== 'deload-position'
   ) {
     const planned = session('TD1', -1, today, { status: 'planned' });
     await db.put('scheduled', planned);
